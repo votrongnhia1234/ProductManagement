@@ -1,0 +1,1031 @@
+@model ProductViewModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<!-- Hero Section with Enhanced Content -->
+<section class="hero-section position-relative overflow-hidden">
+    <div class="particles-container" id="particles"></div>
+    <div class="hero-content">
+        <div class="container">
+            <div class="row align-items-center min-vh-60">
+                <div class="col-lg-6">
+                    <div class="hero-text">
+                        <div class="hero-badge">
+                            <i class="fas fa-rocket me-2"></i>
+                            <span>Hệ thống quản lý hiện đại</span>
+                        </div>
+                        <h1 class="hero-title">
+                            Quản lý sản phẩm
+                            <span class="gradient-text">thông minh</span>
+                        </h1>
+                        <p class="hero-subtitle">
+                            Nền tảng quản lý sản phẩm hiện đại với AI và analytics. 
+                            Tối ưu hóa quy trình kinh doanh và tăng hiệu quả công việc.
+                        </p>
+                        
+                        <!-- Feature Highlights -->
+                        <div class="hero-features">
+                            <div class="feature-item">
+                                <i class="fas fa-lightning-bolt"></i>
+                                <span>Tìm kiếm nhanh</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-chart-line"></i>
+                                <span>Analytics thời gian thực</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-mobile-alt"></i>
+                                <span>Responsive design</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>Bảo mật cao</span>
+                            </div>
+                        </div>
+                        
+                        <div class="hero-stats">
+                            <div class="stat-item">
+                                <div class="stat-number" data-count="@Model.Products.Count">0</div>
+                                <div class="stat-label">Sản phẩm</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number" data-count="@Model.Categories.Count">0</div>
+                                <div class="stat-label">Danh mục</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number" data-count="@(Model.Products.Any() ? (int)Model.Products.Average(p => p.Price) / 1000000 : 0)">0</div>
+                                <div class="stat-label">Triệu VNĐ (TB)</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number" data-count="98">0</div>
+                                <div class="stat-label">% Uptime</div>
+                            </div>
+                        </div>
+                        
+                        <div class="hero-actions">
+                            <a asp-action="Create" class="btn btn-primary btn-lg modern-btn">
+                                <i class="fas fa-plus me-2"></i>Thêm sản phẩm
+                            </a>
+                            <button class="btn btn-outline-light btn-lg modern-btn" data-bs-toggle="modal" data-bs-target="#analyticsModal">
+                                <i class="fas fa-chart-line me-2"></i>Analytics
+                            </button>
+                            <button class="btn btn-outline-light btn-lg modern-btn" onclick="scrollToProducts()">
+                                <i class="fas fa-arrow-down me-2"></i>Xem sản phẩm
+                            </button>
+                        </div>
+                        
+                        <!-- Quick Actions -->
+                        <div class="quick-actions">
+                            <span class="quick-actions-label">Thao tác nhanh:</span>
+                            <button class="quick-action-btn" onclick="openQuickAdd()" title="Thêm nhanh">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                            <button class="quick-action-btn" onclick="exportData()" title="Xuất dữ liệu">
+                                <i class="fas fa-download"></i>
+                            </button>
+                            <button class="quick-action-btn" onclick="importData()" title="Nhập dữ liệu">
+                                <i class="fas fa-upload"></i>
+                            </button>
+                            <button class="quick-action-btn" onclick="showSettings()" title="Cài đặt">
+                                <i class="fas fa-cog"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="hero-visual">
+                        <!-- Enhanced Dashboard Preview -->
+                        <div class="dashboard-preview">
+                            <div class="preview-window">
+                                <div class="window-header">
+                                    <div class="window-controls">
+                                        <span class="control red"></span>
+                                        <span class="control yellow"></span>
+                                        <span class="control green"></span>
+                                    </div>
+                                    <div class="window-title">ProductHub Dashboard</div>
+                                </div>
+                                <div class="window-content">
+                                    <div class="preview-chart">
+                                        <canvas id="heroChart" width="300" height="150"></canvas>
+                                    </div>
+                                    <div class="preview-cards">
+                                        @foreach (var product in Model.Products.Take(3))
+                                        {
+                                            <div class="preview-card" style="animation-delay: @(Model.Products.ToList().IndexOf(product) * 0.3)s">
+                                                <img src="@(string.IsNullOrEmpty(product.ImgUrl) ? "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=100" : product.ImgUrl)" 
+                                                     alt="@product.ProductName">
+                                                <div class="preview-info">
+                                                    <h6>@product.ProductName</h6>
+                                                    <p>@product.Price.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</p>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Floating Elements -->
+                        <div class="floating-elements">
+                            <div class="floating-element" style="top: 10%; right: 20%; animation-delay: 0s;">
+                                <i class="fas fa-chart-pie"></i>
+                            </div>
+                            <div class="floating-element" style="top: 60%; right: 10%; animation-delay: 1s;">
+                                <i class="fas fa-shopping-cart"></i>
+                            </div>
+                            <div class="floating-element" style="bottom: 30%; left: 10%; animation-delay: 2s;">
+                                <i class="fas fa-users"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Scroll Indicator -->
+    <div class="scroll-indicator">
+        <div class="scroll-arrow" onclick="scrollToProducts()">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </div>
+</section>
+
+<!-- Advanced Search Section -->
+<section class="search-section" id="searchSection">
+    <div class="container">
+        <div class="search-card">
+            <form method="get" id="searchForm" class="search-form">
+                <div class="row g-4">
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-search me-2"></i>Tìm kiếm
+                            </label>
+                            <div class="input-group modern-input">
+                                <input type="text" class="form-control" name="searchTerm" 
+                                       value="@Model.SearchTerm" placeholder="Nhập tên sản phẩm..."
+                                       id="searchInput">
+                                <button class="btn btn-outline-secondary" type="button" onclick="clearSearch()">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-filter me-2"></i>Danh mục
+                            </label>
+                            <select name="categoryFilter" class="form-select modern-select" id="categoryFilter">
+                                <option value="">Tất cả danh mục</option>
+                                @foreach (var category in Model.Categories)
+                                {
+                                    <option value="@category.Id" selected="@(Model.CategoryFilter == category.Id)">
+                                        @category.Name
+                                    </option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-sort me-2"></i>Sắp xếp
+                            </label>
+                            <select name="sortOrder" class="form-select modern-select" id="sortOrder">
+                                <option value="name_asc" selected="@(Model.SortOrder == "name_asc")">Tên A-Z</option>
+                                <option value="name_desc" selected="@(Model.SortOrder == "name_desc")">Tên Z-A</option>
+                                <option value="price_asc" selected="@(Model.SortOrder == "price_asc")">Giá thấp → cao</option>
+                                <option value="price_desc" selected="@(Model.SortOrder == "price_desc")">Giá cao → thấp</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label class="form-label">&nbsp;</label>
+                            <button type="submit" class="btn btn-primary w-100 modern-btn">
+                                <i class="fas fa-search me-2"></i>Tìm
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- Products Section -->
+<section class="products-section" id="productsSection">
+    <div class="container">
+        <!-- Section Header -->
+        <div class="section-header">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h2 class="section-title">
+                        <i class="fas fa-box me-2"></i>Sản phẩm
+                        <span class="badge bg-primary ms-2">@Model.Products.Count</span>
+                    </h2>
+                    <p class="section-subtitle">Quản lý và theo dõi tất cả sản phẩm của bạn</p>
+                </div>
+                <div class="section-controls">
+                    <div class="view-toggle">
+                        <button class="btn btn-sm btn-outline-primary active" data-view="grid" title="Grid View">
+                            <i class="fas fa-th"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-primary" data-view="list" title="List View">
+                            <i class="fas fa-list"></i>
+                        </button>
+                    </div>
+                    <button class="btn btn-sm btn-outline-primary" onclick="toggleFilters()" title="Advanced Filters">
+                        <i class="fas fa-sliders-h"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Advanced Filters (Hidden by default) -->
+        <div class="advanced-filters" id="advancedFilters" style="display: none;">
+            <div class="filters-card">
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label class="form-label">Khoảng giá</label>
+                        <div class="price-range">
+                            <input type="range" class="form-range" min="0" max="50000000" step="100000" id="priceRange">
+                            <div class="range-labels">
+                                <span>0₫</span>
+                                <span id="priceValue">25,000,000₫</span>
+                                <span>50M₫</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Trạng thái</label>
+                        <select class="form-select">
+                            <option>Tất cả</option>
+                            <option>Còn hàng</option>
+                            <option>Hết hàng</option>
+                            <option>Ngừng bán</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Ngày tạo</label>
+                        <select class="form-select">
+                            <option>Tất cả</option>
+                            <option>Hôm nay</option>
+                            <option>7 ngày qua</option>
+                            <option>30 ngày qua</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">&nbsp;</label>
+                        <button class="btn btn-outline-secondary w-100" onclick="resetFilters()">
+                            <i class="fas fa-undo me-2"></i>Reset
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Products Grid -->
+        <div class="products-grid" id="productsGrid">
+            @if (Model.Products.Any())
+            {
+                @foreach (var product in Model.Products)
+                {
+                    <div class="product-card-container" data-aos="fade-up" data-aos-delay="@(Model.Products.ToList().IndexOf(product) * 100)">
+                        <div class="product-card modern-card">
+                            <div class="card-image-container">
+                                <img src="@(string.IsNullOrEmpty(product.ImgUrl) ? "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400" : product.ImgUrl)" 
+                                     class="card-image" alt="@product.ProductName"
+                                     onerror="this.src='https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400'">
+                                <div class="card-overlay">
+                                    <div class="overlay-actions">
+                                        <button class="action-btn" onclick="quickView(@product.Id)" title="Quick View">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="action-btn" onclick="editProduct(@product.Id)" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="action-btn delete-btn" onclick="deleteProduct(@product.Id, '@product.ProductName')" title="Delete">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-badges">
+                                    <span class="badge category-badge">@product.Category?.Name</span>
+                                    <span class="badge status-badge">Còn hàng</span>
+                                </div>
+                            </div>
+                            <div class="card-content">
+                                <h5 class="card-title">@product.ProductName</h5>
+                                <p class="card-description">@(string.IsNullOrEmpty(product.Description) ? "Chưa có mô tả" : product.Description)</p>
+                                <div class="card-footer">
+                                    <div class="price">
+                                        <span class="current-price">@product.Price.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</span>
+                                    </div>
+                                    <div class="card-actions">
+                                        <button class="btn btn-sm btn-outline-primary" onclick="viewProduct(@product.Id)">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-warning" onclick="editProduct(@product.Id)">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="empty-state">
+                    <div class="empty-illustration">
+                        <i class="fas fa-box-open"></i>
+                    </div>
+                    <h3>Không tìm thấy sản phẩm</h3>
+                    <p>Hãy thử thay đổi bộ lọc hoặc thêm sản phẩm mới</p>
+                    <a asp-action="Create" class="btn btn-primary modern-btn">
+                        <i class="fas fa-plus me-2"></i>Thêm sản phẩm đầu tiên
+                    </a>
+                </div>
+            }
+        </div>
+
+        <!-- Pagination -->
+        @if (Model.TotalPages > 1)
+        {
+            <nav class="pagination-nav">
+                <ul class="pagination modern-pagination">
+                    @if (Model.CurrentPage > 1)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="?page=@(Model.CurrentPage - 1)&searchTerm=@Model.SearchTerm&categoryFilter=@Model.CategoryFilter&sortOrder=@Model.SortOrder">
+                                <i class="fas fa-chevron-left"></i>
+                            </a>
+                        </li>
+                    }
+                    
+                    @for (int i = Math.Max(1, Model.CurrentPage - 2); i <= Math.Min(Model.TotalPages, Model.CurrentPage + 2); i++)
+                    {
+                        <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                            <a class="page-link" href="?page=@i&searchTerm=@Model.SearchTerm&categoryFilter=@Model.CategoryFilter&sortOrder=@Model.SortOrder">@i</a>
+                        </li>
+                    }
+                    
+                    @if (Model.CurrentPage < Model.TotalPages)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="?page=@(Model.CurrentPage + 1)&searchTerm=@Model.SearchTerm&categoryFilter=@Model.CategoryFilter&sortOrder=@Model.SortOrder">
+                                <i class="fas fa-chevron-right"></i>
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        }
+    </div>
+</section>
+
+<!-- Quick View Modal -->
+<div class="modal fade" id="quickViewModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content modern-modal">
+            <div class="modal-header border-0">
+                <h5 class="modal-title">
+                    <i class="fas fa-eye me-2"></i>Xem nhanh
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="quickViewContent">
+                <!-- Content will be loaded dynamically -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Analytics Modal -->
+<div class="modal fade" id="analyticsModal" tabindex="-1">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content modern-modal">
+            <div class="modal-header border-0">
+                <h5 class="modal-title">
+                    <i class="fas fa-chart-line me-2"></i>Analytics Dashboard
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row g-4">
+                    <div class="col-md-3">
+                        <div class="analytics-card">
+                            <div class="analytics-icon bg-primary">
+                                <i class="fas fa-box"></i>
+                            </div>
+                            <div class="analytics-content">
+                                <h3>@Model.Products.Count</h3>
+                                <p>Tổng sản phẩm</p>
+                                <small class="text-success">+12% so với tháng trước</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="analytics-card">
+                            <div class="analytics-icon bg-success">
+                                <i class="fas fa-tags"></i>
+                            </div>
+                            <div class="analytics-content">
+                                <h3>@Model.Categories.Count</h3>
+                                <p>Danh mục</p>
+                                <small class="text-info">Ổn định</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="analytics-card">
+                            <div class="analytics-icon bg-warning">
+                                <i class="fas fa-dollar-sign"></i>
+                            </div>
+                            <div class="analytics-content">
+                                <h3>@(Model.Products.Any() ? Model.Products.Average(p => p.Price).ToString("C0", new System.Globalization.CultureInfo("vi-VN")) : "0₫")</h3>
+                                <p>Giá trung bình</p>
+                                <small class="text-warning">+5% so với tháng trước</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="analytics-card">
+                            <div class="analytics-icon bg-info">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="analytics-content">
+                                <h3>85%</h3>
+                                <p>Tỷ lệ còn hàng</p>
+                                <small class="text-success">Tốt</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div class="chart-container">
+                            <canvas id="salesChart" width="400" height="200"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true
+        });
+
+        // Counter Animation for Hero Stats
+        function animateCounters() {
+            const counters = document.querySelectorAll('.stat-number[data-count]');
+            counters.forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-count'));
+                const duration = 2000;
+                const step = target / (duration / 16);
+                let current = 0;
+                
+                const timer = setInterval(() => {
+                    current += step;
+                    if (current >= target) {
+                        counter.textContent = target;
+                        clearInterval(timer);
+                    } else {
+                        counter.textContent = Math.floor(current);
+                    }
+                }, 16);
+            });
+        }
+
+        // Initialize counter animation when hero section is visible
+        const heroObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCounters();
+                    heroObserver.unobserve(entry.target);
+                }
+            });
+        });
+
+        const heroSection = document.querySelector('.hero-section');
+        if (heroSection) {
+            heroObserver.observe(heroSection);
+        }
+
+        // Scroll to products section
+        function scrollToProducts() {
+            document.getElementById('productsSection').scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+
+        // Quick actions
+        function openQuickAdd() {
+            window.location.href = '@Url.Action("Create", "Product")';
+        }
+
+        function exportData() {
+            showToast('Tính năng xuất dữ liệu sẽ được phát triển sớm', 'info');
+        }
+
+        function importData() {
+            showToast('Tính năng nhập dữ liệu sẽ được phát triển sớm', 'info');
+        }
+
+        function showSettings() {
+            showToast('Tính năng cài đặt sẽ được phát triển sớm', 'info');
+        }
+
+        // Initialize hero chart
+        function initializeHeroChart() {
+            const ctx = document.getElementById('heroChart');
+            if (ctx) {
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                        datasets: [{
+                            label: 'Doanh số',
+                            data: [12, 19, 3, 5, 2, 3],
+                            borderColor: '#6366f1',
+                            backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                            tension: 0.4,
+                            borderWidth: 2,
+                            pointRadius: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            x: {
+                                display: false
+                            },
+                            y: {
+                                display: false
+                            }
+                        },
+                        elements: {
+                            point: {
+                                radius: 0
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        // Initialize hero chart
+        setTimeout(initializeHeroChart, 1000);
+
+        // Global search state
+        let searchState = {
+            searchTerm: '@Model.SearchTerm',
+            categoryFilter: '@Model.CategoryFilter',
+            sortOrder: '@Model.SortOrder',
+            currentPage: @Model.CurrentPage
+        };
+
+        // Auto-submit search with debounce (AJAX)
+        let searchTimeout;
+        document.getElementById('searchInput').addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                searchState.searchTerm = this.value;
+                searchState.currentPage = 1; // Reset to first page
+                performAjaxSearch();
+            }, 500);
+        });
+
+        // Form controls (AJAX)
+        document.getElementById('categoryFilter').addEventListener('change', function() {
+            searchState.categoryFilter = this.value;
+            searchState.currentPage = 1; // Reset to first page
+            performAjaxSearch();
+        });
+
+        document.getElementById('sortOrder').addEventListener('change', function() {
+            searchState.sortOrder = this.value;
+            searchState.currentPage = 1; // Reset to first page
+            performAjaxSearch();
+        });
+
+        // AJAX Search Function
+        function performAjaxSearch() {
+            const productsGrid = document.getElementById('productsGrid');
+            const searchCard = document.querySelector('.search-card');
+            
+            // Show loading state
+            showSearchLoading(true);
+            
+            // Build query parameters
+            const params = new URLSearchParams({
+                searchTerm: searchState.searchTerm || '',
+                categoryFilter: searchState.categoryFilter || '',
+                sortOrder: searchState.sortOrder || 'name_asc',
+                page: searchState.currentPage || 1,
+                ajax: 'true' // Flag to indicate AJAX request
+            });
+            
+            // Perform AJAX request
+            fetch(`@Url.Action("Index", "Product")?${params.toString()}`, {
+                method: 'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                updateProductsGrid(data.products);
+                updatePagination(data.pagination);
+                updateResultsCount(data.totalCount);
+                
+                // Update URL without reload
+                const newUrl = `${window.location.pathname}?${params.toString().replace('&ajax=true', '')}`;
+                window.history.pushState(searchState, '', newUrl);
+                
+                showSearchLoading(false);
+                
+                // Show success message
+                if (data.products.length === 0) {
+                    showToast('Không tìm thấy sản phẩm nào phù hợp', 'info');
+                } else {
+                    showToast(`Tìm thấy ${data.totalCount} sản phẩm`, 'success');
+                }
+            })
+            .catch(error => {
+                console.error('Search error:', error);
+                showToast('Có lỗi xảy ra khi tìm kiếm. Vui lòng thử lại.', 'error');
+                showSearchLoading(false);
+            });
+        }
+
+        // Show/Hide loading state
+        function showSearchLoading(isLoading) {
+            const searchBtn = document.querySelector('.btn-primary.modern-btn');
+            const productsGrid = document.getElementById('productsGrid');
+            
+            if (isLoading) {
+                // Update search button
+                searchBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Đang tìm...';
+                searchBtn.disabled = true;
+                
+                // Add loading overlay to products grid
+                if (!document.querySelector('.search-loading-overlay')) {
+                    const loadingOverlay = document.createElement('div');
+                    loadingOverlay.className = 'search-loading-overlay';
+                    loadingOverlay.innerHTML = `
+                        <div class="loading-content">
+                            <div class="loading-spinner"></div>
+                            <p>Đang tìm kiếm...</p>
+                        </div>
+                    `;
+                    productsGrid.style.position = 'relative';
+                    productsGrid.appendChild(loadingOverlay);
+                }
+            } else {
+                // Restore search button
+                searchBtn.innerHTML = '<i class="fas fa-search me-2"></i>Tìm';
+                searchBtn.disabled = false;
+                
+                // Remove loading overlay
+                const loadingOverlay = document.querySelector('.search-loading-overlay');
+                if (loadingOverlay) {
+                    loadingOverlay.remove();
+                }
+            }
+        }
+
+        // Update products grid
+        function updateProductsGrid(products) {
+            const productsGrid = document.getElementById('productsGrid');
+            
+            if (products.length === 0) {
+                productsGrid.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-illustration">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <h3>Không tìm thấy sản phẩm</h3>
+                        <p>Hãy thử thay đổi từ khóa tìm kiếm hoặc bộ lọc</p>
+                        <button class="btn btn-outline-primary modern-btn" onclick="clearAllFilters()">
+                            <i class="fas fa-undo me-2"></i>Xóa bộ lọc
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+            
+            let gridHTML = '';
+            products.forEach((product, index) => {
+                gridHTML += `
+                    <div class="product-card-container" data-aos="fade-up" data-aos-delay="${index * 100}">
+                        <div class="product-card modern-card">
+                            <div class="card-image-container">
+                                <img src="${product.imgUrl || 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400'}" 
+                                     class="card-image" alt="${product.productName}"
+                                     onerror="this.src='https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400'">
+                            <div class="card-overlay">
+                                <div class="overlay-actions">
+                                    <button class="action-btn" onclick="quickView(${product.id})" title="Quick View">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="action-btn" onclick="editProduct(${product.id})" title="Edit">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="action-btn delete-btn" onclick="deleteProduct(${product.id}, '${product.productName}')" title="Delete">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-badges">
+                                <span class="badge category-badge">${product.categoryName || 'Chưa phân loại'}</span>
+                                <span class="badge status-badge">Còn hàng</span>
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <h5 class="card-title">${product.productName}</h5>
+                            <p class="card-description">${product.description || 'Chưa có mô tả'}</p>
+                            <div class="card-footer">
+                                <div class="price">
+                                    <span class="current-price">${formatCurrency(product.price)}</span>
+                                </div>
+                                <div class="card-actions">
+                                    <button class="btn btn-sm btn-outline-primary" onclick="viewProduct(${product.id})">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-warning" onclick="editProduct(${product.id})">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            });
+            
+            productsGrid.innerHTML = gridHTML;
+            
+            // Reinitialize AOS for new elements
+            AOS.refresh();
+        }
+
+        // Update pagination
+        function updatePagination(pagination) {
+            const paginationNav = document.querySelector('.pagination-nav');
+            if (!paginationNav || pagination.totalPages <= 1) {
+                if (paginationNav) paginationNav.style.display = 'none';
+                return;
+            }
+            
+            paginationNav.style.display = 'flex';
+            
+            let paginationHTML = '<ul class="pagination modern-pagination">';
+            
+            // Previous button
+            if (pagination.currentPage > 1) {
+                paginationHTML += `
+                    <li class="page-item">
+                        <a class="page-link" href="#" onclick="goToPage(${pagination.currentPage - 1}); return false;">
+                            <i class="fas fa-chevron-left"></i>
+                        </a>
+                    </li>
+                `;
+            }
+            
+            // Page numbers
+            const startPage = Math.max(1, pagination.currentPage - 2);
+            const endPage = Math.min(pagination.totalPages, pagination.currentPage + 2);
+            
+            for (let i = startPage; i <= endPage; i++) {
+                paginationHTML += `
+                    <li class="page-item ${i === pagination.currentPage ? 'active' : ''}">
+                        <a class="page-link" href="#" onclick="goToPage(${i}); return false;">${i}</a>
+                    </li>
+                `;
+            }
+            
+            // Next button
+            if (pagination.currentPage < pagination.totalPages) {
+                paginationHTML += `
+                    <li class="page-item">
+                        <a class="page-link" href="#" onclick="goToPage(${pagination.currentPage + 1}); return false;">
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                    </li>
+                `;
+            }
+            
+            paginationHTML += '</ul>';
+            paginationNav.innerHTML = paginationHTML;
+        }
+
+        // Update results count
+        function updateResultsCount(totalCount) {
+            const sectionTitle = document.querySelector('.section-title');
+            const badge = sectionTitle.querySelector('.badge');
+            if (badge) {
+                badge.textContent = totalCount;
+            }
+        }
+
+        // Go to specific page
+        function goToPage(page) {
+            searchState.currentPage = page;
+            performAjaxSearch();
+        }
+
+        // Clear all filters
+        function clearAllFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('categoryFilter').value = '';
+            document.getElementById('sortOrder').value = 'name_asc';
+            
+            searchState = {
+                searchTerm: '',
+                categoryFilter: '',
+                sortOrder: 'name_asc',
+                currentPage: 1
+            };
+            
+            performAjaxSearch();
+        }
+
+        // Clear search only
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            searchState.searchTerm = '';
+            searchState.currentPage = 1;
+            performAjaxSearch();
+        }
+
+        // Format currency
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('vi-VN', {
+                style: 'currency',
+                currency: 'VND'
+            }).format(amount);
+        }
+
+        // Product actions (unchanged)
+        function viewProduct(id) {
+            window.location.href = '@Url.Action("Details", "Product")/' + id;
+        }
+
+        function editProduct(id) {
+            window.location.href = '@Url.Action("Edit", "Product")/' + id;
+        }
+
+        function deleteProduct(id, name) {
+            showDeleteConfirmation(id, name);
+        }
+
+        function quickView(id) {
+            // Load product details via AJAX
+            fetch(`@Url.Action("Details", "Product")/${id}`)
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('quickViewContent').innerHTML = html;
+                    new bootstrap.Modal(document.getElementById('quickViewModal')).show();
+                });
+        }
+
+        // Advanced filters
+        function toggleFilters() {
+            const filters = document.getElementById('advancedFilters');
+            filters.style.display = filters.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function resetFilters() {
+            clearAllFilters();
+        }
+
+        // View toggle
+        document.querySelectorAll('[data-view]').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('[data-view]').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                const view = this.dataset.view;
+                const grid = document.getElementById('productsGrid');
+                
+                if (view === 'list') {
+                    grid.classList.add('list-view');
+                } else {
+                    grid.classList.remove('list-view');
+                }
+            });
+        });
+
+        // Price range slider
+        const priceRange = document.getElementById('priceRange');
+        const priceValue = document.getElementById('priceValue');
+
+        if (priceRange) {
+            priceRange.addEventListener('input', function() {
+                const value = parseInt(this.value);
+                priceValue.textContent = value.toLocaleString('vi-VN') + '₫';
+            });
+        }
+
+        // Initialize charts
+        function initializeCharts() {
+            const ctx = document.getElementById('salesChart');
+            if (ctx) {
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                        datasets: [{
+                            label: 'Doanh số',
+                            data: [12, 19, 3, 5, 2, 3],
+                            borderColor: 'rgb(99, 102, 241)',
+                            backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                            tension: 0.4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        // Initialize charts when analytics modal is shown
+        document.getElementById('analyticsModal').addEventListener('shown.bs.modal', function() {
+            initializeCharts();
+        });
+
+        // Particles animation
+        function createParticles() {
+            const container = document.getElementById('particles');
+            if (!container) return;
+
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                container.appendChild(particle);
+            }
+        }
+
+        // Initialize particles
+        createParticles();
+
+        // Handle browser back/forward buttons
+        window.addEventListener('popstate', function(event) {
+            if (event.state) {
+                searchState = event.state;
+                
+                // Update form inputs
+                document.getElementById('searchInput').value = searchState.searchTerm || '';
+                document.getElementById('categoryFilter').value = searchState.categoryFilter || '';
+                document.getElementById('sortOrder').value = searchState.sortOrder || 'name_asc';
+                
+                // Perform search
+                performAjaxSearch();
+            }
+        });
+    </script>
+}

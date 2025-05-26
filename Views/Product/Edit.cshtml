@@ -1,0 +1,456 @@
+@model Product
+@{
+    ViewData["Title"] = "Chỉnh sửa sản phẩm";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Breadcrumb -->
+            <nav aria-label="breadcrumb" class="mb-4">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a asp-action="Index" class="text-decoration-none">
+                            <i class="fas fa-home me-1"></i>Trang chủ
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a asp-action="Details" asp-route-id="@Model.Id" class="text-decoration-none">
+                            @Model.ProductName
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active">Chỉnh sửa</li>
+                </ol>
+            </nav>
+
+            <div class="card border-0 shadow-lg">
+                <div class="card-header bg-gradient-warning text-white border-0">
+                    <h4 class="mb-0 fw-bold">
+                        <i class="fas fa-edit me-2"></i>Chỉnh sửa sản phẩm
+                    </h4>
+                </div>
+                <div class="card-body p-5">
+                    <form asp-action="Edit" method="post" enctype="multipart/form-data" id="editForm" novalidate>
+                        <input asp-for="Id" type="hidden" />
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger d-none" id="validationSummary"></div>
+                        
+                        <!-- Image Upload Section -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold text-dark">
+                                <i class="fas fa-image me-2 text-primary"></i>Hình ảnh sản phẩm
+                            </label>
+                            <div class="image-upload-container">
+                                <div class="image-preview" id="imagePreview">
+                                    <img id="previewImg" 
+                                         src="@(string.IsNullOrEmpty(Model.ImgUrl) ? "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=300" : Model.ImgUrl)" 
+                                         alt="Preview" class="img-fluid rounded"
+                                         onerror="this.src='https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=300'">
+                                    <div class="upload-overlay">
+                                        <i class="fas fa-camera fa-2x"></i>
+                                        <p>Thay đổi hình ảnh</p>
+                                    </div>
+                                </div>
+                                <input type="file" id="imageFile" name="imageFile" accept="image/*" class="d-none">
+                                <input asp-for="ImgUrl" type="hidden" id="imgUrlHidden">
+                            </div>
+                            <div class="form-text text-center">
+                                <i class="fas fa-info-circle me-1"></i>
+                                Chọn file ảnh mới (JPG, PNG, GIF). Tối đa 5MB. Để trống nếu không muốn thay đổi.
+                            </div>
+                            <div class="text-center mt-2">
+                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="resetImage()">
+                                    <i class="fas fa-undo me-1"></i>Khôi phục ảnh gốc
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label asp-for="ProductName" class="form-label fw-semibold text-dark">
+                                    <i class="fas fa-tag me-2 text-primary"></i>@Html.DisplayNameFor(m => m.ProductName)
+                                </label>
+                                <input asp-for="ProductName" class="form-control form-control-lg border-2" 
+                                       placeholder="Nhập tên sản phẩm">
+                                <span asp-validation-for="ProductName" class="text-danger small"></span>
+                            </div>
+                            
+                            <div class="col-md-6 mb-4">
+                                <label asp-for="CategoryId" class="form-label fw-semibold text-dark">
+                                    <i class="fas fa-layer-group me-2 text-primary"></i>@Html.DisplayNameFor(m => m.CategoryId)
+                                </label>
+                                <select asp-for="CategoryId" class="form-select form-select-lg border-2">
+                                    <option value="">Chọn danh mục</option>
+                                    @foreach (var category in (ViewBag.Categories as List<Category>) ?? new List<Category>())
+                                    {
+                                        <option value="@category.Id">@category.Name</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="CategoryId" class="text-danger small"></span>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label asp-for="Price" class="form-label fw-semibold text-dark">
+                                    <i class="fas fa-dollar-sign me-2 text-primary"></i>@Html.DisplayNameFor(m => m.Price)
+                                </label>
+                                <div class="input-group input-group-lg">
+                                    <span class="input-group-text bg-light border-2">₫</span>
+                                    <input asp-for="Price" class="form-control border-2" placeholder="0" 
+                                           oninput="formatPrice(this)">
+                                </div>
+                                <span asp-validation-for="Price" class="text-danger small"></span>
+                            </div>
+                            
+                            <div class="col-md-6 mb-4">
+                                <label asp-for="Description" class="form-label fw-semibold text-dark">
+                                    <i class="fas fa-align-left me-2 text-primary"></i>@Html.DisplayNameFor(m => m.Description)
+                                </label>
+                                <textarea asp-for="Description" class="form-control border-2" rows="3" 
+                                          placeholder="Mô tả ngắn về sản phẩm..."
+                                          oninput="updateCharCount(this)" maxlength="200"></textarea>
+                                <div class="form-text">
+                                    <span id="charCount">@(Model.Description?.Length ?? 0)</span>/200 ký tự
+                                </div>
+                                <span asp-validation-for="Description" class="text-danger small"></span>
+                            </div>
+                        </div>
+                        
+                        <!-- Action Buttons -->
+                        <div class="d-flex gap-3 justify-content-end">
+                            <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-secondary btn-lg">
+                                <i class="fas fa-times me-2"></i>Hủy
+                            </a>
+                            <button type="button" class="btn btn-info btn-lg" onclick="previewChanges()">
+                                <i class="fas fa-eye me-2"></i>Xem trước
+                            </button>
+                            <button type="submit" class="btn btn-warning btn-lg" id="saveBtn">
+                                <span class="spinner-border spinner-border-sm d-none me-2" id="saveSpinner"></span>
+                                <i class="fas fa-save me-2" id="saveIcon"></i>Lưu thay đổi
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Preview Modal -->
+<div class="modal fade" id="previewModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header border-0 bg-info text-white">
+                <h5 class="modal-title">
+                    <i class="fas fa-eye me-2"></i>Xem trước sản phẩm
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-0">
+                <div class="row g-0">
+                    <div class="col-md-6">
+                        <img id="previewImage" class="img-fluid w-100" style="height: 300px; object-fit: cover;">
+                    </div>
+                    <div class="col-md-6 p-4">
+                        <h5 id="previewName" class="fw-bold mb-3"></h5>
+                        <p id="previewCategory" class="text-muted mb-2"></p>
+                        <h4 id="previewPrice" class="text-primary fw-bold mb-3"></h4>
+                        <p id="previewDescription" class="text-muted"></p>
+                        <div class="mt-3">
+                            <small class="text-muted">
+                                <i class="fas fa-info-circle me-1"></i>
+                                Đây là bản xem trước. Nhấn "Lưu ngay" để áp dụng thay đổi.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-warning" onclick="submitForm()">
+                    <i class="fas fa-save me-2"></i>Lưu ngay
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script>
+        // Store original image URL
+        const originalImageUrl = '@Model.ImgUrl';
+        let hasNewImage = false;
+
+        // Image upload functionality
+        document.getElementById('imagePreview').addEventListener('click', function() {
+            document.getElementById('imageFile').click();
+        });
+
+        document.getElementById('imageFile').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                // Validate file size (5MB max)
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('File quá lớn. Vui lòng chọn file nhỏ hơn 5MB.');
+                    this.value = '';
+                    return;
+                }
+
+                // Validate file type
+                if (!file.type.startsWith('image/')) {
+                    alert('Vui lòng chọn file hình ảnh.');
+                    this.value = '';
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('previewImg').src = e.target.result;
+                    document.getElementById('imgUrlHidden').value = e.target.result;
+                    hasNewImage = true;
+                    
+                    // Show success message
+                    showImageUploadSuccess();
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Reset to original image
+        function resetImage() {
+            document.getElementById('previewImg').src = originalImageUrl || 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=300';
+            document.getElementById('imgUrlHidden').value = originalImageUrl || '';
+            document.getElementById('imageFile').value = '';
+            hasNewImage = false;
+            
+            showToast('Đã khôi phục hình ảnh gốc', 'info');
+        }
+
+        // Show image upload success
+        function showImageUploadSuccess() {
+            const overlay = document.querySelector('.upload-overlay');
+            const originalContent = overlay.innerHTML;
+            
+            overlay.innerHTML = `
+                <i class="fas fa-check-circle fa-2x text-success"></i>
+                <p class="text-success">Đã chọn ảnh mới!</p>
+            `;
+            
+            setTimeout(() => {
+                overlay.innerHTML = originalContent;
+            }, 2000);
+        }
+
+        function updateImagePreview(url) {
+            const preview = document.getElementById('previewImg');
+            if (url && url.trim() !== '') {
+                preview.src = url;
+                preview.onerror = function() {
+                    this.src = 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=300';
+                };
+            } else {
+                preview.src = 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=300';
+            }
+        }
+
+        function formatPrice(input) {
+            let value = input.value.replace(/[^\d]/g, '');
+            if (value) {
+                input.value = parseInt(value).toLocaleString('vi-VN');
+            }
+        }
+
+        function updateCharCount(textarea) {
+            const count = textarea.value.length;
+            document.getElementById('charCount').textContent = count;
+            
+            if (count > 200) {
+                textarea.value = textarea.value.substring(0, 200);
+                document.getElementById('charCount').textContent = 200;
+            }
+        }
+
+        function previewChanges() {
+            const name = document.querySelector('[name="ProductName"]').value;
+            const categorySelect = document.querySelector('[name="CategoryId"]');
+            const category = categorySelect.options[categorySelect.selectedIndex].text;
+            const price = document.querySelector('[name="Price"]').value;
+            const description = document.querySelector('[name="Description"]').value;
+            const currentImageSrc = document.getElementById('previewImg').src;
+
+            document.getElementById('previewName').textContent = name || 'Tên sản phẩm';
+            document.getElementById('previewCategory').textContent = category !== 'Chọn danh mục' ? category : 'Chưa chọn danh mục';
+            document.getElementById('previewPrice').textContent = price ? price + ' ₫' : '0 ₫';
+            document.getElementById('previewDescription').textContent = description || 'Chưa có mô tả';
+            document.getElementById('previewImage').src = currentImageSrc;
+
+            new bootstrap.Modal(document.getElementById('previewModal')).show();
+        }
+
+        function submitForm() {
+            document.getElementById('editForm').submit();
+        }
+
+        // Form submission with loading state
+        document.getElementById('editForm').addEventListener('submit', function(e) {
+            const saveBtn = document.getElementById('saveBtn');
+            const saveIcon = document.getElementById('saveIcon');
+            const saveSpinner = document.getElementById('saveSpinner');
+            
+            saveBtn.disabled = true;
+            saveIcon.classList.add('d-none');
+            saveSpinner.classList.remove('d-none');
+            saveBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Đang lưu...';
+            
+            // Show progress message
+            if (hasNewImage) {
+                showToast('Đang tải lên hình ảnh mới...', 'info');
+            }
+        });
+
+        // Auto-save draft (optional feature)
+        let autoSaveTimer;
+        document.querySelectorAll('input, textarea, select').forEach(element => {
+            element.addEventListener('input', function() {
+                clearTimeout(autoSaveTimer);
+                autoSaveTimer = setTimeout(() => {
+                    // Save draft to localStorage
+                    const formData = new FormData(document.getElementById('editForm'));
+                    const draft = {};
+                    for (let [key, value] of formData.entries()) {
+                        if (key !== 'imageFile') { // Don't save file data
+                            draft[key] = value;
+                        }
+                    }
+                    localStorage.setItem('productDraft_@Model.Id', JSON.stringify(draft));
+                    
+                    // Show auto-save indicator
+                    const indicator = document.createElement('div');
+                    indicator.className = 'alert alert-success alert-sm position-fixed top-0 end-0 m-3';
+                    indicator.style.zIndex = '9999';
+                    indicator.innerHTML = '<i class="fas fa-check me-2"></i>Đã tự động lưu bản nháp';
+                    document.body.appendChild(indicator);
+                    
+                    setTimeout(() => {
+                        indicator.remove();
+                    }, 2000);
+                }, 3000);
+            });
+        });
+
+        // Load draft on page load
+        window.addEventListener('load', function() {
+            const draft = localStorage.getItem('productDraft_@Model.Id');
+            if (draft) {
+                try {
+                    const draftData = JSON.parse(draft);
+                    // You can implement draft loading logic here if needed
+                } catch (e) {
+                    console.log('Could not load draft');
+                }
+            }
+        });
+
+        // Drag and drop functionality
+        const imagePreview = document.getElementById('imagePreview');
+        
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            imagePreview.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            imagePreview.addEventListener(eventName, highlight, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            imagePreview.addEventListener(eventName, unhighlight, false);
+        });
+
+        function highlight(e) {
+            imagePreview.classList.add('drag-over');
+        }
+
+        function unhighlight(e) {
+            imagePreview.classList.remove('drag-over');
+        }
+
+        imagePreview.addEventListener('drop', handleDrop, false);
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            
+            if (files.length > 0) {
+                const file = files[0];
+                if (file.type.startsWith('image/')) {
+                    document.getElementById('imageFile').files = files;
+                    document.getElementById('imageFile').dispatchEvent(new Event('change'));
+                } else {
+                    alert('Vui lòng thả file hình ảnh.');
+                }
+            }
+        }
+
+        // Toast notification function
+        function showToast(message, type = 'success') {
+            const toastContainer = document.getElementById('toastContainer') || createToastContainer();
+            const toastId = 'toast-' + Date.now();
+            const iconClass = {
+                'success': 'fa-check-circle',
+                'error': 'fa-exclamation-circle',
+                'warning': 'fa-exclamation-triangle',
+                'info': 'fa-info-circle'
+            }[type] || 'fa-info-circle';
+
+            const typeLabel = {
+                'success': 'Thành công',
+                'error': 'Lỗi',
+                'warning': 'Cảnh báo',
+                'info': 'Thông tin'
+            }[type] || 'Thông báo';
+
+            const toastHTML = `
+                <div class="toast modern-toast ${type}-toast show" id="${toastId}" role="alert">
+                    <div class="toast-header border-0">
+                        <i class="fas ${iconClass} text-${type} me-2"></i>
+                        <strong class="me-auto">${typeLabel}</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+                    </div>
+                    <div class="toast-body">
+                        ${message}
+                    </div>
+                </div>
+            `;
+
+            toastContainer.insertAdjacentHTML('beforeend', toastHTML);
+
+            const toast = document.getElementById(toastId);
+            const bsToast = new bootstrap.Toast(toast, {
+                autohide: true,
+                delay: type === 'error' ? 8000 : 5000
+            });
+
+            bsToast.show();
+
+            toast.addEventListener('hidden.bs.toast', () => {
+                toast.remove();
+            });
+        }
+
+        function createToastContainer() {
+            const container = document.createElement('div');
+            container.id = 'toastContainer';
+            container.className = 'toast-container position-fixed top-0 end-0 p-3';
+            container.style.zIndex = '9999';
+            document.body.appendChild(container);
+            return container;
+        }
+    </script>
+}

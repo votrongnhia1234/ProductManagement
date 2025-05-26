@@ -1,0 +1,249 @@
+﻿<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Quản lý sản phẩm</title>
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="~/css/site.css" as="style">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" as="style">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#6366f1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Product Manager">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📦</text></svg>">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-logo">
+                <i class="fas fa-store fa-3x text-primary"></i>
+            </div>
+            <div class="loading-spinner"></div>
+            <p class="loading-text">Đang tải...</p>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top modern-navbar">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold d-flex align-items-center" asp-area="" asp-controller="Product" asp-action="Index">
+                <div class="brand-icon me-2">
+                    <i class="fas fa-store"></i>
+                </div>
+                <span class="brand-text">ProductHub</span>
+            </a>
+            
+            <!-- Mobile Toggle -->
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Product" asp-action="Index">
+                            <i class="fas fa-home me-1"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Product" asp-action="Create">
+                            <i class="fas fa-plus me-1"></i>Thêm sản phẩm
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-chart-bar me-1"></i>Báo cáo
+                        </a>
+                        <ul class="dropdown-menu modern-dropdown">
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-chart-line me-2"></i>Thống kê bán hàng</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-chart-pie me-2"></i>Phân tích danh mục</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-download me-2"></i>Xuất báo cáo</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                
+                <!-- Right side controls -->
+                <div class="d-flex align-items-center gap-3">
+                    <!-- Quick Search -->
+                    <div class="search-container d-none d-md-block">
+                        <div class="quick-search-wrapper">
+                            <input type="text" class="form-control quick-search-input" 
+                                   placeholder="Tìm kiếm nhanh..." id="quickSearchInput">
+                            <i class="fas fa-search search-icon"></i>
+                            <button class="btn btn-sm search-clear-btn" onclick="clearQuickSearch()" style="display: none;">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <!-- Quick Search Results -->
+                        <div class="quick-search-results" id="quickSearchResults" style="display: none;">
+                            <div class="search-results-header">
+                                <span class="results-count">Kết quả tìm kiếm</span>
+                                <button class="btn btn-sm btn-link view-all-btn" onclick="viewAllSearchResults()">
+                                    Xem tất cả
+                                </button>
+                            </div>
+                            <div class="search-results-list" id="searchResultsList">
+                                <!-- Results will be populated here -->
+                            </div>
+                            <div class="search-no-results" id="searchNoResults" style="display: none;">
+                                <i class="fas fa-search"></i>
+                                <p>Không tìm thấy sản phẩm nào</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Theme Toggle -->
+                    <button class="btn btn-outline-light btn-sm theme-toggle" onclick="toggleTheme()">
+                        <i class="fas fa-moon" id="themeIcon"></i>
+                    </button>
+                    
+                    <!-- Notifications -->
+                    <div class="dropdown">
+                        <button class="btn btn-outline-light btn-sm position-relative" data-bs-toggle="dropdown">
+                            <i class="fas fa-bell"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                3
+                            </span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end modern-dropdown notification-dropdown">
+                            <li class="dropdown-header">Thông báo</li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-info-circle text-info me-2"></i>Sản phẩm mới được thêm</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-exclamation-triangle text-warning me-2"></i>Sản phẩm sắp hết hàng</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-check-circle text-success me-2"></i>Cập nhật thành công</a></li>
+                        </ul>
+                    </div>
+                    
+                    <!-- User Menu -->
+                    <div class="dropdown">
+                        <button class="btn btn-outline-light btn-sm d-flex align-items-center" data-bs-toggle="dropdown">
+                            <div class="user-avatar me-2">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <span class="d-none d-lg-inline">Admin</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end modern-dropdown">
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Hồ sơ</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Cài đặt</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt me-2"></i>Đăng xuất</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Toast Container -->
+        <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 9999;" id="toastContainer">
+            @if (TempData["Success"] != null)
+            {
+                <div class="toast modern-toast success-toast show" role="alert">
+                    <div class="toast-header border-0">
+                        <i class="fas fa-check-circle text-success me-2"></i>
+                        <strong class="me-auto">Thành công</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+                    </div>
+                    <div class="toast-body">
+                        @TempData["Success"]
+                    </div>
+                </div>
+            }
+            @if (TempData["Error"] != null)
+            {
+                <div class="toast modern-toast error-toast show" role="alert">
+                    <div class="toast-header border-0">
+                        <i class="fas fa-exclamation-circle text-danger me-2"></i>
+                        <strong class="me-auto">Lỗi</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+                    </div>
+                    <div class="toast-body">
+                        @TempData["Error"]
+                    </div>
+                </div>
+            }
+            @if (TempData["Warning"] != null)
+            {
+                <div class="toast modern-toast warning-toast show" role="alert">
+                    <div class="toast-header border-0">
+                        <i class="fas fa-exclamation-triangle text-warning me-2"></i>
+                        <strong class="me-auto">Cảnh báo</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+                    </div>
+                    <div class="toast-body">
+                        @TempData["Warning"]
+                    </div>
+                </div>
+            }
+            @if (TempData["Info"] != null)
+            {
+                <div class="toast modern-toast info-toast show" role="alert">
+                    <div class="toast-header border-0">
+                        <i class="fas fa-info-circle text-info me-2"></i>
+                        <strong class="me-auto">Thông tin</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+                    </div>
+                    <div class="toast-body">
+                        @TempData["Info"]
+                    </div>
+                </div>
+            }
+        </div>
+        
+        @RenderBody()
+    </main>
+
+    <!-- Footer -->
+    <footer class="modern-footer">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="mb-0">&copy; 2024 ProductHub. Được phát triển với ❤️</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" onclick="scrollToTop()">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Scripts -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    
+    @await RenderSectionAsync("Scripts", required: false)
+    
+    <script>
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+            initializeQuickSearch();
+        });
+    </script>
+</body>
+</html>
