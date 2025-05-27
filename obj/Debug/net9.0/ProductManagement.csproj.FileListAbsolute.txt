@@ -148,9 +148,7 @@ D:\ASP.NET Core MVC\ProductManagement\obj\Debug\net9.0\ProductManagement.RazorAs
 D:\ASP.NET Core MVC\ProductManagement\obj\Debug\net9.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
 D:\ASP.NET Core MVC\ProductManagement\obj\Debug\net9.0\scopedcss\bundle\ProductManagement.styles.css
 D:\ASP.NET Core MVC\ProductManagement\obj\Debug\net9.0\scopedcss\projectbundle\ProductManagement.bundle.scp.css
-D:\ASP.NET Core MVC\ProductManagement\obj\Debug\net9.0\compressed\371pcvfpip-vsnjxj9es3.gz
 D:\ASP.NET Core MVC\ProductManagement\obj\Debug\net9.0\compressed\d1zg0g024t-61n19gt1b8.gz
-D:\ASP.NET Core MVC\ProductManagement\obj\Debug\net9.0\compressed\yktobtynf0-i767p2utv3.gz
 D:\ASP.NET Core MVC\ProductManagement\obj\Debug\net9.0\compressed\h5fqenjb65-bqjiyaj88i.gz
 D:\ASP.NET Core MVC\ProductManagement\obj\Debug\net9.0\compressed\lzkfvxcxb1-c2jlpeoesf.gz
 D:\ASP.NET Core MVC\ProductManagement\obj\Debug\net9.0\compressed\xg1vdy9ksg-erw9l3u2r3.gz
@@ -223,3 +221,6 @@ D:\ASP.NET Core MVC\ProductManagement\obj\Debug\net9.0\refint\ProductManagement.
 D:\ASP.NET Core MVC\ProductManagement\obj\Debug\net9.0\ProductManagement.pdb
 D:\ASP.NET Core MVC\ProductManagement\obj\Debug\net9.0\ProductManagement.genruntimeconfig.cache
 D:\ASP.NET Core MVC\ProductManagement\obj\Debug\net9.0\ref\ProductManagement.dll
+D:\ASP.NET Core MVC\ProductManagement\obj\Debug\net9.0\ProductManagement.sourcelink.json
+D:\ASP.NET Core MVC\ProductManagement\obj\Debug\net9.0\compressed\371pcvfpip-fw7wefqu2w.gz
+D:\ASP.NET Core MVC\ProductManagement\obj\Debug\net9.0\compressed\yktobtynf0-uf726pcz3d.gz

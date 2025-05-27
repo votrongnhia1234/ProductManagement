@@ -26,7 +26,7 @@
             <div class="card border-0 shadow-lg">
                 <div class="card-header bg-gradient-warning text-white border-0">
                     <h4 class="mb-0 fw-bold">
-                        <i class="fas fa-edit me-2"></i>Chỉnh sửa sản phẩm
+                        <i class="fas fa-edit me-2 text-dark"></i>Chỉnh sửa sản phẩm
                     </h4>
                 </div>
                 <div class="card-body p-5">
@@ -256,11 +256,28 @@
         }
 
         function formatPrice(input) {
-            let value = input.value.replace(/[^\d]/g, '');
-            if (value) {
-                input.value = parseInt(value).toLocaleString('vi-VN');
+            let position = input.selectionStart;
+
+            // Lấy tất cả chữ số
+            let rawValue = input.value.replace(/[^\d]/g, '');
+
+            if (rawValue.length === 0) {
+                input.value = '';
+                return;
             }
+
+            // Định dạng lại số
+            let formatted = parseInt(rawValue).toLocaleString('vi-VN');
+
+            // Đặt lại giá trị
+            input.value = formatted;
+
+            // Tính lại vị trí con trỏ
+            let diff = formatted.length - rawValue.length;
+            input.setSelectionRange(position + diff, position + diff);
         }
+
+
 
         function updateCharCount(textarea) {
             const count = textarea.value.length;

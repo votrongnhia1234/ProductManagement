@@ -119,6 +119,7 @@
                                                 <div class="preview-info">
                                                     <h6>@product.ProductName</h6>
                                                     <p>@product.Price.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</p>
+                                                    @* <p>@product.Price.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</p> *@
                                                 </div>
                                             </div>
                                         }
@@ -363,7 +364,7 @@
                     @if (Model.CurrentPage > 1)
                     {
                         <li class="page-item">
-                            <a class="page-link" href="?page=@(Model.CurrentPage - 1)&searchTerm=@Model.SearchTerm&categoryFilter=@Model.CategoryFilter&sortOrder=@Model.SortOrder">
+                            <a class="page-link" href="@Url.Action("Index", new { page = Model.CurrentPage - 1, searchTerm = Model.SearchTerm, categoryFilter = Model.CategoryFilter, sortOrder = Model.SortOrder })">
                                 <i class="fas fa-chevron-left"></i>
                             </a>
                         </li>
@@ -372,14 +373,14 @@
                     @for (int i = Math.Max(1, Model.CurrentPage - 2); i <= Math.Min(Model.TotalPages, Model.CurrentPage + 2); i++)
                     {
                         <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
-                            <a class="page-link" href="?page=@i&searchTerm=@Model.SearchTerm&categoryFilter=@Model.CategoryFilter&sortOrder=@Model.SortOrder">@i</a>
+                            <a class="page-link" href="@Url.Action("Index", new { page = i, searchTerm = Model.SearchTerm, categoryFilter = Model.CategoryFilter, sortOrder = Model.SortOrder })">@i</a>
                         </li>
                     }
                     
                     @if (Model.CurrentPage < Model.TotalPages)
                     {
                         <li class="page-item">
-                            <a class="page-link" href="?page=@(Model.CurrentPage + 1)&searchTerm=@Model.SearchTerm&categoryFilter=@Model.CategoryFilter&sortOrder=@Model.SortOrder">
+                            <a class="page-link" href="@Url.Action("Index", new { page = Model.CurrentPage + 1, searchTerm = Model.SearchTerm, categoryFilter = Model.CategoryFilter, sortOrder = Model.SortOrder })">
                                 <i class="fas fa-chevron-right"></i>
                             </a>
                         </li>
@@ -665,7 +666,6 @@
             })
             .then(data => {
                 updateProductsGrid(data.products);
-                updatePagination(data.pagination);
                 updateResultsCount(data.totalCount);
                 
                 // Update URL without reload
@@ -799,56 +799,6 @@
             AOS.refresh();
         }
 
-        // Update pagination
-        function updatePagination(pagination) {
-            const paginationNav = document.querySelector('.pagination-nav');
-            if (!paginationNav || pagination.totalPages <= 1) {
-                if (paginationNav) paginationNav.style.display = 'none';
-                return;
-            }
-            
-            paginationNav.style.display = 'flex';
-            
-            let paginationHTML = '<ul class="pagination modern-pagination">';
-            
-            // Previous button
-            if (pagination.currentPage > 1) {
-                paginationHTML += `
-                    <li class="page-item">
-                        <a class="page-link" href="#" onclick="goToPage(${pagination.currentPage - 1}); return false;">
-                            <i class="fas fa-chevron-left"></i>
-                        </a>
-                    </li>
-                `;
-            }
-            
-            // Page numbers
-            const startPage = Math.max(1, pagination.currentPage - 2);
-            const endPage = Math.min(pagination.totalPages, pagination.currentPage + 2);
-            
-            for (let i = startPage; i <= endPage; i++) {
-                paginationHTML += `
-                    <li class="page-item ${i === pagination.currentPage ? 'active' : ''}">
-                        <a class="page-link" href="#" onclick="goToPage(${i}); return false;">${i}</a>
-                    </li>
-                `;
-            }
-            
-            // Next button
-            if (pagination.currentPage < pagination.totalPages) {
-                paginationHTML += `
-                    <li class="page-item">
-                        <a class="page-link" href="#" onclick="goToPage(${pagination.currentPage + 1}); return false;">
-                            <i class="fas fa-chevron-right"></i>
-                        </a>
-                    </li>
-                `;
-            }
-            
-            paginationHTML += '</ul>';
-            paginationNav.innerHTML = paginationHTML;
-        }
-
         // Update results count
         function updateResultsCount(totalCount) {
             const sectionTitle = document.querySelector('.section-title');
@@ -856,12 +806,6 @@
             if (badge) {
                 badge.textContent = totalCount;
             }
-        }
-
-        // Go to specific page
-        function goToPage(page) {
-            searchState.currentPage = page;
-            performAjaxSearch();
         }
 
         // Clear all filters
@@ -889,6 +833,7 @@
         }
 
         // Format currency
+        
         function formatCurrency(amount) {
             return new Intl.NumberFormat('vi-VN', {
                 style: 'currency',

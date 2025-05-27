@@ -433,6 +433,12 @@ function viewAllSearchResults() {
 
 // Enhanced toast function with better error handling
 function showToast(message, type = "success") {
+  // Only show success messages
+  if (type !== "success") {
+    console.log(`${type.toUpperCase()}: ${message}`)
+    return
+  }
+
   const toastContainer = document.getElementById("toastContainer")
   if (!toastContainer) {
     console.warn("Toast container not found")
@@ -440,26 +446,13 @@ function showToast(message, type = "success") {
   }
 
   const toastId = "toast-" + Date.now()
-  const iconClass =
-    {
-      success: "fa-check-circle",
-      error: "fa-exclamation-circle",
-      warning: "fa-exclamation-triangle",
-      info: "fa-info-circle",
-    }[type] || "fa-info-circle"
-
-  const typeLabel =
-    {
-      success: "Thành công",
-      error: "Lỗi",
-      warning: "Cảnh báo",
-      info: "Thông tin",
-    }[type] || "Thông báo"
+  const iconClass = "fa-check-circle"
+  const typeLabel = "Thành công"
 
   const toastHTML = `
-    <div class="toast modern-toast ${type}-toast show" id="${toastId}" role="alert">
+    <div class="toast modern-toast success-toast show" id="${toastId}" role="alert">
       <div class="toast-header border-0">
-        <i class="fas ${iconClass} text-${type} me-2"></i>
+        <i class="fas ${iconClass} text-success me-2"></i>
         <strong class="me-auto">${typeLabel}</strong>
         <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
       </div>
@@ -472,21 +465,32 @@ function showToast(message, type = "success") {
   toastContainer.insertAdjacentHTML("beforeend", toastHTML)
 
   const toast = document.getElementById(toastId)
-  const bsToast = new bootstrap.Toast(toast, {
-    autohide: true,
-    delay: type === "error" ? 8000 : 5000,
-  })
+  const bsToast =
+    bootstrap.Toast.getInstance(toast) ||
+    new bootstrap.Toast(toast, {
+      autohide: true,
+      delay: 5000,
+    })
 
   bsToast.show()
 
-  toast.addEventListener("hidden.bs.toast", () => {
+  toast.addEventListener("hidden.bs.modal", () => {
     toast.remove()
   })
 }
 
-// Declare formatCurrency
+// Fixed formatCurrency function
 function formatCurrency(number) {
-  return new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(number)
+  // Convert to number if it's a string
+  const num = typeof number === "string" ? Number.parseFloat(number) : number
+
+  // Check if it's a valid number
+  if (isNaN(num)) {
+    return "0₫"
+  }
+
+  // Format with Vietnamese locale
+  return num.toLocaleString("vi-VN") + "₫"
 }
 
 // Initialize Bootstrap's toast

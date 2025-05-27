@@ -22,13 +22,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     }
 });
 
-// ⚠️ QUAN TRỌNG: Chỉ đăng ký EF repositories, XÓA BỎ in-memory repositories
 builder.Services.AddScoped<IProductRepository, EFProductRepository>();
 builder.Services.AddScoped<ICategoryRepository, EFCategoryRepository>();
-
-// ❌ KHÔNG được có dòng này:
-// builder.Services.AddScoped<IProductRepository, ProductRepository>();
-// builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 
 var app = builder.Build();
 

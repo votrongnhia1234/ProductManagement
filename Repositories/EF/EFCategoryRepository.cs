@@ -16,6 +16,7 @@ namespace ProductManagement.Repositories.EF
         public async Task<List<Category>> GetAllAsync()
         {
             return await _context.Categories
+                .Include(c => c.Products) // Include products to get accurate count
                 .OrderBy(c => c.Name)
                 .ToListAsync();
         }
@@ -49,22 +50,32 @@ namespace ProductManagement.Repositories.EF
 
         public async Task<bool> DeleteAsync(int id)
         {
-            var category = await _context.Categories.FindAsync(id);
-            if (category == null)
+            try
             {
+                var category = await _context.Categories.FindAsync(id);
+                if (category == null)
+                {
+                    return false;
+                }
+
+                // Double check for products (safety check)
+                var hasProducts = await _context.Products.AnyAsync(p => p.CategoryId == id);
+                if (hasProducts)
+                {
+                    // Don't throw exception, just return false
+                    return false;
+                }
+
+                _context.Categories.Remove(category);
+                var changes = await _context.SaveChangesAsync();
+                return changes > 0;
+            }
+            catch (Exception ex)
+            {
+                // Log the exception but don't throw
+                // You can add logging here if needed
                 return false;
             }
-
-            // Check if category has products
-            var hasProducts = await _context.Products.AnyAsync(p => p.CategoryId == id);
-            if (hasProducts)
-            {
-                throw new InvalidOperationException("Cannot delete category that has products");
-            }
-
-            _context.Categories.Remove(category);
-            await _context.SaveChangesAsync();
-            return true;
         }
 
         public async Task<bool> ExistsAsync(int id)
