@@ -1,0 +1,270 @@
+﻿@model ProductManagementViewModel
+@{
+    ViewData["Title"] = "Quản lý sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="admin-page-header mb-4">
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            <h1 class="admin-page-title">
+                <i class="fas fa-box me-2"></i>Quản lý sản phẩm
+            </h1>
+            <p class="admin-page-subtitle">Danh sách sản phẩm và các tùy chọn quản lý</p>
+        </div>
+        <div>
+            <a asp-action="Create" class="btn btn-primary">
+                <i class="fas fa-plus me-2"></i>Thêm sản phẩm
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Search and Filter -->
+<div class="card shadow-sm mb-4 animated-card">
+    <div class="card-header bg-light">
+        <h5 class="mb-0 card-title-custom"><i class="fas fa-filter me-2 text-primary"></i>Bộ lọc & Tìm kiếm</h5>
+    </div>
+    <div class="card-body">
+        <form method="get" class="row g-3 align-items-end">
+            <div class="col-md-5">
+                <label class="form-label fw-semibold">Tìm kiếm sản phẩm</label>
+                <input type="text" name="searchTerm" value="@Model.SearchTerm" class="form-control"
+                    placeholder="Nhập tên sản phẩm...">
+            </div>
+            <div class="col-md-4">
+                <label class="form-label fw-semibold">Danh mục</label>
+                <select name="categoryFilter" class="form-select">
+                    <option value="">Tất cả danh mục</option>
+                    @foreach (var category in Model.Categories)
+                    {
+                        <option value="@category.Id" selected="@(Model.CategoryFilter == category.Id)">@category.Name
+                        </option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="fas fa-search me-2"></i>Lọc kết quả
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Products Grid -->
+<div class="row g-4">
+    @if (Model.Products.Any())
+    {
+        foreach (var (product, index) in Model.Products.Select((value, i) => (value, i)))
+        {
+            <div class="col-md-4 col-lg-3 mb-4">
+                <div class="card product-card h-100 shadow-sm animated-card" style="animation-delay: @((index * 0.05) + 0.1)s">
+                    <div class="product-image-wrapper">
+                        <a asp-action="Details" asp-route-id="@product.Id">
+                            @if (!string.IsNullOrEmpty(product.ImgUrl))
+                            {
+                                <img src="@product.ImgUrl" class="card-img-top" alt="@product.ProductName"
+                                    style="height: 200px; object-fit: cover;">
+                            }
+                            else
+                            {
+                                <div class="no-image d-flex align-items-center justify-content-center"
+                                    style="height: 200px; background-color: var(--surface-dark);">
+                                    <i class="fas fa-image fa-3x text-muted"></i>
+                                </div>
+                            }
+                            <div class="product-image-overlay">
+                                <span class="btn btn-sm btn-light"><i class="fas fa-eye me-1"></i>Xem chi tiết</span>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <h6 class="card-title fw-semibold mb-1 text-truncate" title="@product.ProductName">@product.ProductName
+                        </h6>
+                        <span
+                            class="badge bg-secondary-subtle text-secondary-emphasis mb-2 align-self-start">@product.CategoryName</span>
+
+                        <p class="card-text text-muted small mb-3 description-truncate">
+                            @if (!string.IsNullOrEmpty(product.Description))
+                            {
+                                @product.Description
+                            }
+                            else
+                            {
+                                <span class="fst-italic">Không có mô tả.</span>
+                            }
+                        </p>
+                        <div class="mt-auto">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="h5 text-primary fw-bold mb-0">@product.Price.ToString("C0")</span>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <a asp-action="Edit" asp-route-id="@product.Id"
+                                    class="btn btn-sm btn-outline-primary flex-grow-1">
+                                    <i class="fas fa-edit me-1"></i> Sửa
+                                </a>
+                                <form asp-action="Delete" method="post" class="d-inline flex-grow-1">
+                                    <input type="hidden" name="id" value="@product.Id" />
+                                    <button type="submit" class="btn btn-sm btn-outline-danger w-100"
+                                        onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')">
+                                        <i class="fas fa-trash me-1"></i> Xóa
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="col-12">
+            <div class="text-center py-5 my-4 bg-white rounded shadow-sm animated-card" style="animation-delay: 0.1s;">
+                <i class="fas fa-box-open fa-4x text-muted mb-3"></i>
+                <h4 class="text-muted">Không tìm thấy sản phẩm nào</h4>
+                <p class="text-muted">Vui lòng thử điều chỉnh bộ lọc hoặc từ khóa tìm kiếm của bạn.</p>
+                <a asp-action="Index" class="btn btn-outline-primary mt-2"><i class="fas fa-sync-alt me-2"></i>Làm mới danh
+                    sách</a>
+            </div>
+        </div>
+    }
+</div>
+
+<!-- Pagination -->
+@if (Model.TotalPages > 1)
+{
+    <nav aria-label="Product navigation" class="mt-4">
+        <ul class="pagination justify-content-center">
+            @if (Model.CurrentPage > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link"
+                        href="@Url.Action("Index", new { page = Model.CurrentPage - 1, searchTerm = Model.SearchTerm, categoryFilter = Model.CategoryFilter })">
+                        <i class="fas fa-chevron-left"></i>
+                    </a>
+                </li>
+            }
+
+            @for (int i = Math.Max(1, Model.CurrentPage - 2); i <= Math.Min(Model.TotalPages, Model.CurrentPage + 2); i++)
+            {
+                <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                    <a class="page-link"
+                        href="@Url.Action("Index", new { page = i, searchTerm = Model.SearchTerm, categoryFilter = Model.CategoryFilter })">@i</a>
+                </li>
+            }
+
+            @if (Model.CurrentPage < Model.TotalPages)
+            {
+                <li class="page-item">
+                    <a class="page-link"
+                        href="@Url.Action("Index", new { page = Model.CurrentPage + 1, searchTerm = Model.SearchTerm, categoryFilter = Model.CategoryFilter })">
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                </li>
+            }
+        </ul>
+    </nav>
+}
+
+@section Styles {
+    <style>
+        .admin-page-header .btn-primary {
+            background-image: linear-gradient(to right, var(--primary-color) 0%, var(--primary-light) 50%, var(--primary-color) 100%);
+            background-size: 200% auto;
+            color: white;
+            border: none;
+            transition: background-position 0.5s ease, transform 0.2s ease;
+        }
+
+        .admin-page-header .btn-primary:hover {
+            background-position: right center;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .card-title-custom {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .animated-card {
+            animation: fadeInUp 0.5s ease-out forwards;
+            opacity: 0;
+        }
+
+        @@keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .product-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.12) !important;
+        }
+
+        .product-image-wrapper {
+            position: relative;
+            overflow: hidden;
+            /* Important for overlay */
+        }
+
+        .product-image-wrapper .card-img-top {
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover .product-image-wrapper .card-img-top {
+            transform: scale(1.05);
+        }
+
+        .product-image-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(30, 41, 59, 0.5);
+            /* var(--dark-color) with opacity */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .product-card:hover .product-image-overlay {
+            opacity: 1;
+        }
+
+        .description-truncate {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            /* Show 2 lines */
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1.4;
+            /* Adjust as needed */
+            height: calc(1em * 1.4 * 2);
+            /* line-height * number of lines */
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: var(--primary-light, #818cf8);
+            box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.25);
+        }
+    </style>
+}

@@ -1,0 +1,281 @@
+﻿@model ProductManagement.Areas.Admin.Models.AdminDashboardViewModel
+
+@{
+    ViewData["Title"] = "Admin Dashboard";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+@* <div class="admin-page-header">
+    <h1 class="admin-page-title mb-1">
+        <i class="fas fa-tachometer-alt me-2"></i>Admin Dashboard
+    </h1>
+    <p class="admin-page-subtitle">Tổng quan hệ thống quản lý</p>
+</div> *@
+
+<!-- Statistics Cards -->
+<div class="row mb-4 g-4">
+    <div class="col-xl-3 col-md-6">
+        <div class="card admin-stat-card h-100 shadow-sm border-0 border-start border-primary border-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h3 class="mb-1 fw-bold">@Model.TotalProducts</h3>
+                        <p class="mb-0 text-muted">Sản phẩm</p>
+                    </div>
+                    <div class="stat-icon text-primary">
+                        <i class="fas fa-box fa-3x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card admin-stat-card h-100 shadow-sm border-0 border-start border-success border-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h3 class="mb-1 fw-bold">@Model.TotalCategories</h3>
+                        <p class="mb-0 text-muted">Danh mục</p>
+                    </div>
+                    <div class="stat-icon text-success">
+                        <i class="fas fa-tags fa-3x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card admin-stat-card h-100 shadow-sm border-0 border-start border-info border-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h3 class="mb-1 fw-bold">@Model.TotalOrders</h3>
+                        <p class="mb-0 text-muted">Đơn hàng</p>
+                    </div>
+                    <div class="stat-icon text-info">
+                        <i class="fas fa-shopping-cart fa-3x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card admin-stat-card h-100 shadow-sm border-0 border-start border-warning border-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h3 class="mb-1 fw-bold">@Model.TotalRevenue.ToString("N0") VNĐ</h3>
+                        <p class="mb-0 text-muted">Doanh thu</p>
+                    </div>
+                    <div class="stat-icon text-warning">
+                        <i class="fas fa-dollar-sign fa-3x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Orders and Top Products -->
+<div class="row g-4">
+    <div class="col-lg-8">
+        <div class="card shadow-sm h-100">
+            <div class="card-header bg-light border-bottom">
+                <h5 class="mb-0 card-title-custom"><i class="fas fa-history me-2 text-primary"></i>Đơn hàng gần đây</h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover table-borderless mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="ps-3">Mã ĐH</th>
+                                <th>Khách hàng</th>
+                                <th>Tổng tiền</th>
+                                <th class="pe-3">Trạng thái</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.RecentOrders.Any())
+                            {
+                                @foreach (var order in Model.RecentOrders)
+                                {
+                                    <tr>
+                                        <td class="ps-3 fw-medium">#@order.Id.ToString("D6")</td>
+                                        <td>@order.User.FullName</td>
+                                        <td>@order.TotalAmount.ToString("C0")</td>
+                                        <td class="pe-3">
+                                            <span class="badge rounded-pill 
+                                                @(order.Status.ToString() == "Completed" ? "bg-success-subtle text-success-emphasis" :
+                                                  order.Status.ToString() == "Pending" ? "bg-warning-subtle text-warning-emphasis" :
+                                                  order.Status.ToString() == "Processing" ? "bg-info-subtle text-info-emphasis" :
+                                                  order.Status.ToString() == "Cancelled" ? "bg-danger-subtle text-danger-emphasis" :
+                                                  "bg-secondary-subtle text-secondary-emphasis")">
+                                                @order.Status.ToString()
+                                            </span>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="4" class="text-center py-4 text-muted">
+                                        <i class="fas fa-box-open fa-2x mb-2"></i><br>
+                                        Không có đơn hàng nào gần đây.
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-header bg-light border-bottom">
+                <h5 class="mb-0 card-title-custom"><i class="fas fa-star me-2 text-warning"></i>Sản phẩm bán chạy</h5>
+            </div>
+            <div class="card-body p-0">
+                @if (Model.TopSellingProducts.Any())
+                {
+                    <ul class="list-group list-group-flush">
+                        @foreach (var product in Model.TopSellingProducts)
+                        {
+                            <li class="list-group-item top-product-item">
+                                <div class="d-flex align-items-center">
+                                    <div class="me-3">
+                                        @if (!string.IsNullOrEmpty(product.ImgUrl))
+                                        {
+                                            <img src="@product.ImgUrl" alt="@product.ProductName"
+                                                 class="rounded object-fit-cover" style="width: 50px; height: 50px;">
+                                        }
+                                        else
+                                        {
+                                            <div class="bg-light rounded d-flex align-items-center justify-content-center"
+                                                 style="width: 50px; height: 50px;">
+                                                <i class="fas fa-image text-muted fs-4"></i>
+                                            </div>
+                                        }
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-1 text-truncate" title="@product.ProductName">@product.ProductName</h6>
+                                        <small class="text-muted">@product.Price.ToString("C0")</small>
+                                    </div>
+                                    @* Optional: Display sales count if available *@
+                                    @* <span class="badge bg-primary-subtle text-primary-emphasis rounded-pill">Đã bán: X</span> *@
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <div class="text-center py-5 text-muted">
+                         <i class="fas fa-chart-line fa-2x mb-2"></i><br>
+                        Chưa có dữ liệu sản phẩm bán chạy.
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+<style>
+    .admin-page-header {
+        margin-bottom: 2rem;
+    }
+
+    .admin-stat-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .admin-stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1) !important;
+    }
+
+    .stat-icon {
+        opacity: 0.6;
+    }
+    .admin-stat-card:hover .stat-icon {
+        opacity: 1;
+    }
+
+    .card-title-custom {
+        font-weight: 600;
+        font-size: 1.1rem;
+    }
+
+    .table th {
+        font-weight: 600;
+        color: #495057; /* Bootstrap's default table head color */
+    }
+
+    .top-product-item {
+        transition: background-color 0.2s ease;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }
+
+    .top-product-item:hover {
+        background-color: #f8f9fa; /* Light gray for hover */
+    }
+
+    .object-fit-cover {
+        object-fit: cover;
+    }
+
+    /* Animation for sections loading */
+    .row.g-4 > [class*="col-"] {
+        animation: fadeInScaleUp 0.5s ease-out forwards;
+        opacity: 0;
+    }
+
+    @@keyframes fadeInScaleUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px) scale(0.98);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    /* Delay for staggered animation */
+    .row.g-4 > [class*="col-"]:nth-child(1) { animation-delay: 0.1s; }
+    .row.g-4 > [class*="col-"]:nth-child(2) { animation-delay: 0.2s; }
+    .row.g-4 > [class*="col-"]:nth-child(3) { animation-delay: 0.3s; }
+    .row.g-4 > [class*="col-"]:nth-child(4) { animation-delay: 0.4s; }
+    /* For the second row */
+    .row.g-4 > .col-lg-8 { animation-delay: 0.2s; } /* Adjust if it's the first element in its row */
+    .row.g-4 > .col-lg-4 { animation-delay: 0.3s; } /* Adjust if it's the second element in its row */
+
+</style>
+}
+
+@* 
+LƯU Ý:
+Để các style tùy chỉnh trong @section Styles hoạt động, bạn cần đảm bảo rằng tệp layout
+`~/Areas/Admin/Views/Shared/_AdminLayout.cshtml` có dòng `@RenderSection("Styles", required: false)`
+bên trong thẻ <head>. Ví dụ:
+
+<head>
+    ...
+    @RenderSection("Styles", required: false)
+</head>
+*@
+                            @* </div>
+                        }
+                    </div>
+                    <div class="flex-grow-1">
+                        <div class="fw-semibold">@product.ProductName</div>
+                        <small class="text-muted">@product.Price.ToString("C0")</small>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div> *@

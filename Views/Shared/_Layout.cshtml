@@ -1,0 +1,532 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Product Management</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #818cf8;
+            --secondary-color: #10b981;
+            --accent-color: #f43f5e;
+            --dark-color: #1e293b;
+            --light-color: #f8fafc;
+            --gray-color: #94a3b8;
+            --surface-color: #ffffff;
+            --surface-dark: #f1f5f9;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--dark-color);
+            background-color: var(--light-color);
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color: var(--surface-color);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--dark-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .navbar-brand i {
+            color: var(--primary-color);
+            font-size: 1.75rem;
+        }
+
+        .navbar-nav .nav-link {
+            font-weight: 500;
+            color: var(--dark-color);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: var(--primary-color);
+            background-color: var(--surface-dark);
+        }
+
+        .navbar-nav .nav-link.active {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .dropdown-menu {
+            border: none;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            padding: 0.75rem;
+            min-width: 200px;
+        }
+
+        .dropdown-item {
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown-item:hover {
+            background-color: var(--surface-dark);
+            color: var(--primary-color);
+        }
+
+        .dropdown-divider {
+            margin: 0.5rem 0;
+            border-color: var(--surface-dark);
+        }
+
+        /* User Menu */
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 12px;
+            background-color: var(--surface-dark);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark-color);
+            font-weight: 500;
+        }
+
+        .user-menu:hover {
+            background-color: var(--primary-light);
+            color: white;
+        }
+
+        .user-menu i {
+            font-size: 1.25rem;
+        }
+
+        /* Auth Buttons */
+        .auth-buttons {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .btn-auth-nav {
+            padding: 0.5rem 1.25rem;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-login {
+            background-color: var(--surface-dark);
+            color: var(--dark-color);
+        }
+
+        .btn-login:hover {
+            background-color: var(--gray-color);
+            color: white;
+        }
+
+        .btn-register {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+        }
+
+        .btn-register:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3);
+            color: white;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 3rem 0 1.5rem;
+            margin-top: 5rem;
+        }
+
+        .footer-brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer-brand i {
+            color: var(--primary-light);
+        }
+
+        .footer-text {
+            color: #cbd5e1;
+            margin-bottom: 2rem;
+            max-width: 300px;
+        }
+
+        .footer-heading {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer-links a:hover {
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .footer-contact {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-contact li {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: #cbd5e1;
+        }
+
+        .footer-contact i {
+            width: 20px;
+            color: var(--primary-light);
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 1.5rem;
+            margin-top: 3rem;
+            text-align: center;
+            color: #94a3b8;
+            font-size: 0.875rem;
+        }
+
+        /* Responsive */
+        @@media (max-width: 991px) {
+            .navbar {
+                padding: 0.75rem 0;
+            }
+
+            .navbar-collapse {
+                background-color: var(--surface-color);
+                padding: 1rem;
+                border-radius: 12px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+                margin-top: 0.5rem;
+            }
+
+            .auth-buttons {
+                margin-top: 1rem;
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn-auth-nav {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        @@media (max-width: 768px) {
+            .footer {
+                text-align: center;
+            }
+
+            .footer-text {
+                max-width: 100%;
+            }
+
+            .footer-brand {
+                justify-content: center;
+            }
+
+            .footer-social {
+                justify-content: center;
+            }
+
+            .footer-contact li {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <i class="fas fa-store"></i>
+                    Product Management
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target=".navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-lg-inline-flex justify-content-between">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Trang chủ</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="Customer" asp-controller="Home" asp-action="Index">Cửa
+                                hàng</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav">
+                        @if (User.Identity!.IsAuthenticated)
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="user-menu dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                    <i class="fas fa-user-circle"></i>
+                                    <span>@User.Identity.Name</span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <li>
+                                            <a class="dropdown-item" asp-area="Admin" asp-controller="Dashboard"
+                                                asp-action="Index">
+                                                <i class="fas fa-tachometer-alt me-2"></i>Admin Panel
+                                            </a>
+                                        </li>
+                                    }
+                                    @if (User.IsInRole("Manager"))
+                                    {
+                                        <li>
+                                            <a class="dropdown-item" asp-area="Manager" asp-controller="Dashboard"
+                                                asp-action="Index">
+                                                <i class="fas fa-chart-line me-2"></i>Manager Panel
+                                            </a>
+                                        </li>
+                                    }
+                                    <li>
+                                        <a class="dropdown-item" asp-area="Customer" asp-controller="Home"
+                                            asp-action="Index">
+                                            <i class="fas fa-shopping-bag me-2"></i>Cửa hàng
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li>
+                                        <form id="logoutFormCustomer" asp-area="" asp-controller="Account"
+                                            asp-action="Logout" method="post" class="d-inline">
+                                            <button type="submit" class="dropdown-item">
+                                                <i class="fas fa-sign-out-alt me-2"></i>Đăng xuất
+                                            </button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+                        else
+                        {
+                            <div class="auth-buttons">
+                                <a class="btn-auth-nav btn-login" asp-area="" asp-controller="Account" asp-action="Login">
+                                    <i class="fas fa-sign-in-alt"></i>
+                                    <span>Đăng nhập</span>
+                                </a>
+                                <a class="btn-auth-nav btn-register" asp-area="" asp-controller="Account"
+                                    asp-action="Register">
+                                    <i class="fas fa-user-plus"></i>
+                                    <span>Đăng ký</span>
+                                </a>
+                            </div>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <div class="footer-brand">
+                        <i class="fas fa-store"></i>
+                        <span>Product Management</span>
+                    </div>
+                    <p class="footer-text">Hệ thống quản lý sản phẩm và bán hàng trực tuyến hiện đại, giúp doanh nghiệp
+                        của bạn phát triển.</p>
+                    <div class="footer-social">
+                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
+                    <h5 class="footer-heading">Liên kết</h5>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-angle-right"></i>Trang chủ</a></li>
+                        <li><a href="#"><i class="fas fa-angle-right"></i>Cửa hàng</a></li>
+                        <li><a href="#"><i class="fas fa-angle-right"></i>Sản phẩm</a></li>
+                        <li><a href="#"><i class="fas fa-angle-right"></i>Giới thiệu</a></li>
+                        <li><a href="#"><i class="fas fa-angle-right"></i>Liên hệ</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
+                    <h5 class="footer-heading">Tài khoản</h5>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-angle-right"></i>Đăng nhập</a></li>
+                        <li><a href="#"><i class="fas fa-angle-right"></i>Đăng ký</a></li>
+                        <li><a href="#"><i class="fas fa-angle-right"></i>Giỏ hàng</a></li>
+                        <li><a href="#"><i class="fas fa-angle-right"></i>Đơn hàng</a></li>
+                        <li><a href="#"><i class="fas fa-angle-right"></i>Hỗ trợ</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <h5 class="footer-heading">Liên hệ</h5>
+                    <ul class="footer-contact">
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>123 Đường ABC, Quận 1, TP.HCM</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone-alt"></i>
+                            <span>+84 123 456 789</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <span>info@productmanagement.com</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-clock"></i>
+                            <span>Thứ 2 - Thứ 6: 9:00 - 17:00</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p class="mb-0">&copy; @DateTime.Now.Year - Product Management - Tất cả quyền được bảo lưu</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        // Use JavaScript to handle customer logout form submission via AJAX
+        $(function () {
+            $("#logoutFormCustomer").on("submit", function (e) {
+                e.preventDefault(); // Prevent default form submission
+                var form = $(this);
+                var token = $('input[name="__RequestVerificationToken"]', form).val();
+
+                $.ajax({
+                    url: "/Account/Logout", // Explicitly set the target URL
+                    type: "POST",
+                    data: form.serialize(), // Include form data (like the antiforgery token)
+                    headers: {
+                        'RequestVerificationToken': token
+                    },
+                    success: function (result) {
+                        // Redirect to home page or login page after successful logout
+                        window.location.href = "/"; // Redirect to site root
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Logout failed: ", error);
+                        // Optionally display an error message to the user
+                        alert("Đăng xuất thất bại. Vui lòng thử lại.");
+                    }
+                });
+            });
+
+            // Add scroll effect to navbar
+            $(window).scroll(function () {
+                if ($(this).scrollTop() > 50) {
+                    $('.navbar').addClass('shadow-sm');
+                } else {
+                    $('.navbar').removeClass('shadow-sm');
+                }
+            });
+
+            // Add active class to current nav item
+            var path = window.location.pathname;
+            $(".navbar-nav .nav-link").each(function () {
+                var href = $(this).attr('href');
+                if (path === href || path.startsWith(href) && href !== '/') {
+                    $(this).addClass('active');
+                }
+            });
+        });
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+
+</html>

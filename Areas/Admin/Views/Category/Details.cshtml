@@ -1,0 +1,157 @@
+@model CategoryDetailsViewModel
+@{
+    ViewData["Title"] = "Chi tiết danh mục";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="admin-page-header">
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            <h1 class="admin-page-title">
+                <i class="fas fa-folder-open me-2"></i>Chi tiết danh mục: @Model.Name
+            </h1>
+            <p class="admin-page-subtitle">Thông tin chi tiết về danh mục</p>
+        </div>
+        <div>
+            <a asp-action="Index" class="btn btn-secondary me-2">
+                <i class="fas fa-arrow-left me-2"></i>Quay lại danh sách
+            </a>
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
+                <i class="fas fa-edit me-2"></i>Chỉnh sửa
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="admin-content-section">
+            <dl class="row">
+                <dt class="col-sm-4">Mã danh mục:</dt>
+                <dd class="col-sm-8">@Model.Id</dd>
+
+                <dt class="col-sm-4">Tên danh mục:</dt>
+                <dd class="col-sm-8">@Model.Name</dd>
+
+                <dt class="col-sm-4">Mô tả:</dt>
+                <dd class="col-sm-8">@Model.Description</dd>
+
+                <dt class="col-sm-4">Ngày tạo:</dt>
+                <dd class="col-sm-8">@Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</dd>
+
+                <dt class="col-sm-4">Số sản phẩm:</dt>
+                <dd class="col-sm-8">@Model.Products.Count</dd>
+            </dl>
+
+            <div class="mt-4">
+                <button type="button" class="btn btn-danger" onclick="deleteCategory(@Model.Id)">
+                    <i class="fas fa-trash-alt me-2"></i>Xóa danh mục
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <div class="admin-content-section">
+            <h5 class="mb-3">
+                <i class="fas fa-box me-2"></i>Danh sách sản phẩm
+            </h5>
+
+            @if (Model.Products.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Mã</th>
+                                <th>Tên sản phẩm</th>
+                                <th>Giá</th>
+                                <th>Ngày tạo</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var product in Model.Products)
+                            {
+                                <tr>
+                                    <td>@product.Id</td>
+                                    <td>@product.ProductName</td>
+                                    <td>@product.Price.ToString("N0") VNĐ</td>
+                                    <td>@product.CreatedAt.ToString("dd/MM/yyyy")</td>
+                                    <td>
+                                        <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" 
+                                           class="btn btn-sm btn-info">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>Chưa có sản phẩm nào trong danh mục này.
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Xác nhận xóa</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p id="deleteMessage"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-danger" id="confirmDelete">Xóa</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        function deleteCategory(id) {
+            var token = $('input[name="__RequestVerificationToken"]').val();
+            $.ajax({
+                url: '@Url.Action("Delete")',
+                type: 'POST',
+                data: { id: id },
+                headers: {
+                    'RequestVerificationToken': token
+                },
+                success: function(response) {
+                    if (response.success) {
+                        $('#deleteMessage').text(response.message);
+                        $('#confirmDelete').show();
+                        $('#confirmDelete').off('click').on('click', function() {
+                            window.location.href = '@Url.Action("Index")';
+                        });
+                    } else {
+                        $('#deleteMessage').text(response.message);
+                        $('#confirmDelete').hide();
+                    }
+                    $('#deleteModal').modal('show');
+                },
+                error: function(xhr, status, error) {
+                    $('#deleteMessage').text('Đã xảy ra lỗi khi xóa danh mục: ' + error);
+                    $('#confirmDelete').hide();
+                    $('#deleteModal').modal('show');
+                }
+            });
+        }
+    </script>
+} 
