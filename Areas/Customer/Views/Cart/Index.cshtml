@@ -1,0 +1,516 @@
+﻿@model CartViewModel
+@{
+    ViewData["Title"] = "Giỏ hàng của bạn";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using ProductManagement.Areas.Customer.Models
+
+<style>
+    .cart-container {
+        background: var(--light-color);
+        min-height: 80vh;
+        padding: 2rem 0;
+    }
+
+    .cart-header {
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+        color: white;
+        border-radius: 20px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .cart-header::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+        animation: rotate 20s linear infinite;
+    }
+
+    .cart-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 0;
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .cart-badge {
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        border-radius: 50px;
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+        font-weight: 600;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .cart-items-card {
+        background: var(--surface-color);
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        margin-bottom: 2rem;
+    }
+
+    .cart-item {
+        padding: 1.5rem;
+        border-bottom: 1px solid var(--surface-dark);
+        transition: all 0.3s ease;
+    }
+
+    .cart-item:last-child {
+        border-bottom: none;
+    }
+
+    .cart-item:hover {
+        background: var(--surface-dark);
+    }
+
+    .item-image {
+        width: 80px;
+        height: 80px;
+        border-radius: 12px;
+        overflow: hidden;
+        background: var(--surface-dark);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .item-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: all 0.3s ease;
+    }
+
+    .item-image:hover img {
+        transform: scale(1.1);
+    }
+
+    .item-info h6 {
+        font-weight: 700;
+        color: var(--dark-color);
+        margin-bottom: 0.5rem;
+        font-size: 1.125rem;
+    }
+
+    .item-price {
+        color: var(--gray-color);
+        font-weight: 500;
+        margin-bottom: 0;
+    }
+
+    .quantity-controls {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: var(--surface-dark);
+        border-radius: 12px;
+        padding: 0.5rem;
+        width: fit-content;
+    }
+
+    .quantity-btn {
+        width: 36px;
+        height: 36px;
+        border: none;
+        background: var(--surface-color);
+        color: var(--dark-color);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .quantity-btn:hover {
+        background: var(--primary-color);
+        color: white;
+        transform: scale(1.1);
+    }
+
+    .quantity-display {
+        min-width: 40px;
+        text-align: center;
+        font-weight: 700;
+        color: var(--dark-color);
+        font-size: 1.125rem;
+    }
+
+    .item-total {
+        font-size: 1.25rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .remove-btn {
+        width: 40px;
+        height: 40px;
+        border: none;
+        background: var(--surface-dark);
+        color: var(--accent-color);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .remove-btn:hover {
+        background: var(--accent-color);
+        color: white;
+        transform: scale(1.1);
+    }
+
+    .summary-card {
+        background: var(--surface-color);
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+        position: sticky;
+        top: 2rem;
+        height: fit-content;
+    }
+
+    .summary-title {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: var(--dark-color);
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid var(--surface-dark);
+    }
+
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+        font-weight: 500;
+    }
+
+    .summary-row.total {
+        font-size: 1.25rem;
+        font-weight: 800;
+        padding-top: 1rem;
+        border-top: 2px solid var(--surface-dark);
+        margin-top: 1.5rem;
+    }
+
+    .summary-row.total .amount {
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-size: 1.5rem;
+    }
+
+    .checkout-btn {
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 12px;
+        font-size: 1.125rem;
+        font-weight: 700;
+        width: 100%;
+        margin-bottom: 1rem;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .checkout-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.7s;
+    }
+
+    .checkout-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+    }
+
+    .checkout-btn:hover::before {
+        left: 100%;
+    }
+
+    .continue-shopping-btn {
+        margin-top: 20px;
+        background: var(--surface-dark);
+        color: var(--dark-color);
+        border: 2px solid var(--surface-dark);
+        padding: 0.75rem 1.5rem;
+        border-radius: 12px;
+        font-weight: 600;
+        width: 100%;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    .continue-shopping-btn:hover {
+        background: var(--gray-color);
+        color: white;
+        border-color: var(--gray-color);
+    }
+
+    .empty-cart {
+        text-align: center;
+        padding: 4rem 2rem;
+        background: var(--surface-color);
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .empty-cart i {
+        font-size: 5rem;
+        color: var(--gray-color);
+        margin-bottom: 2rem;
+        opacity: 0.5;
+    }
+
+    .empty-cart h4 {
+        font-weight: 800;
+        color: var(--dark-color);
+        margin-bottom: 1rem;
+    }
+
+    .empty-cart p {
+        color: var(--gray-color);
+        margin-bottom: 2rem;
+        font-size: 1.125rem;
+    }
+
+    .shop-now-btn {
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 12px;
+        font-size: 1.125rem;
+        font-weight: 700;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .shop-now-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+        color: white;
+    }
+
+    @@media (max-width: 991px) {
+        .summary-card {
+            position: static;
+            margin-top: 2rem;
+        }
+
+        .cart-title {
+            font-size: 2rem;
+        }
+    }
+
+    @@media (max-width: 768px) {
+        .cart-container {
+            padding: 1rem 0;
+        }
+
+        .cart-header {
+            padding: 1.5rem;
+        }
+
+        .cart-title {
+            font-size: 1.75rem;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+
+        .cart-item {
+            padding: 1rem;
+        }
+
+        .summary-card {
+            padding: 1.5rem;
+        }
+
+        .item-image {
+            width: 60px;
+            height: 60px;
+        }
+    }
+</style>
+
+<div class="cart-container">
+    <div class="container">
+        <div class="cart-header">
+            <h2 class="cart-title">
+                <i class="fas fa-shopping-cart"></i>
+                Giỏ hàng của bạn
+                @if (Model.ItemCount > 0)
+                {
+                    <span class="cart-badge">@Model.ItemCount sản phẩm</span>
+                }
+            </h2>
+        </div>
+
+        @if (Model.Items.Any())
+        {
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="cart-items-card">
+                        @foreach (var item in Model.Items)
+                        {
+                            <div class="cart-item">
+                                <div class="row align-items-center">
+                                    <div class="col-md-2 col-3">
+                                        <div class="item-image">
+                                            @if (!string.IsNullOrEmpty(item.ImgUrl))
+                                            {
+                                                <img src="@item.ImgUrl" alt="@item.ProductName">
+                                            }
+                                            else
+                                            {
+                                                <i class="fas fa-image text-muted"></i>
+                                            }
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-9">
+                                        <div class="item-info">
+                                            <h6>@item.ProductName</h6>
+                                            <p class="item-price">@item.Price.ToString("C0")</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-6 mt-2 mt-md-0">
+                                        <form asp-action="UpdateQuantity" method="post" class="quantity-controls">
+                                            <input type="hidden" name="productId" value="@item.ProductId" />
+                                            <button type="submit" name="quantity" value="@(item.Quantity - 1)"
+                                                class="quantity-btn">
+                                                <i class="fas fa-minus"></i>
+                                            </button>
+                                            <span class="quantity-display">@item.Quantity</span>
+                                            <button type="submit" name="quantity" value="@(item.Quantity + 1)"
+                                                class="quantity-btn">
+                                                <i class="fas fa-plus"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                    <div class="col-md-2 col-4 mt-2 mt-md-0">
+                                        <div class="item-total">@item.TotalPrice.ToString("C0")</div>
+                                    </div>
+                                    <div class="col-md-1 col-2 mt-2 mt-md-0">
+                                        <form asp-action="RemoveFromCart" method="post" class="d-inline">
+                                            <input type="hidden" name="productId" value="@item.ProductId" />
+                                            <button type="submit" class="remove-btn"
+                                                onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="summary-card">
+                        <h5 class="summary-title">Tóm tắt đơn hàng</h5>
+
+                        <div class="summary-row">
+                            <span>Tạm tính:</span>
+                            <span>@Model.TotalAmount.ToString("C0")</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Phí vận chuyển:</span>
+                            <span class="text-success">Miễn phí</span>
+                        </div>
+                        <div class="summary-row total">
+                            <span>Tổng cộng:</span>
+                            <span class="amount">@Model.TotalAmount.ToString("C0")</span>
+                        </div>
+
+                        <a asp-action="Checkout" class="checkout-btn">
+                            <i class="fas fa-credit-card me-2"></i>Thanh toán
+                        </a>
+                        <a asp-action="Index" asp-controller="Home" class="continue-shopping-btn">
+                            <i class="fas fa-arrow-left mt-1"></i>Tiếp tục mua sắm
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="empty-cart">
+                <i class="fas fa-shopping-cart"></i>
+                <h4>Giỏ hàng trống</h4>
+                <p>Bạn chưa có sản phẩm nào trong giỏ hàng</p>
+                <a asp-action="Index" asp-controller="Home" class="shop-now-btn">
+                    <i class="fas fa-shopping-bag"></i>Bắt đầu mua sắm
+                </a>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Animate cart items on load
+            const cartItems = document.querySelectorAll('.cart-item');
+            cartItems.forEach((item, index) => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateX(-20px)';
+                item.style.transition = `all 0.6s ease ${index * 0.1}s`;
+
+                setTimeout(() => {
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateX(0)';
+                }, 100 + (index * 100));
+            });
+
+            // Animate summary card
+            const summaryCard = document.querySelector('.summary-card');
+            if (summaryCard) {
+                summaryCard.style.opacity = '0';
+                summaryCard.style.transform = 'translateY(20px)';
+                summaryCard.style.transition = 'all 0.6s ease 0.3s';
+
+                setTimeout(() => {
+                    summaryCard.style.opacity = '1';
+                    summaryCard.style.transform = 'translateY(0)';
+                }, 400);
+            }
+        });
+    </script>
+}

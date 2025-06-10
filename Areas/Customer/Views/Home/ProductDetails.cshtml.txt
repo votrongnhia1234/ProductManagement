@@ -1,0 +1,91 @@
+@model Product
+@{
+    ViewData["Title"] = Model.ProductName;
+    Layout = "~/Areas/Customer/Views/Shared/_CustomerLayout.cshtml";
+}
+
+<div class="container py-5">
+    <div class="row">
+        <!-- Product Image -->
+        <div class="col-md-6 mb-4">
+            <div class="product-image-container">
+                @if (!string.IsNullOrEmpty(Model.ImgUrl))
+                {
+                    <img src="@Model.ImgUrl" alt="@Model.ProductName" class="img-fluid rounded">
+                }
+                else
+                {
+                    <div class="no-image-placeholder">
+                        <i class="fas fa-image"></i>
+                        <p>Không có hình ảnh</p>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Product Info -->
+        <div class="col-md-6">
+            <h1 class="product-title mb-3">@Model.ProductName</h1>
+            
+            <div class="product-price mb-4">
+                <span class="h2 text-primary">@Model.Price.ToString("C0")</span>
+            </div>
+
+            <div class="product-description mb-4">
+                <h5>Mô tả sản phẩm</h5>
+                <p>@Model.Description</p>
+            </div>
+
+            <div class="product-category mb-4">
+                <h5>Danh mục</h5>
+                <p>@Model.Category?.Name</p>
+            </div>
+
+            <form asp-area="Customer" asp-controller="Cart" asp-action="AddToCart" method="post" class="mb-4">
+                <input type="hidden" name="productId" value="@Model.Id" />
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <div class="input-group" style="width: 150px;">
+                            <button type="button" class="btn btn-outline-secondary" onclick="decrementQuantity()">-</button>
+                            <input type="number" class="form-control text-center" id="quantity" name="quantity" value="1" min="1" max="99">
+                            <button type="button" class="btn btn-outline-secondary" onclick="incrementQuantity()">+</button>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-cart-plus me-2"></i>Thêm vào giỏ
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <div class="product-meta">
+                <p class="text-muted mb-0">
+                    <small>
+                        <i class="fas fa-clock me-1"></i>Cập nhật: @Model.UpdatedAt.ToString("dd/MM/yyyy HH:mm")
+                    </small>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function incrementQuantity() {
+            var input = document.getElementById('quantity');
+            var value = parseInt(input.value);
+            if (value < 99) {
+                input.value = value + 1;
+            }
+        }
+
+        function decrementQuantity() {
+            var input = document.getElementById('quantity');
+            var value = parseInt(input.value);
+            if (value > 1) {
+                input.value = value - 1;
+            }
+        }
+    </script>
+} 

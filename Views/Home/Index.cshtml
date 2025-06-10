@@ -1,0 +1,577 @@
+﻿@{
+    ViewData["Title"] = "Trang chủ";
+}
+
+<style>
+    :root {
+        --primary-color: #6366f1;
+        --primary-dark: #4f46e5;
+        --primary-light: #818cf8;
+        --secondary-color: #10b981;
+        --accent-color: #f43f5e;
+        --dark-color: #1e293b;
+        --light-color: #f8fafc;
+        --gray-color: #94a3b8;
+        --surface-color: #ffffff;
+        --surface-dark: #f1f5f9;
+    }
+
+    /* Hero Section */
+    .hero-section {
+        position: relative;
+        background: linear-gradient(135deg, #4f46e5 0%, #7e22ce 50%, #ec4899 100%);
+        color: white;
+        padding: 6rem 0;
+        margin-top: 1.5rem;
+        margin-bottom: 4rem;
+        overflow: hidden;
+    }
+
+    .hero-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath opacity='.5' d='M96 95h4v1h-4v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9zm-1 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        opacity: 0.3;
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 1;
+        text-align: center;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .hero-title {
+        font-size: 3.5rem;
+        font-weight: 800;
+        margin-bottom: 1.5rem;
+        background: linear-gradient(to right, #ffffff, #d1d5db);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        animation: fadeInUp 1s ease-out;
+    }
+
+    .hero-subtitle {
+        font-size: 1.5rem;
+        opacity: 0.9;
+        margin-bottom: 2rem;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        animation: fadeInUp 1s ease-out 0.2s both;
+    }
+
+    .hero-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        animation: fadeInUp 1s ease-out 0.4s both;
+    }
+
+    .btn-hero {
+        padding: 1rem 2rem;
+        font-size: 1rem;
+        font-weight: 600;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+        border: none;
+    }
+
+    .btn-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.7s;
+        z-index: -1;
+    }
+
+    .btn-hero:hover {
+        transform: translateY(-3px);
+    }
+
+    .btn-hero:hover::before {
+        left: 100%;
+    }
+
+    .btn-primary-hero {
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .btn-primary-hero:hover {
+        background: rgba(255, 255, 255, 0.3);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-secondary-hero {
+        background: white;
+        color: var(--primary-dark);
+    }
+
+    .btn-secondary-hero:hover {
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Features Section */
+    .features-section {
+        padding: 4rem 0;
+    }
+
+    .section-title {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    .section-title h2 {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: var(--dark-color);
+        margin-bottom: 1rem;
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .section-title p {
+        font-size: 1.25rem;
+        color: var(--gray-color);
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+    }
+
+    .feature-card {
+        background: var(--surface-color);
+        border-radius: 20px;
+        padding: 2.5rem 2rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        transition: all 0.4s ease;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    .feature-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary-color), var(--primary-dark));
+        transform: scaleX(0);
+        transition: transform 0.3s ease;
+        transform-origin: left;
+    }
+
+    .feature-card:hover::before {
+        transform: scaleX(1);
+    }
+
+    .feature-icon {
+        width: 80px;
+        height: 80px;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+        font-size: 2rem;
+        color: white;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .feature-icon::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+        animation: rotate 10s linear infinite;
+    }
+
+    @@keyframes rotate {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+
+    .feature-icon i {
+        position: relative;
+        z-index: 1;
+    }
+
+    .icon-primary { background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); }
+    .icon-success { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
+    .icon-info { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); }
+    .icon-warning { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); }
+    .icon-secondary { background: linear-gradient(135deg, #94a3b8 0%, #64748b 100%); }
+
+    .feature-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--dark-color);
+        margin-bottom: 1rem;
+    }
+
+    .feature-description {
+        color: var(--gray-color);
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+        flex-grow: 1;
+    }
+
+    .feature-action {
+        margin-top: auto;
+    }
+
+    .btn-feature {
+        padding: 0.75rem 1.5rem;
+        border-radius: 12px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn-feature::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: left 0.5s;
+    }
+
+    .btn-feature:hover::before {
+        left: 100%;
+    }
+
+    .btn-feature:hover {
+        transform: translateY(-2px);
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+        color: white;
+        border: none;
+    }
+
+    .btn-primary:hover {
+        box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
+        color: white;
+    }
+
+    .btn-success {
+        background: linear-gradient(135deg, var(--secondary-color), #059669);
+        color: white;
+        border: none;
+    }
+
+    .btn-success:hover {
+        box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+        color: white;
+    }
+
+    .btn-info {
+        background: linear-gradient(135deg, #3b82f6, #2563eb);
+        color: white;
+        border: none;
+    }
+
+    .btn-info:hover {
+        box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+        color: white;
+    }
+
+    .btn-warning {
+        background: linear-gradient(135deg, #f59e0b, #d97706);
+        color: white;
+        border: none;
+    }
+
+    .btn-warning:hover {
+        box-shadow: 0 10px 25px rgba(245, 158, 11, 0.3);
+        color: white;
+    }
+
+    .btn-secondary {
+        background: linear-gradient(135deg, #94a3b8, #64748b);
+        color: white;
+        border: none;
+    }
+
+    .btn-secondary:hover {
+        box-shadow: 0 10px 25px rgba(148, 163, 184, 0.3);
+        color: white;
+    }
+
+    .access-denied {
+        background: var(--surface-dark);
+        color: var(--gray-color);
+        padding: 0.75rem 1.5rem;
+        border-radius: 12px;
+        font-weight: 500;
+        border: 2px dashed #e2e8f0;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    /* Admin Section */
+    .admin-section {
+        margin-top: 4rem;
+        padding-top: 4rem;
+        position: relative;
+    }
+
+    .admin-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100px;
+        height: 3px;
+        background: linear-gradient(90deg, var(--primary-color), var(--primary-dark));
+        border-radius: 3px;
+    }
+
+    /* Animations */
+    @@keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .fade-in-up {
+        animation: fadeInUp 1s ease-out;
+    }
+
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+    .delay-4 { animation-delay: 0.4s; }
+    .delay-5 { animation-delay: 0.5s; }
+
+    /* Responsive */
+    @@media (max-width: 991px) {
+        .hero-title {
+            font-size: 2.5rem;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.25rem;
+        }
+        
+        .hero-buttons {
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .btn-hero {
+            width: 100%;
+            max-width: 300px;
+            text-align: center;
+            justify-content: center;
+        }
+    }
+
+    @@media (max-width: 768px) {
+        .hero-section {
+            padding: 4rem 0;
+        }
+        
+        .section-title h2 {
+            font-size: 2rem;
+        }
+        
+        .section-title p {
+            font-size: 1rem;
+        }
+        
+        .features-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<div class="hero-section">
+    <div class="container">
+        <div class="hero-content">
+            <h1 class="hero-title">Product Management</h1>
+            <p class="hero-subtitle">Hệ thống quản lý sản phẩm và bán hàng trực tuyến hiện đại</p>
+            <div class="hero-buttons">
+                <a href="#features" class="btn-hero btn-primary-hero">
+                    <i class="fas fa-info-circle me-2"></i>Tìm hiểu thêm
+                </a>
+                <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="btn-hero btn-secondary-hero">
+                    <i class="fas fa-shopping-cart me-2"></i>Mua sắm ngay
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="features-section" id="features">
+    <div class="container">
+        <div class="section-title">
+            <h2>Tính năng nổi bật</h2>
+            <p>Khám phá các công cụ mạnh mẽ giúp quản lý doanh nghiệp của bạn hiệu quả hơn</p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card fade-in-up delay-1">
+                <div class="feature-icon icon-primary">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3 class="feature-title">Quản lý người dùng</h3>
+                <p class="feature-description">Quản lý tài khoản và phân quyền người dùng trong hệ thống một cách hiệu quả và bảo mật.</p>
+                <div class="feature-action">
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a asp-area="Admin" asp-controller="User" asp-action="Index" class="btn-feature btn-primary">
+                            <i class="fas fa-arrow-right"></i>Truy cập
+                        </a>
+                    }
+                    else
+                    {
+                        <span class="access-denied">
+                            <i class="fas fa-lock"></i>Cần quyền Admin
+                        </span>
+                    }
+                </div>
+            </div>
+
+            <div class="feature-card fade-in-up delay-2">
+                <div class="feature-icon icon-success">
+                    <i class="fas fa-box"></i>
+                </div>
+                <h3 class="feature-title">Quản lý sản phẩm</h3>
+                <p class="feature-description">Thêm, sửa, xóa sản phẩm và quản lý danh mục với giao diện trực quan và dễ sử dụng.</p>
+                <div class="feature-action">
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a asp-area="Admin" asp-controller="Product" asp-action="Index" class="btn-feature btn-success">
+                            <i class="fas fa-arrow-right"></i>Truy cập
+                        </a>
+                    }
+                    else
+                    {
+                        <span class="access-denied">
+                            <i class="fas fa-lock"></i>Cần quyền Admin
+                        </span>
+                    }
+                </div>
+            </div>
+
+            <div class="feature-card fade-in-up delay-3">
+                <div class="feature-icon icon-info">
+                    <i class="fas fa-shopping-cart"></i>
+                </div>
+                <h3 class="feature-title">Cửa hàng</h3>
+                <p class="feature-description">Mua sắm sản phẩm và quản lý đơn hàng của bạn với trải nghiệm mua sắm tuyệt vời.</p>
+                <div class="feature-action">
+                    <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="btn-feature btn-info">
+                        <i class="fas fa-shopping-bag"></i>Mua sắm ngay
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+        {
+            <div class="admin-section">
+                <div class="section-title">
+                    <h2>Công cụ quản lý nâng cao</h2>
+                    <p>Các công cụ dành riêng cho quản trị viên và người quản lý</p>
+                </div>
+                <div class="features-grid">
+                    <div class="feature-card fade-in-up delay-1">
+                        <div class="feature-icon icon-warning">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3 class="feature-title">Quản lý đơn hàng</h3>
+                        <p class="feature-description">Theo dõi và xử lý đơn hàng của khách hàng với dashboard thống kê chi tiết.</p>
+                        <div class="feature-action">
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <a asp-area="Admin" asp-controller="Order" asp-action="Index" class="btn-feature btn-warning">
+                                    <i class="fas fa-crown me-1"></i>Admin Panel
+                                </a>
+                            }
+                            @if (User.IsInRole("Manager"))
+                            {
+                                <a asp-area="Manager" asp-controller="Order" asp-action="Index" class="btn-feature btn-warning">
+                                    <i class="fas fa-user-tie me-1"></i>Manager Panel
+                                </a>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="feature-card fade-in-up delay-2">
+                        <div class="feature-icon icon-secondary">
+                            <i class="fas fa-tags"></i>
+                        </div>
+                        <h3 class="feature-title">Quản lý danh mục</h3>
+                        <p class="feature-description">Tạo và quản lý danh mục sản phẩm để tổ chức cửa hàng một cách khoa học.</p>
+                        <div class="feature-action">
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <a asp-area="Admin" asp-controller="Category" asp-action="Index" class="btn-feature btn-secondary">
+                                    <i class="fas fa-arrow-right"></i>Truy cập
+                                </a>
+                            }
+                            else
+                            {
+                                <span class="access-denied">
+                                    <i class="fas fa-lock"></i>Cần quyền Admin
+                                </span>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

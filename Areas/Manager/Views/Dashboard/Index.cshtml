@@ -1,0 +1,126 @@
+@model ManagerDashboardViewModel
+@{
+    ViewData["Title"] = "Manager Dashboard";
+}
+
+<div class="admin-page-header">
+    <h1 class="admin-page-title">
+        <i class="fas fa-tachometer-alt me-2"></i>Manager Dashboard
+    </h1>
+    <p class="admin-page-subtitle">Tổng quan quản lý đơn hàng</p>
+</div>
+
+<!-- Statistics Cards -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card bg-primary text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4 class="mb-0">@Model.TotalOrders</h4>
+                        <p class="mb-0">Tổng đơn hàng</p>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-shopping-cart fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-warning text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4 class="mb-0">@Model.PendingOrders</h4>
+                        <p class="mb-0">Chờ xử lý</p>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-clock fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-info text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4 class="mb-0">@Model.ProcessingOrders</h4>
+                        <p class="mb-0">Đang xử lý</p>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-cog fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-success text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4 class="mb-0">@Model.CompletedOrders</h4>
+                        <p class="mb-0">Hoàn thành</p>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-check-circle fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Orders and Top Products -->
+<div class="row">
+    <div class="col-md-8">
+        <div class="admin-content-section">
+            <h5 class="mb-3"><i class="fas fa-clock me-2"></i>Đơn hàng gần đây</h5>
+            <div class="table-responsive">
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>Mã ĐH</th>
+                            <th>Khách hàng</th>
+                            <th>Tổng tiền</th>
+                            <th>Trạng thái</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var order in Model.RecentOrders)
+                        {
+                            <tr>
+                                <td>#@order.Id.ToString("D6")</td>
+                                <td>@order.UserName</td>
+                                <td>@order.TotalAmount.ToString("C0")</td>
+                                <td>
+                                    <span class="badge bg-primary">@order.Status</span>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="admin-content-section">
+            <h5 class="mb-3"><i class="fas fa-star me-2"></i>Sản phẩm bán chạy</h5>
+            @foreach (var product in Model.TopSellingProducts)
+            {
+                <div class="d-flex align-items-center mb-2">
+                    <div class="flex-grow-1">
+                        <div class="fw-semibold">@product.ProductName</div>
+                        <small class="text-muted">
+                            Số lượng: @product.TotalQuantity | 
+                            Doanh thu: @product.TotalRevenue.ToString("C0")
+                        </small>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div> 

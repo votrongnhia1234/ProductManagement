@@ -1,0 +1,118 @@
+﻿/* Customer Styles */
+body {
+    font-family: "Inter", sans-serif;
+    background-color: #f8f9fa;
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+}
+
+.hero-section {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.product-card {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+    .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    }
+
+.product-image {
+    position: relative;
+    overflow: hidden;
+}
+
+    .product-image img {
+        transition: transform 0.3s ease;
+    }
+
+.product-card:hover .product-image img {
+    transform: scale(1.05);
+}
+
+.category-filter .btn {
+    border-radius: 25px;
+    margin-bottom: 0.5rem;
+}
+
+.cart-item {
+    border-bottom: 1px solid #dee2e6;
+    padding: 1rem 0;
+}
+
+    .cart-item:last-child {
+        border-bottom: none;
+    }
+
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+    .quantity-controls button {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+.order-status {
+    padding: 0.25rem 0.75rem;
+    border-radius: 15px;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+    .order-status.pending {
+        background-color: #fff3cd;
+        color: #856404;
+    }
+
+    .order-status.confirmed {
+        background-color: #d1ecf1;
+        color: #0c5460;
+    }
+
+    .order-status.processing {
+        background-color: #cce5ff;
+        color: #004085;
+    }
+
+    .order-status.shipped {
+        background-color: #d4edda;
+        color: #155724;
+    }
+
+    .order-status.delivered {
+        background-color: #d1e7dd;
+        color: #0f5132;
+    }
+
+    .order-status.cancelled {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero-section h1 {
+        font-size: 2rem;
+    }
+
+    .hero-section .lead {
+        font-size: 1rem;
+    }
+
+    .product-card {
+        margin-bottom: 1rem;
+    }
+}
