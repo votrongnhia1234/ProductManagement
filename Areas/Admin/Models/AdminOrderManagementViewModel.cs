@@ -70,4 +70,15 @@ namespace ProductManagement.Areas.Admin.Models
         public decimal TotalRevenue { get; set; }
         public decimal AverageOrderValue { get; set; }
     }
+
+    public class AdminOrderExportViewModel
+    {
+        public int Id { get; set; }
+        public string CustomerName { get; set; }
+        public string CustomerEmail { get; set; }
+        public DateTime OrderDate { get; set; }
+        public decimal TotalAmount { get; set; }
+        public OrderStatus Status { get; set; }
+        public string TrackingNumber { get; set; }
+    }
 }

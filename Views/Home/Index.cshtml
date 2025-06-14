@@ -216,13 +216,18 @@
         left: -50%;
         width: 200%;
         height: 200%;
-        background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
         animation: rotate 10s linear infinite;
     }
 
     @@keyframes rotate {
-        from { transform: rotate(0deg); }
-        to { transform: rotate(360deg); }
+        from {
+            transform: rotate(0deg);
+        }
+
+        to {
+            transform: rotate(360deg);
+        }
     }
 
     .feature-icon i {
@@ -230,11 +235,25 @@
         z-index: 1;
     }
 
-    .icon-primary { background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); }
-    .icon-success { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
-    .icon-info { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); }
-    .icon-warning { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); }
-    .icon-secondary { background: linear-gradient(135deg, #94a3b8 0%, #64748b 100%); }
+    .icon-primary {
+        background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+    }
+
+    .icon-success {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    }
+
+    .icon-info {
+        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    }
+
+    .icon-warning {
+        background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    }
+
+    .icon-secondary {
+        background: linear-gradient(135deg, #94a3b8 0%, #64748b 100%);
+    }
 
     .feature-title {
         font-size: 1.5rem;
@@ -274,7 +293,7 @@
         left: -100%;
         width: 100%;
         height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
         transition: left 0.5s;
     }
 
@@ -378,6 +397,7 @@
             opacity: 0;
             transform: translateY(30px);
         }
+
         to {
             opacity: 1;
             transform: translateY(0);
@@ -388,27 +408,41 @@
         animation: fadeInUp 1s ease-out;
     }
 
-    .delay-1 { animation-delay: 0.1s; }
-    .delay-2 { animation-delay: 0.2s; }
-    .delay-3 { animation-delay: 0.3s; }
-    .delay-4 { animation-delay: 0.4s; }
-    .delay-5 { animation-delay: 0.5s; }
+    .delay-1 {
+        animation-delay: 0.1s;
+    }
+
+    .delay-2 {
+        animation-delay: 0.2s;
+    }
+
+    .delay-3 {
+        animation-delay: 0.3s;
+    }
+
+    .delay-4 {
+        animation-delay: 0.4s;
+    }
+
+    .delay-5 {
+        animation-delay: 0.5s;
+    }
 
     /* Responsive */
     @@media (max-width: 991px) {
         .hero-title {
             font-size: 2.5rem;
         }
-        
+
         .hero-subtitle {
             font-size: 1.25rem;
         }
-        
+
         .hero-buttons {
             flex-direction: column;
             align-items: center;
         }
-        
+
         .btn-hero {
             width: 100%;
             max-width: 300px;
@@ -421,15 +455,15 @@
         .hero-section {
             padding: 4rem 0;
         }
-        
+
         .section-title h2 {
             font-size: 2rem;
         }
-        
+
         .section-title p {
             font-size: 1rem;
         }
-        
+
         .features-grid {
             grid-template-columns: 1fr;
         }
@@ -439,7 +473,7 @@
 <div class="hero-section">
     <div class="container">
         <div class="hero-content">
-            <h1 class="hero-title">Product Management</h1>
+            <h1 class="hero-title">Shop đồ công nghệ</h1>
             <p class="hero-subtitle">Hệ thống quản lý sản phẩm và bán hàng trực tuyến hiện đại</p>
             <div class="hero-buttons">
                 <a href="#features" class="btn-hero btn-primary-hero">
@@ -466,7 +500,8 @@
                     <i class="fas fa-users"></i>
                 </div>
                 <h3 class="feature-title">Quản lý người dùng</h3>
-                <p class="feature-description">Quản lý tài khoản và phân quyền người dùng trong hệ thống một cách hiệu quả và bảo mật.</p>
+                <p class="feature-description">Quản lý tài khoản và phân quyền người dùng trong hệ thống một cách hiệu
+                    quả và bảo mật.</p>
                 <div class="feature-action">
                     @if (User.IsInRole("Admin"))
                     {
@@ -488,7 +523,8 @@
                     <i class="fas fa-box"></i>
                 </div>
                 <h3 class="feature-title">Quản lý sản phẩm</h3>
-                <p class="feature-description">Thêm, sửa, xóa sản phẩm và quản lý danh mục với giao diện trực quan và dễ sử dụng.</p>
+                <p class="feature-description">Thêm, sửa, xóa sản phẩm và quản lý danh mục với giao diện trực quan và dễ
+                    sử dụng.</p>
                 <div class="feature-action">
                     @if (User.IsInRole("Admin"))
                     {
@@ -510,7 +546,8 @@
                     <i class="fas fa-shopping-cart"></i>
                 </div>
                 <h3 class="feature-title">Cửa hàng</h3>
-                <p class="feature-description">Mua sắm sản phẩm và quản lý đơn hàng của bạn với trải nghiệm mua sắm tuyệt vời.</p>
+                <p class="feature-description">Mua sắm sản phẩm và quản lý đơn hàng của bạn với trải nghiệm mua sắm
+                    tuyệt vời.</p>
                 <div class="feature-action">
                     <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="btn-feature btn-info">
                         <i class="fas fa-shopping-bag"></i>Mua sắm ngay
@@ -532,7 +569,8 @@
                             <i class="fas fa-chart-line"></i>
                         </div>
                         <h3 class="feature-title">Quản lý đơn hàng</h3>
-                        <p class="feature-description">Theo dõi và xử lý đơn hàng của khách hàng với dashboard thống kê chi tiết.</p>
+                        <p class="feature-description">Theo dõi và xử lý đơn hàng của khách hàng với dashboard thống kê chi
+                            tiết.</p>
                         <div class="feature-action">
                             @if (User.IsInRole("Admin"))
                             {
@@ -554,11 +592,13 @@
                             <i class="fas fa-tags"></i>
                         </div>
                         <h3 class="feature-title">Quản lý danh mục</h3>
-                        <p class="feature-description">Tạo và quản lý danh mục sản phẩm để tổ chức cửa hàng một cách khoa học.</p>
+                        <p class="feature-description">Tạo và quản lý danh mục sản phẩm để tổ chức cửa hàng một cách khoa
+                            học.</p>
                         <div class="feature-action">
                             @if (User.IsInRole("Admin"))
                             {
-                                <a asp-area="Admin" asp-controller="Category" asp-action="Index" class="btn-feature btn-secondary">
+                                <a asp-area="Admin" asp-controller="Category" asp-action="Index"
+                                    class="btn-feature btn-secondary">
                                     <i class="fas fa-arrow-right"></i>Truy cập
                                 </a>
                             }

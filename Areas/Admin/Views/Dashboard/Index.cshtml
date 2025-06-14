@@ -5,277 +5,719 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-@* <div class="admin-page-header">
-    <h1 class="admin-page-title mb-1">
-        <i class="fas fa-tachometer-alt me-2"></i>Admin Dashboard
-    </h1>
-    <p class="admin-page-subtitle">Tổng quan hệ thống quản lý</p>
-</div> *@
-
-<!-- Statistics Cards -->
-<div class="row mb-4 g-4">
-    <div class="col-xl-3 col-md-6">
-        <div class="card admin-stat-card h-100 shadow-sm border-0 border-start border-primary border-4">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <h3 class="mb-1 fw-bold">@Model.TotalProducts</h3>
-                        <p class="mb-0 text-muted">Sản phẩm</p>
-                    </div>
-                    <div class="stat-icon text-primary">
-                        <i class="fas fa-box fa-3x"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-xl-3 col-md-6">
-        <div class="card admin-stat-card h-100 shadow-sm border-0 border-start border-success border-4">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <h3 class="mb-1 fw-bold">@Model.TotalCategories</h3>
-                        <p class="mb-0 text-muted">Danh mục</p>
-                    </div>
-                    <div class="stat-icon text-success">
-                        <i class="fas fa-tags fa-3x"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-xl-3 col-md-6">
-        <div class="card admin-stat-card h-100 shadow-sm border-0 border-start border-info border-4">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <h3 class="mb-1 fw-bold">@Model.TotalOrders</h3>
-                        <p class="mb-0 text-muted">Đơn hàng</p>
-                    </div>
-                    <div class="stat-icon text-info">
-                        <i class="fas fa-shopping-cart fa-3x"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-xl-3 col-md-6">
-        <div class="card admin-stat-card h-100 shadow-sm border-0 border-start border-warning border-4">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <h3 class="mb-1 fw-bold">@Model.TotalRevenue.ToString("N0") VNĐ</h3>
-                        <p class="mb-0 text-muted">Doanh thu</p>
-                    </div>
-                    <div class="stat-icon text-warning">
-                        <i class="fas fa-dollar-sign fa-3x"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Recent Orders and Top Products -->
-<div class="row g-4">
-    <div class="col-lg-8">
-        <div class="card shadow-sm h-100">
-            <div class="card-header bg-light border-bottom">
-                <h5 class="mb-0 card-title-custom"><i class="fas fa-history me-2 text-primary"></i>Đơn hàng gần đây</h5>
-            </div>
-            <div class="card-body p-0">
-                <div class="table-responsive">
-                    <table class="table table-hover table-borderless mb-0">
-                        <thead class="table-light">
-                            <tr>
-                                <th class="ps-3">Mã ĐH</th>
-                                <th>Khách hàng</th>
-                                <th>Tổng tiền</th>
-                                <th class="pe-3">Trạng thái</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (Model.RecentOrders.Any())
-                            {
-                                @foreach (var order in Model.RecentOrders)
-                                {
-                                    <tr>
-                                        <td class="ps-3 fw-medium">#@order.Id.ToString("D6")</td>
-                                        <td>@order.User.FullName</td>
-                                        <td>@order.TotalAmount.ToString("C0")</td>
-                                        <td class="pe-3">
-                                            <span class="badge rounded-pill 
-                                                @(order.Status.ToString() == "Completed" ? "bg-success-subtle text-success-emphasis" :
-                                                  order.Status.ToString() == "Pending" ? "bg-warning-subtle text-warning-emphasis" :
-                                                  order.Status.ToString() == "Processing" ? "bg-info-subtle text-info-emphasis" :
-                                                  order.Status.ToString() == "Cancelled" ? "bg-danger-subtle text-danger-emphasis" :
-                                                  "bg-secondary-subtle text-secondary-emphasis")">
-                                                @order.Status.ToString()
-                                            </span>
-                                        </td>
-                                    </tr>
-                                }
-                            }
-                            else
-                            {
-                                <tr>
-                                    <td colspan="4" class="text-center py-4 text-muted">
-                                        <i class="fas fa-box-open fa-2x mb-2"></i><br>
-                                        Không có đơn hàng nào gần đây.
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-4">
-        <div class="card shadow-sm h-100">
-            <div class="card-header bg-light border-bottom">
-                <h5 class="mb-0 card-title-custom"><i class="fas fa-star me-2 text-warning"></i>Sản phẩm bán chạy</h5>
-            </div>
-            <div class="card-body p-0">
-                @if (Model.TopSellingProducts.Any())
-                {
-                    <ul class="list-group list-group-flush">
-                        @foreach (var product in Model.TopSellingProducts)
-                        {
-                            <li class="list-group-item top-product-item">
-                                <div class="d-flex align-items-center">
-                                    <div class="me-3">
-                                        @if (!string.IsNullOrEmpty(product.ImgUrl))
-                                        {
-                                            <img src="@product.ImgUrl" alt="@product.ProductName"
-                                                 class="rounded object-fit-cover" style="width: 50px; height: 50px;">
-                                        }
-                                        else
-                                        {
-                                            <div class="bg-light rounded d-flex align-items-center justify-content-center"
-                                                 style="width: 50px; height: 50px;">
-                                                <i class="fas fa-image text-muted fs-4"></i>
-                                            </div>
-                                        }
-                                    </div>
-                                    <div class="flex-grow-1">
-                                        <h6 class="mb-1 text-truncate" title="@product.ProductName">@product.ProductName</h6>
-                                        <small class="text-muted">@product.Price.ToString("C0")</small>
-                                    </div>
-                                    @* Optional: Display sales count if available *@
-                                    @* <span class="badge bg-primary-subtle text-primary-emphasis rounded-pill">Đã bán: X</span> *@
-                                </div>
-                            </li>
-                        }
-                    </ul>
-                }
-                else
-                {
-                    <div class="text-center py-5 text-muted">
-                         <i class="fas fa-chart-line fa-2x mb-2"></i><br>
-                        Chưa có dữ liệu sản phẩm bán chạy.
-                    </div>
-                }
-            </div>
-        </div>
-    </div>
-</div>
-
-@section Styles {
 <style>
-    .admin-page-header {
+    .dashboard-header {
+        background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+        color: white;
+        border-radius: 20px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .dashboard-header::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+        animation: rotate 30s linear infinite;
+    }
+
+    @@keyframes rotate {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    .dashboard-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .dashboard-subtitle {
+        font-size: 1.125rem;
+        opacity: 0.9;
+        margin-bottom: 0;
+        position: relative;
+        z-index: 1;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
         margin-bottom: 2rem;
     }
 
-    .admin-stat-card {
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    .stat-card {
+        background: var(--surface-color);
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 0.6s ease forwards;
     }
 
-    .admin-stat-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1) !important;
+    .stat-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    @@keyframes fadeInUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .stat-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 6px;
+        border-radius: 20px 20px 0 0;
+    }
+
+    .stat-card.products::before {
+        background: linear-gradient(90deg, #6366f1, #4f46e5);
+    }
+
+    .stat-card.categories::before {
+        background: linear-gradient(90deg, #10b981, #059669);
+    }
+
+    .stat-card.orders::before {
+        background: linear-gradient(90deg, #f59e0b, #d97706);
+    }
+
+    .stat-card.revenue::before {
+        background: linear-gradient(90deg, #ef4444, #dc2626);
+    }
+
+    .stat-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .stat-info h3 {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: var(--dark-color);
+        margin-bottom: 0.5rem;
+        line-height: 1;
+    }
+
+    .stat-info p {
+        color: var(--gray-color);
+        font-weight: 600;
+        margin-bottom: 0;
+        font-size: 1rem;
     }
 
     .stat-icon {
-        opacity: 0.6;
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        color: white;
+        opacity: 0.9;
+        transition: all 0.3s ease;
     }
-    .admin-stat-card:hover .stat-icon {
+
+    .stat-card:hover .stat-icon {
         opacity: 1;
+        transform: scale(1.1);
     }
 
-    .card-title-custom {
+    .stat-card.products .stat-icon {
+        background: linear-gradient(135deg, #6366f1, #4f46e5);
+    }
+
+    .stat-card.categories .stat-icon {
+        background: linear-gradient(135deg, #10b981, #059669);
+    }
+
+    .stat-card.orders .stat-icon {
+        background: linear-gradient(135deg, #f59e0b, #d97706);
+    }
+
+    .stat-card.revenue .stat-icon {
+        background: linear-gradient(135deg, #ef4444, #dc2626);
+    }
+
+    .dashboard-content {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .content-card {
+        background: var(--surface-color);
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .content-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    }
+
+    .card-header {
+        background: var(--surface-dark);
+        padding: 1.5rem 2rem;
+        border-bottom: none;
+    }
+
+    .card-title {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: var(--dark-color);
+        margin-bottom: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .card-title i {
+        color: #6366f1;
+    }
+
+    .orders-table {
+        margin-bottom: 0;
+    }
+
+    .orders-table thead th {
+        background: var(--surface-dark);
+        font-weight: 700;
+        color: var(--dark-color);
+        border: none;
+        padding: 1rem;
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .orders-table tbody td {
+        padding: 1rem;
+        vertical-align: middle;
+        border-color: var(--surface-dark);
+    }
+
+    .orders-table tbody tr {
+        transition: all 0.3s ease;
+    }
+
+    .orders-table tbody tr:hover {
+        background-color: var(--surface-dark);
+        transform: scale(1.01);
+    }
+
+    .order-id {
+        font-weight: 700;
+        color: var(--dark-color);
+    }
+
+    .customer-name {
         font-weight: 600;
-        font-size: 1.1rem;
+        color: var(--dark-color);
     }
 
-    .table th {
+    .order-amount {
+        font-weight: 700;
+        color: var(--secondary-color);
+    }
+
+    .status-badge {
+        padding: 0.5rem 1rem;
+        border-radius: 50px;
+        font-size: 0.75rem;
         font-weight: 600;
-        color: #495057; /* Bootstrap's default table head color */
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
 
-    .top-product-item {
-        transition: background-color 0.2s ease;
-        padding-top: 1rem;
-        padding-bottom: 1rem;
+    .status-completed {
+        background: rgba(16, 185, 129, 0.1);
+        color: #059669;
     }
 
-    .top-product-item:hover {
-        background-color: #f8f9fa; /* Light gray for hover */
+    .status-pending {
+        background: rgba(245, 158, 11, 0.1);
+        color: #d97706;
     }
 
-    .object-fit-cover {
+    .status-processing {
+        background: rgba(99, 102, 241, 0.1);
+        color: #4f46e5;
+    }
+
+    .status-cancelled {
+        background: rgba(239, 68, 68, 0.1);
+        color: #dc2626;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 3rem 2rem;
+        color: var(--gray-color);
+    }
+
+    .empty-state i {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+    }
+
+    .top-products-list {
+        padding: 0;
+        margin: 0;
+    }
+
+    .product-item {
+        display: flex;
+        align-items: center;
+        padding: 1.5rem 2rem;
+        border-bottom: 1px solid var(--surface-dark);
+        transition: all 0.3s ease;
+    }
+
+    .product-item:last-child {
+        border-bottom: none;
+    }
+
+    .product-item:hover {
+        background-color: var(--surface-dark);
+    }
+
+    .product-image {
+        width: 60px;
+        height: 60px;
         object-fit: cover;
+        border-radius: 12px;
+        margin-right: 1rem;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     }
 
-    /* Animation for sections loading */
-    .row.g-4 > [class*="col-"] {
-        animation: fadeInScaleUp 0.5s ease-out forwards;
-        opacity: 0;
+    .no-image {
+        width: 60px;
+        height: 60px;
+        background: var(--surface-dark);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--gray-color);
+        margin-right: 1rem;
     }
 
-    @@keyframes fadeInScaleUp {
-        from {
-            opacity: 0;
-            transform: translateY(20px) scale(0.98);
+    .product-info {
+        flex: 1;
+    }
+
+    .product-name {
+        font-weight: 600;
+        color: var(--dark-color);
+        margin-bottom: 0.25rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .product-price {
+        color: var(--gray-color);
+        font-size: 0.875rem;
+    }
+
+    .chart-container {
+        padding: 2rem;
+        height: 400px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .chart-placeholder {
+        text-align: center;
+        color: var(--gray-color);
+    }
+
+    .chart-placeholder i {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        opacity: 0.3;
+    }
+
+    @@media (max-width: 1200px) {
+        .dashboard-content {
+            grid-template-columns: 1fr;
         }
-        to {
-            opacity: 1;
-            transform: translateY(0) scale(1);
+    }
+
+    @@media (max-width: 991px) {
+        .dashboard-title {
+            font-size: 2rem;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+
+        .stats-grid {
+            grid-template-columns: repeat(2, 1fr);
         }
     }
 
-    /* Delay for staggered animation */
-    .row.g-4 > [class*="col-"]:nth-child(1) { animation-delay: 0.1s; }
-    .row.g-4 > [class*="col-"]:nth-child(2) { animation-delay: 0.2s; }
-    .row.g-4 > [class*="col-"]:nth-child(3) { animation-delay: 0.3s; }
-    .row.g-4 > [class*="col-"]:nth-child(4) { animation-delay: 0.4s; }
-    /* For the second row */
-    .row.g-4 > .col-lg-8 { animation-delay: 0.2s; } /* Adjust if it's the first element in its row */
-    .row.g-4 > .col-lg-4 { animation-delay: 0.3s; } /* Adjust if it's the second element in its row */
+    @@media (max-width: 768px) {
+        .dashboard-header {
+            padding: 1.5rem;
+        }
 
+        .dashboard-title {
+            font-size: 1.75rem;
+        }
+
+        .stats-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .stat-card {
+            padding: 1.5rem;
+        }
+
+        .orders-table thead th,
+        .orders-table tbody td {
+            padding: 0.75rem 0.5rem;
+        }
+
+        .product-item {
+            padding: 1rem;
+        }
+
+        .product-image,
+        .no-image {
+            width: 50px;
+            height: 50px;
+        }
+    }
 </style>
-}
 
-@* 
-LƯU Ý:
-Để các style tùy chỉnh trong @section Styles hoạt động, bạn cần đảm bảo rằng tệp layout
-`~/Areas/Admin/Views/Shared/_AdminLayout.cshtml` có dòng `@RenderSection("Styles", required: false)`
-bên trong thẻ <head>. Ví dụ:
+<div class="dashboard-header">
+    <div>
+        <h1 class="dashboard-title">
+            <i class="fas fa-tachometer-alt"></i>
+            Admin Dashboard
+        </h1>
+        <p class="dashboard-subtitle">Tổng quan hệ thống quản lý</p>
+    </div>
+</div>
 
-<head>
-    ...
-    @RenderSection("Styles", required: false)
-</head>
-*@
-                            @* </div>
-                        }
-                    </div>
-                    <div class="flex-grow-1">
-                        <div class="fw-semibold">@product.ProductName</div>
-                        <small class="text-muted">@product.Price.ToString("C0")</small>
-                    </div>
-                </div>
-            }
+<!-- Statistics Cards -->
+<div class="stats-grid">
+    <div class="stat-card products" style="animation-delay: 0.1s">
+        <div class="stat-content">
+            <div class="stat-info">
+                <h3>@Model.TotalProducts</h3>
+                <p>Sản phẩm</p>
+            </div>
+            <div class="stat-icon">
+                <i class="fas fa-box"></i>
+            </div>
         </div>
     </div>
-</div> *@
+    <div class="stat-card categories" style="animation-delay: 0.2s">
+        <div class="stat-content">
+            <div class="stat-info">
+                <h3>@Model.TotalCategories</h3>
+                <p>Danh mục</p>
+            </div>
+            <div class="stat-icon">
+                <i class="fas fa-tags"></i>
+            </div>
+        </div>
+    </div>
+    <div class="stat-card orders" style="animation-delay: 0.3s">
+        <div class="stat-content">
+            <div class="stat-info">
+                <h3>@Model.TotalOrders</h3>
+                <p>Đơn hàng</p>
+            </div>
+            <div class="stat-icon">
+                <i class="fas fa-shopping-cart"></i>
+            </div>
+        </div>
+    </div>
+    <div class="stat-card revenue" style="animation-delay: 0.4s">
+        <div class="stat-content">
+            <div class="stat-info">
+                <h3>@Model.TotalRevenue.ToString("N0")</h3>
+                <p>Doanh thu (VNĐ)</p>
+            </div>
+            <div class="stat-icon">
+                <i class="fas fa-dollar-sign"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Dashboard Content -->
+<div class="dashboard-content">
+    <!-- Recent Orders -->
+    <div class="content-card">
+        <div class="card-header">
+            <h5 class="card-title">
+                <i class="fas fa-history"></i>
+                Đơn hàng gần đây
+            </h5>
+        </div>
+        <div class="table-responsive">
+            <table class="table orders-table">
+                <thead>
+                    <tr>
+                        <th>Mã ĐH</th>
+                        <th>Khách hàng</th>
+                        <th>Tổng tiền</th>
+                        <th>Trạng thái</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.RecentOrders.Any())
+                    {
+                        @foreach (var order in Model.RecentOrders)
+                        {
+                            <tr>
+                                <td class="order-id">#@order.Id.ToString("D6")</td>
+                                <td class="customer-name">@order.User.FullName</td>
+                                <td class="order-amount">@order.TotalAmount.ToString("C0")</td>
+                                <td>
+                                    <span class="status-badge status-@order.Status.ToString().ToLower()">
+                                        @order.Status.ToString()
+                                    </span>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="4">
+                                <div class="empty-state">
+                                    <i class="fas fa-box-open"></i>
+                                    <p>Không có đơn hàng nào gần đây.</p>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Top Selling Products -->
+    <div class="content-card">
+        <div class="card-header">
+            <h5 class="card-title">
+                <i class="fas fa-star"></i>
+                Sản phẩm bán chạy
+            </h5>
+        </div>
+        @if (Model.TopSellingProducts.Any())
+        {
+            <div class="top-products-list">
+                @foreach (var product in Model.TopSellingProducts)
+                {
+                    <div class="product-item">
+                        @if (!string.IsNullOrEmpty(product.ImgUrl))
+                        {
+                            <img src="@product.ImgUrl" alt="@product.ProductName" class="product-image">
+                        }
+                        else
+                        {
+                            <div class="no-image">
+                                <i class="fas fa-image"></i>
+                            </div>
+                        }
+                        <div class="product-info">
+                            <div class="product-name" title="@product.ProductName">@product.ProductName</div>
+                            <div class="product-price">@product.Price.ToString("C0")</div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="empty-state">
+                <i class="fas fa-chart-line"></i>
+                <p>Chưa có dữ liệu sản phẩm bán chạy.</p>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Charts Section -->
+<div class="row">
+    <div class="col-lg-6">
+        <div class="content-card">
+            <div class="card-header">
+                <h5 class="card-title">
+                    <i class="fas fa-chart-line"></i>
+                    Doanh thu theo tháng
+                </h5>
+            </div>
+            <div class="chart-container">
+                <canvas id="revenueChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="content-card">
+            <div class="card-header">
+                <h5 class="card-title">
+                    <i class="fas fa-chart-pie"></i>
+                    Trạng thái đơn hàng
+                </h5>
+            </div>
+            <div class="chart-container">
+                <canvas id="orderStatusChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Animate elements on load
+        document.addEventListener('DOMContentLoaded', function () {
+            // Animate content cards
+            const contentCards = document.querySelectorAll('.content-card');
+            contentCards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = `all 0.6s ease ${0.5 + (index * 0.1)}s`;
+
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 500 + (index * 100));
+            });
+
+            // Revenue Chart
+            const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+            new Chart(revenueCtx, {
+                type: 'line',
+                data: {
+                    labels: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12'],
+                    datasets: [{
+                        label: 'Doanh thu (VNĐ)',
+                        data: [12000000, 19000000, 15000000, 25000000, 22000000, 30000000, 28000000, 35000000, 32000000, 40000000, 38000000, 45000000],
+                        borderColor: '#6366f1',
+                        backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#6366f1',
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 2,
+                        pointRadius: 6,
+                        pointHoverRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.1)'
+                            },
+                            ticks: {
+                                callback: function (value) {
+                                    return new Intl.NumberFormat('vi-VN', {
+                                        style: 'currency',
+                                        currency: 'VND',
+                                        minimumFractionDigits: 0
+                                    }).format(value);
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.1)'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Order Status Chart
+            const statusCtx = document.getElementById('orderStatusChart').getContext('2d');
+            new Chart(statusCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Chờ xử lý', 'Đã xác nhận', 'Đang xử lý', 'Đã giao hàng', 'Đã hủy'],
+                    datasets: [{
+                        data: [15, 25, 20, 35, 5],
+                        backgroundColor: [
+                            '#f59e0b',
+                            '#3b82f6',
+                            '#8b5cf6',
+                            '#10b981',
+                            '#ef4444'
+                        ],
+                        borderWidth: 0,
+                        hoverOffset: 10
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                usePointStyle: true,
+                                pointStyle: 'circle'
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+}

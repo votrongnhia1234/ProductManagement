@@ -1,7 +1,7 @@
 ﻿@model CartViewModel
 @{
     ViewData["Title"] = "Giỏ hàng của bạn";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Areas/Customer/Views/Shared/_CustomerLayout.cshtml";
 }
 
 @using ProductManagement.Areas.Customer.Models
@@ -378,7 +378,7 @@
                 Giỏ hàng của bạn
                 @if (Model.ItemCount > 0)
                 {
-                    <span class="cart-badge">@Model.ItemCount sản phẩm</span>
+                    <span class="cart-badge rounded-pill bg-danger fs-5">@Model.ItemCount sản phẩm</span>
                 }
             </h2>
         </div>
@@ -392,6 +392,10 @@
                         {
                             <div class="cart-item">
                                 <div class="row align-items-center">
+                                    <div class="col-1 d-flex justify-content-center">
+                                        <input type="checkbox" class="select-item-checkbox" data-price="@item.TotalPrice"
+                                            value="@item.ProductId" />
+                                    </div>
                                     <div class="col-md-2 col-3">
                                         <div class="item-image">
                                             @if (!string.IsNullOrEmpty(item.ImgUrl))
@@ -404,7 +408,7 @@
                                             }
                                         </div>
                                     </div>
-                                    <div class="col-md-4 col-9">
+                                    <div class="col-md-4 col-9  ">
                                         <div class="item-info">
                                             <h6>@item.ProductName</h6>
                                             <p class="item-price">@item.Price.ToString("C0")</p>
@@ -424,10 +428,10 @@
                                             </button>
                                         </form>
                                     </div>
-                                    <div class="col-md-2 col-4 mt-2 mt-md-0">
+                                    <div class="col-md-1 col-3 mt-2 mt-md-0 d-flex">
                                         <div class="item-total">@item.TotalPrice.ToString("C0")</div>
                                     </div>
-                                    <div class="col-md-1 col-2 mt-2 mt-md-0">
+                                    <div class="col-md-1 col-1 mt-2 mt-md-0">
                                         <form asp-action="RemoveFromCart" method="post" class="d-inline">
                                             <input type="hidden" name="productId" value="@item.ProductId" />
                                             <button type="submit" class="remove-btn"
@@ -446,22 +450,25 @@
                     <div class="summary-card">
                         <h5 class="summary-title">Tóm tắt đơn hàng</h5>
 
-                        <div class="summary-row">
+                        <div class="summary-row total">
                             <span>Tạm tính:</span>
-                            <span>@Model.TotalAmount.ToString("C0")</span>
+                            <span class="amount" id="selected-subtotal">@Model.TotalAmount.ToString("C0")</span>
                         </div>
                         <div class="summary-row">
                             <span>Phí vận chuyển:</span>
-                            <span class="text-success">Miễn phí</span>
+                            <span class="text-success ">Miễn phí</span>
                         </div>
                         <div class="summary-row total">
                             <span>Tổng cộng:</span>
-                            <span class="amount">@Model.TotalAmount.ToString("C0")</span>
+                            <span class="amount" id="selected-total">@Model.TotalAmount.ToString("C0")</span>
                         </div>
 
-                        <a asp-action="Checkout" class="checkout-btn">
-                            <i class="fas fa-credit-card me-2"></i>Thanh toán
-                        </a>
+                        <form id="checkout-form" asp-action="Checkout" method="get">
+                            <input type="hidden" name="selectedProductIds" id="selectedProductIds" />
+                            <button type="submit" class="checkout-btn">
+                                <i class="fas fa-credit-card me-2"></i>Thanh toán
+                            </button>
+                        </form>
                         <a asp-action="Index" asp-controller="Home" class="continue-shopping-btn">
                             <i class="fas fa-arrow-left mt-1"></i>Tiếp tục mua sắm
                         </a>
@@ -511,6 +518,35 @@
                     summaryCard.style.transform = 'translateY(0)';
                 }, 400);
             }
+
+            function updateSelectedTotal() {
+                let total = 0;
+                document.querySelectorAll('.select-item-checkbox:checked').forEach(cb => {
+                    total += parseFloat(cb.getAttribute('data-price'));
+                });
+                // Hiển thị tiền USD
+                let formatted = total.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+                document.getElementById('selected-subtotal').innerText = formatted;
+                document.getElementById('selected-total').innerText = formatted;
+            }
+
+            document.querySelectorAll('.select-item-checkbox').forEach(cb => {
+                cb.addEventListener('change', updateSelectedTotal);
+            });
+            updateSelectedTotal();
+
+            document.getElementById('checkout-form').addEventListener('submit', function (e) {
+                let selectedIds = [];
+                document.querySelectorAll('.select-item-checkbox:checked').forEach(cb => {
+                    selectedIds.push(cb.value);
+                });
+                if (selectedIds.length === 0) {
+                    alert('Vui lòng chọn ít nhất một sản phẩm để thanh toán!');
+                    e.preventDefault();
+                    return false;
+                }
+                document.getElementById('selectedProductIds').value = selectedIds.join(',');
+            });
         });
     </script>
 }

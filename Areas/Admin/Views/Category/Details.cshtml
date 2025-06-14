@@ -4,96 +4,649 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<div class="admin-page-header">
-    <div class="d-flex justify-content-between align-items-center">
+<style>
+    .details-header {
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+        color: white;
+        border-radius: 20px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .details-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: rotate 30s linear infinite;
+        }
+
+    @@keyframes rotate {
+        0%
+
+    {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+
+    }
+
+    .details-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .details-subtitle {
+        font-size: 1.125rem;
+        opacity: 0.9;
+        margin-bottom: 0;
+        position: relative;
+        z-index: 1;
+    }
+
+    .header-actions {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .btn-header {
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border-radius: 12px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+        .btn-header:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            color: white;
+        }
+
+    .category-info-card {
+        background: var(--surface-color);
+        border-radius: 20px;
+        padding: 2.5rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        margin-bottom: 2rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .category-info-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, var(--primary-color), #8b5cf6);
+            border-radius: 20px 20px 0 0;
+        }
+
+    .category-header {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        margin-bottom: 2rem;
+        padding-bottom: 2rem;
+        border-bottom: 2px solid var(--surface-dark);
+    }
+
+    .category-icon-large {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--primary-color), #8b5cf6);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+        font-weight: 800;
+        color: white;
+        box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+        position: relative;
+    }
+
+        .category-icon-large::after {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), #8b5cf6);
+            z-index: -1;
+            opacity: 0.3;
+            animation: pulse 2s infinite;
+        }
+
+    @@keyframes pulse {
+        0%, 100%
+
+    {
+        transform: scale(1);
+        opacity: 0.3;
+    }
+
+    50% {
+        transform: scale(1.1);
+        opacity: 0.1;
+    }
+
+    }
+
+    .category-basic-info h2 {
+        font-size: 2rem;
+        font-weight: 800;
+        color: var(--dark-color);
+        margin-bottom: 0.5rem;
+    }
+
+    .category-description {
+        font-size: 1.125rem;
+        color: var(--gray-color);
+        margin-bottom: 1rem;
+        line-height: 1.6;
+    }
+
+    .category-meta {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .meta-item {
+        background: rgba(99, 102, 241, 0.1);
+        color: var(--primary-color);
+        padding: 0.5rem 1rem;
+        border-radius: 50px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .info-section {
+        background: var(--surface-color);
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        margin-bottom: 2rem;
+        transition: all 0.3s ease;
+    }
+
+        .info-section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+
+    .section-title {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: var(--dark-color);
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid var(--surface-dark);
+    }
+
+        .section-title i {
+            color: #8b5cf6;
+            font-size: 1.75rem;
+        }
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .info-item {
+        background: var(--surface-dark);
+        border-radius: 12px;
+        padding: 1.5rem;
+        transition: all 0.3s ease;
+    }
+
+        .info-item:hover {
+            background: var(--primary-light);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+    .info-label {
+        font-weight: 600;
+        color: var(--gray-color);
+        margin-bottom: 0.5rem;
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .info-item:hover .info-label {
+        color: rgba(255, 255, 255, 0.8);
+    }
+
+    .info-value {
+        font-weight: 700;
+        color: var(--dark-color);
+        font-size: 1.125rem;
+    }
+
+    .info-item:hover .info-value {
+        color: white;
+    }
+
+    .products-table-section {
+        background: var(--surface-color);
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        margin-bottom: 2rem;
+    }
+
+    .products-table {
+        margin-bottom: 0;
+    }
+
+        .products-table thead th {
+            background: var(--surface-dark);
+            font-weight: 700;
+            color: var(--dark-color);
+            border: none;
+            padding: 1.5rem 1rem;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .products-table tbody td {
+            padding: 1.5rem 1rem;
+            vertical-align: middle;
+            border-color: var(--surface-dark);
+            transition: all 0.3s ease;
+        }
+
+        .products-table tbody tr {
+            transition: all 0.3s ease;
+        }
+
+            .products-table tbody tr:hover {
+                background-color: var(--surface-dark);
+                transform: scale(1.01);
+            }
+
+    .product-name {
+        font-weight: 600;
+        color: var(--dark-color);
+    }
+
+    .product-price {
+        font-weight: 700;
+        color: var(--secondary-color);
+    }
+
+    .btn-view-product {
+        background: rgba(59, 130, 246, 0.1);
+        color: #3b82f6;
+        border: none;
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        text-decoration: none;
+    }
+
+        .btn-view-product:hover {
+            background: #3b82f6;
+            color: white;
+            transform: scale(1.1);
+        }
+
+    .empty-products {
+        text-align: center;
+        padding: 3rem 2rem;
+        color: var(--gray-color);
+    }
+
+        .empty-products i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+    .action-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .btn-action {
+        padding: 1rem;
+        border-radius: 12px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        justify-content: center;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+    }
+
+    .btn-edit {
+        background: linear-gradient(135deg, #f59e0b, #d97706);
+        color: white;
+    }
+
+        .btn-edit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(245, 158, 11, 0.3);
+            color: white;
+        }
+
+    .btn-delete {
+        background: linear-gradient(135deg, #ef4444, #dc2626);
+        color: white;
+    }
+
+        .btn-delete:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(239, 68, 68, 0.3);
+            color: white;
+        }
+
+    .modal-content {
+        border-radius: 20px;
+        border: none;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .modal-header {
+        background: linear-gradient(135deg, #ef4444, #dc2626);
+        color: white;
+        border-radius: 20px 20px 0 0;
+        border-bottom: none;
+    }
+
+    .modal-title {
+        font-weight: 700;
+    }
+
+    .btn-close {
+        filter: brightness(0) invert(1);
+    }
+
+    .modal-body {
+        padding: 2rem;
+    }
+
+    .modal-footer {
+        border-top: none;
+        padding: 1rem 2rem 2rem;
+    }
+
+    @@media (max-width: 991px) {
+        .details-title
+
+    {
+        font-size: 2rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .category-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+
+    .category-icon-large {
+        width: 100px;
+        height: 100px;
+        font-size: 2.5rem;
+        margin: 0 auto;
+    }
+
+    .category-meta {
+        justify-content: center;
+    }
+
+    }
+
+    @@media (max-width: 768px) {
+        .details-header
+
+    {
+        padding: 1.5rem;
+    }
+
+    .details-title {
+        font-size: 1.75rem;
+    }
+
+    .category-info-card,
+    .info-section {
+        padding: 1.5rem;
+    }
+
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .header-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .btn-header {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .products-table thead th,
+    .products-table tbody td {
+        padding: 1rem 0.5rem;
+    }
+
+    }
+</style>
+
+<div class="details-header">
+    <div class="d-flex justify-content-between align-items-center flex-wrap">
         <div>
-            <h1 class="admin-page-title">
-                <i class="fas fa-folder-open me-2"></i>Chi tiết danh mục: @Model.Name
+            <h1 class="details-title">
+                <i class="fas fa-folder-open"></i>
+                Chi tiết danh mục: @Model.Name
             </h1>
-            <p class="admin-page-subtitle">Thông tin chi tiết về danh mục</p>
+            <p class="details-subtitle">Thông tin chi tiết về danh mục</p>
         </div>
-        <div>
-            <a asp-action="Index" class="btn btn-secondary me-2">
-                <i class="fas fa-arrow-left me-2"></i>Quay lại danh sách
+        <div class="header-actions">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn-header">
+                <i class="fas fa-edit"></i>
+                Chỉnh sửa
             </a>
-            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
-                <i class="fas fa-edit me-2"></i>Chỉnh sửa
+            <a asp-action="Index" class="btn-header">
+                <i class="fas fa-arrow-left"></i>
+                Quay lại danh sách
             </a>
         </div>
     </div>
 </div>
 
 <div class="row">
-    <div class="col-md-4">
-        <div class="admin-content-section">
-            <dl class="row">
-                <dt class="col-sm-4">Mã danh mục:</dt>
-                <dd class="col-sm-8">@Model.Id</dd>
+    <div class="col-lg-4">
+        <!-- Category Info Card -->
+        <div class="category-info-card">
+            <div class="category-header">
+                <div class="category-icon-large">
+                    <i class="fas fa-tag"></i>
+                </div>
+                <div class="category-basic-info">
+                    <h2>@Model.Name</h2>
+                    <div class="category-description">
+                        @if (!string.IsNullOrEmpty(Model.Description))
+                        {
+                            @Model.Description
+                        }
+                        else
+                        {
+                            <span class="text-muted">Không có mô tả</span>
+                        }
+                    </div>
+                    <div class="category-meta">
+                        <div class="meta-item">
+                            <i class="fas fa-box"></i>
+                            @Model.Products.Count sản phẩm
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-calendar"></i>
+                            @Model.CreatedAt.ToString("dd/MM/yyyy")
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                <dt class="col-sm-4">Tên danh mục:</dt>
-                <dd class="col-sm-8">@Model.Name</dd>
+        <!-- Category Details -->
+        <div class="info-section">
+            <h5 class="section-title">
+                <i class="fas fa-info-circle"></i>
+                Thông tin chi tiết
+            </h5>
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">
+                        <i class="fas fa-fingerprint"></i>
+                        Mã danh mục
+                    </div>
+                    <div class="info-value">@Model.Id</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">
+                        <i class="fas fa-tag"></i>
+                        Tên danh mục
+                    </div>
+                    <div class="info-value">@Model.Name</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">
+                        <i class="fas fa-calendar-alt"></i>
+                        Ngày tạo
+                    </div>
+                    <div class="info-value">@Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">
+                        <i class="fas fa-box"></i>
+                        Số sản phẩm
+                    </div>
+                    <div class="info-value">@Model.Products.Count</div>
+                </div>
+            </div>
+        </div>
 
-                <dt class="col-sm-4">Mô tả:</dt>
-                <dd class="col-sm-8">@Model.Description</dd>
-
-                <dt class="col-sm-4">Ngày tạo:</dt>
-                <dd class="col-sm-8">@Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</dd>
-
-                <dt class="col-sm-4">Số sản phẩm:</dt>
-                <dd class="col-sm-8">@Model.Products.Count</dd>
-            </dl>
-
-            <div class="mt-4">
-                <button type="button" class="btn btn-danger" onclick="deleteCategory(@Model.Id)">
+        <!-- Actions -->
+        <div class="info-section">
+            <h5 class="section-title">
+                <i class="fas fa-cogs"></i>
+                Thao tác
+            </h5>
+            <div class="action-buttons">
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn-action btn-edit">
+                    <i class="fas fa-edit me-2"></i>Chỉnh sửa danh mục
+                </a>
+                <button type="button" class="btn-action btn-delete" onclick="deleteCategory(@Model.Id)">
                     <i class="fas fa-trash-alt me-2"></i>Xóa danh mục
                 </button>
             </div>
         </div>
     </div>
 
-    <div class="col-md-8">
-        <div class="admin-content-section">
-            <h5 class="mb-3">
-                <i class="fas fa-box me-2"></i>Danh sách sản phẩm
+    <div class="col-lg-8">
+        <div class="info-section">
+            <h5 class="section-title">
+                <i class="fas fa-box"></i>
+                Danh sách sản phẩm
             </h5>
 
             @if (Model.Products.Any())
             {
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>Mã</th>
-                                <th>Tên sản phẩm</th>
-                                <th>Giá</th>
-                                <th>Ngày tạo</th>
-                                <th>Thao tác</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var product in Model.Products)
-                            {
+                <div class="products-table-section">
+                    <div class="table-responsive">
+                        <table class="table products-table">
+                            <thead>
                                 <tr>
-                                    <td>@product.Id</td>
-                                    <td>@product.ProductName</td>
-                                    <td>@product.Price.ToString("N0") VNĐ</td>
-                                    <td>@product.CreatedAt.ToString("dd/MM/yyyy")</td>
-                                    <td>
-                                        <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" 
-                                           class="btn btn-sm btn-info">
-                                            <i class="fas fa-eye"></i>
-                                        </a>
-                                    </td>
+                                    <th>Mã</th>
+                                    <th>Tên sản phẩm</th>
+                                    <th>Giá</th>
+                                    <th>Ngày tạo</th>
+                                    <th>Thao tác</th>
                                 </tr>
-                            }
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @foreach (var product in Model.Products)
+                                {
+                                    <tr>
+                                        <td>@product.Id</td>
+                                        <td class="product-name">@product.ProductName</td>
+                                        <td class="product-price">@product.Price.ToString("N0") VNĐ</td>
+                                        <td>@product.CreatedAt.ToString("dd/MM/yyyy")</td>
+                                        <td>
+                                            <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id"
+                                               class="btn-view-product" title="Xem chi tiết">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             }
             else
             {
-                <div class="alert alert-info">
-                    <i class="fas fa-info-circle me-2"></i>Chưa có sản phẩm nào trong danh mục này.
+                <div class="empty-products">
+                    <i class="fas fa-box-open"></i>
+                    <h5>Chưa có sản phẩm nào trong danh mục này</h5>
+                    <p>Thêm sản phẩm mới để hiển thị ở đây</p>
                 </div>
             }
         </div>
@@ -153,5 +706,45 @@
                 }
             });
         }
+
+        // Animate elements on load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate category info card
+            const categoryCard = document.querySelector('.category-info-card');
+            categoryCard.style.opacity = '0';
+            categoryCard.style.transform = 'translateY(20px)';
+            categoryCard.style.transition = 'all 0.6s ease';
+
+            setTimeout(() => {
+                categoryCard.style.opacity = '1';
+                categoryCard.style.transform = 'translateY(0)';
+            }, 100);
+
+            // Animate info sections
+            const infoSections = document.querySelectorAll('.info-section');
+            infoSections.forEach((section, index) => {
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(20px)';
+                section.style.transition = `all 0.6s ease ${0.2 + (index * 0.1)}s`;
+
+                setTimeout(() => {
+                    section.style.opacity = '1';
+                    section.style.transform = 'translateY(0)';
+                }, 300 + (index * 100));
+            });
+
+            // Animate table rows
+            const rows = document.querySelectorAll('.products-table tbody tr');
+            rows.forEach((row, index) => {
+                row.style.opacity = '0';
+                row.style.transform = 'translateY(10px)';
+                row.style.transition = `all 0.4s ease ${0.5 + (index * 0.05)}s`;
+
+                setTimeout(() => {
+                    row.style.opacity = '1';
+                    row.style.transform = 'translateY(0)';
+                }, 500 + (index * 50));
+            });
+        });
     </script>
-} 
+}
