@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using ProductManagement.Data;
 using ProductManagement.Models;
 
-namespace ProductManagement.Controllers
+namespace ProductManagement.Controllers.Api
 {
     [ApiController]
     [Route("api/[controller]")]

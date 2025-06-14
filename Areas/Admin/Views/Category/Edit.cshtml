@@ -4,64 +4,511 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<div class="admin-page-header">
-    <div class="d-flex justify-content-between align-items-center">
+<style>
+    .edit-header {
+        background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        color: white;
+        border-radius: 20px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .edit-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: rotate 25s linear infinite;
+        }
+
+    @@keyframes rotate {
+        0%
+
+    {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+
+    }
+
+    .edit-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .edit-subtitle {
+        font-size: 1.125rem;
+        opacity: 0.9;
+        margin-bottom: 0;
+        position: relative;
+        z-index: 1;
+    }
+
+    .header-actions {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .btn-header {
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border-radius: 12px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+        .btn-header:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            color: white;
+        }
+
+    .form-card {
+        background: var(--surface-color);
+        border-radius: 20px;
+        padding: 2.5rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        margin-bottom: 2rem;
+        transition: all 0.3s ease;
+    }
+
+        .form-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+
+    .form-section-title {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: var(--dark-color);
+        margin-bottom: 2rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid var(--surface-dark);
+    }
+
+        .form-section-title i {
+            color: #f59e0b;
+            font-size: 1.75rem;
+        }
+
+    .category-preview {
+        background: var(--surface-dark);
+        border-radius: 16px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+
+    .preview-icon {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #f59e0b, #d97706);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 2rem;
+        margin: 0 auto 1rem;
+        box-shadow: 0 10px 30px rgba(245, 158, 11, 0.3);
+    }
+
+    .preview-name {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--dark-color);
+        margin-bottom: 0.5rem;
+    }
+
+    .preview-description {
+        color: var(--gray-color);
+        margin-bottom: 0;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: var(--dark-color);
+        margin-bottom: 0.75rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+        .form-label i {
+            color: #f59e0b;
+            width: 16px;
+        }
+
+    .required {
+        color: var(--accent-color);
+        margin-left: 0.25rem;
+    }
+
+    .form-control {
+        border: 2px solid var(--surface-dark);
+        border-radius: 12px;
+        padding: 1rem 1.25rem;
+        font-size: 1rem;
+        background-color: var(--surface-dark);
+        color: var(--dark-color);
+        transition: all 0.3s ease;
+    }
+
+        .form-control:focus {
+            border-color: #f59e0b;
+            background-color: var(--surface-color);
+            box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.1);
+            outline: none;
+        }
+
+        .form-control::placeholder {
+            color: var(--gray-color);
+        }
+
+    textarea.form-control {
+        resize: vertical;
+        min-height: 120px;
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2rem;
+        flex-wrap: wrap;
+    }
+
+    .btn-save {
+        background: linear-gradient(135deg, #f59e0b, #d97706);
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 12px;
+        font-size: 1.125rem;
+        font-weight: 700;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        flex: 1;
+        min-width: 200px;
+    }
+
+        .btn-save::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.7s;
+        }
+
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(245, 158, 11, 0.3);
+        }
+
+            .btn-save:hover::before {
+                left: 100%;
+            }
+
+    .btn-cancel {
+        background: var(--surface-dark);
+        color: var(--dark-color);
+        border: 2px solid var(--surface-dark);
+        padding: 1rem 2rem;
+        border-radius: 12px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        flex: 1;
+        min-width: 200px;
+    }
+
+        .btn-cancel:hover {
+            background: var(--gray-color);
+            color: white;
+            border-color: var(--gray-color);
+        }
+
+    .info-card {
+        background: var(--surface-color);
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        height: fit-content;
+        position: sticky;
+        top: 2rem;
+    }
+
+    .info-title {
+        font-size: 1.25rem;
+        font-weight: 800;
+        color: var(--dark-color);
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+        .info-title i {
+            color: #f59e0b;
+        }
+
+    .alert-info {
+        background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(217, 119, 6, 0.05));
+        border-left: 4px solid #f59e0b;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .alert h6 {
+        font-weight: 700;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .alert ul {
+        margin-bottom: 0;
+        padding-left: 1.5rem;
+    }
+
+    .alert li {
+        margin-bottom: 0.5rem;
+    }
+
+    .text-danger {
+        color: var(--accent-color) !important;
+        font-size: 0.875rem;
+        margin-top: 0.5rem;
+        display: block;
+        font-weight: 500;
+    }
+
+    .category-stats {
+        background: var(--surface-dark);
+        border-radius: 16px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .stats-title {
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--dark-color);
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .stat-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.5rem;
+    }
+
+        .stat-item:last-child {
+            margin-bottom: 0;
+        }
+
+    .stat-label {
+        color: var(--gray-color);
+        font-size: 0.875rem;
+    }
+
+    .stat-value {
+        font-weight: 600;
+        color: var(--dark-color);
+    }
+
+    @@media (max-width: 991px) {
+        .info-card
+
+    {
+        position: static;
+        margin-top: 2rem;
+    }
+
+    .edit-title {
+        font-size: 2rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .btn-save,
+    .btn-cancel {
+        flex: none;
+        width: 100%;
+    }
+
+    }
+
+    @@media (max-width: 768px) {
+        .edit-header
+
+    {
+        padding: 1.5rem;
+    }
+
+    .edit-title {
+        font-size: 1.75rem;
+    }
+
+    .form-card {
+        padding: 1.5rem;
+    }
+
+    .info-card {
+        padding: 1.5rem;
+    }
+
+    .header-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .btn-header {
+        width: 100%;
+        justify-content: center;
+    }
+
+    }
+</style>
+
+<div class="edit-header">
+    <div class="d-flex justify-content-between align-items-center flex-wrap">
         <div>
-            <h1 class="admin-page-title">
-                <i class="fas fa-edit me-2"></i>Chỉnh sửa danh mục: @Model.Name
+            <h1 class="edit-title">
+                <i class="fas fa-edit"></i>
+                Chỉnh sửa danh mục: @Model.Name
             </h1>
-            <p class="admin-page-subtitle">Cập nhật thông tin danh mục</p>
+            <p class="edit-subtitle">Cập nhật thông tin danh mục</p>
         </div>
-        <div>
-            <a asp-action="Index" class="btn btn-secondary me-2">
-                <i class="fas fa-arrow-left me-2"></i>Quay lại danh sách
+        <div class="header-actions">
+            <a asp-action="Details" asp-route-id="@Model.Id" class="btn-header">
+                <i class="fas fa-info-circle"></i>
+                Xem chi tiết
             </a>
-            <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-info">
-                <i class="fas fa-info-circle me-2"></i>Xem chi tiết
+            <a asp-action="Index" class="btn-header">
+                <i class="fas fa-arrow-left"></i>
+                Quay lại danh sách
             </a>
         </div>
     </div>
 </div>
 
 <div class="row">
-    <div class="col-md-8">
-        <div class="admin-content-section">
-            <form asp-action="Edit" method="post">
+    <div class="col-lg-8">
+        <div class="form-card">
+            <!-- Category Preview -->
+            <div class="category-preview">
+                <div class="preview-icon">
+                    <i class="fas fa-tag"></i>
+                </div>
+                <div class="preview-name" id="previewName">@Model.Name</div>
+                <div class="preview-description" id="previewDescription">@(Model.Description ?? "Mô tả danh mục")</div>
+            </div>
+
+            <h5 class="form-section-title">
+                <i class="fas fa-folder-open"></i>
+                Thông tin danh mục
+            </h5>
+
+            <form asp-action="Edit" method="post" id="editCategoryForm">
                 <input type="hidden" asp-for="Id" />
 
-                <div class="mb-3">
-                    <label asp-for="Name" class="form-label">Tên danh mục *</label>
-                    <input asp-for="Name" class="form-control" />
+                <div class="form-group">
+                    <label asp-for="Name" class="form-label">
+                        <i class="fas fa-tag"></i>
+                        Tên danh mục<span class="required">*</span>
+                    </label>
+                    <input asp-for="Name" class="form-control" placeholder="Nhập tên danh mục"
+                           oninput="updatePreview()" />
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
 
-                <div class="mb-3">
-                    <label asp-for="Description" class="form-label">Mô tả</label>
-                    <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+                <div class="form-group">
+                    <label asp-for="Description" class="form-label">
+                        <i class="fas fa-align-left"></i>
+                        Mô tả
+                    </label>
+                    <textarea asp-for="Description" class="form-control" rows="4"
+                              placeholder="Nhập mô tả cho danh mục (tùy chọn)"
+                              oninput="updatePreview()"></textarea>
                     <span asp-validation-for="Description" class="text-danger"></span>
                 </div>
 
-                <div class="d-flex gap-2">
-                    <button type="submit" class="btn btn-primary">
+                <div class="form-actions">
+                    <button type="submit" class="btn-save">
                         <i class="fas fa-save me-2"></i>Cập nhật danh mục
                     </button>
-                    <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-secondary">
-                        <i class="fas fa-times me-2"></i>Hủy
+                    <a asp-action="Details" asp-route-id="@Model.Id" class="btn-cancel">
+                        <i class="fas fa-times"></i>Hủy
                     </a>
                 </div>
             </form>
         </div>
     </div>
 
-    <div class="col-md-4">
-        <div class="admin-content-section">
-            <h5 class="mb-3"><i class="fas fa-info-circle me-2"></i>Hướng dẫn</h5>
-            <div class="alert alert-info">
+    <div class="col-lg-4">
+        <div class="info-card">
+            <h5 class="info-title">
+                <i class="fas fa-info-circle"></i>
+                Hướng dẫn
+            </h5>
+
+            <div class="alert-info">
                 <h6><i class="fas fa-lightbulb me-2"></i>Lưu ý:</h6>
-                <ul class="mb-0">
+                <ul>
                     <li>Tên danh mục là bắt buộc và phải là duy nhất.</li>
                     <li>Mô tả giúp làm rõ nội dung danh mục.</li>
                     <li>Việc thay đổi tên danh mục có thể ảnh hưởng đến các sản phẩm trong danh mục.</li>
+                    <li>Thay đổi sẽ được áp dụng ngay lập tức.</li>
                 </ul>
             </div>
         </div>
@@ -72,4 +519,43 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-} 
+
+    <script>
+        function updatePreview() {
+            const name = document.querySelector('input[name="Name"]').value;
+            const description = document.querySelector('textarea[name="Description"]').value;
+
+            // Update preview name
+            const previewName = document.getElementById('previewName');
+            previewName.textContent = name || 'Tên danh mục';
+
+            // Update preview description
+            const previewDescription = document.getElementById('previewDescription');
+            previewDescription.textContent = description || 'Mô tả danh mục';
+        }
+
+        // Animate form on load
+        document.addEventListener('DOMContentLoaded', function() {
+            const formCard = document.querySelector('.form-card');
+            const infoCard = document.querySelector('.info-card');
+
+            formCard.style.opacity = '0';
+            formCard.style.transform = 'translateY(20px)';
+            formCard.style.transition = 'all 0.6s ease';
+
+            infoCard.style.opacity = '0';
+            infoCard.style.transform = 'translateY(20px)';
+            infoCard.style.transition = 'all 0.6s ease 0.2s';
+
+            setTimeout(() => {
+                formCard.style.opacity = '1';
+                formCard.style.transform = 'translateY(0)';
+            }, 100);
+
+            setTimeout(() => {
+                infoCard.style.opacity = '1';
+                infoCard.style.transform = 'translateY(0)';
+            }, 300);
+        });
+    </script>
+}

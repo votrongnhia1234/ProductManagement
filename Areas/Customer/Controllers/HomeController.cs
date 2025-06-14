@@ -73,5 +73,12 @@ namespace ProductManagement.Areas.Customer.Controllers
             // Pass the product directly to the view as the view expects a Product model
             return View(product);
         }
+
+        [HttpGet]
+        public IActionResult Search(string q)
+        {
+            // Chuyển hướng về Index với searchTerm
+            return RedirectToAction("Index", new { searchTerm = q });
+        }
     }
 }

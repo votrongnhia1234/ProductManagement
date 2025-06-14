@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using ProductManagement.Repositories;
 using ProductManagement.Areas.Admin.Models;
 using ProductManagement.Models;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
 
 namespace ProductManagement.Areas.Admin.Controllers
 {
@@ -104,40 +106,73 @@ namespace ProductManagement.Areas.Admin.Controllers
             return View(viewModel);
         }
 
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> UpdateStatus(int id, OrderStatus status, string? trackingNumber = null, string? notes = null)
+        //{
+        //    var order = await _orderRepository.GetOrderByIdAsync(id);
+        //    if (order == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var oldStatus = order.Status;
+        //    order.Status = status;
+
+        //    if (!string.IsNullOrEmpty(notes))
+        //    {
+        //        order.Notes = notes;
+        //    }
+
+        //    if (status == OrderStatus.Shipped && !string.IsNullOrEmpty(trackingNumber))
+        //    {
+        //        order.TrackingNumber = trackingNumber;
+        //        order.ShippedDate = DateTime.UtcNow;
+        //    }
+        //    else if (status == OrderStatus.Delivered)
+        //    {
+        //        order.DeliveredDate = DateTime.UtcNow;
+        //    }
+
+        //    await _orderRepository.UpdateOrderAsync(order);
+
+        //    TempData["Success"] = $"Đơn hàng đã được cập nhật từ {GetStatusText(oldStatus)} thành {GetStatusText(status)}.";
+        //    return RedirectToAction(nameof(Details), new { id });
+        //}
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UpdateStatus(int id, OrderStatus status, string? trackingNumber = null, string? notes = null)
+        public async Task<IActionResult> UpdateStatus(int id, OrderStatus status)
         {
             var order = await _orderRepository.GetOrderByIdAsync(id);
-            if (order == null)
-            {
-                return NotFound();
-            }
+            if (order == null) return NotFound();
 
-            var oldStatus = order.Status;
             order.Status = status;
 
-            if (!string.IsNullOrEmpty(notes))
+            if (status == OrderStatus.Shipped)
             {
-                order.Notes = notes;
-            }
+                // Nếu chưa có mã vận đơn thì sinh mới
+                if (string.IsNullOrEmpty(order.TrackingNumber))
+                {
+                    string newTrackingNumber;
+                    do
+                    {
+                        // Ví dụ: SHP + 8 ký tự ngẫu nhiên
+                        newTrackingNumber = "SHP" + Guid.NewGuid().ToString("N").Substring(0, 8).ToUpper();
+                    }
+                    // Đảm bảo không trùng trong database
+                    while (await _orderRepository.ExistsTrackingNumberAsync(newTrackingNumber));
 
-            if (status == OrderStatus.Shipped && !string.IsNullOrEmpty(trackingNumber))
-            {
-                order.TrackingNumber = trackingNumber;
+                    order.TrackingNumber = newTrackingNumber;
+                }
                 order.ShippedDate = DateTime.UtcNow;
-            }
-            else if (status == OrderStatus.Delivered)
-            {
-                order.DeliveredDate = DateTime.UtcNow;
             }
 
             await _orderRepository.UpdateOrderAsync(order);
 
-            TempData["Success"] = $"Đơn hàng đã được cập nhật từ {GetStatusText(oldStatus)} thành {GetStatusText(status)}.";
-            return RedirectToAction(nameof(Details), new { id });
+            TempData["Success"] = "Cập nhật trạng thái thành công!";
+            return RedirectToAction("Details", new { id });
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
@@ -162,21 +197,50 @@ namespace ProductManagement.Areas.Admin.Controllers
 
         public async Task<IActionResult> Export(string searchTerm, OrderStatus? statusFilter)
         {
-            var orders = await _orderRepository.GetOrdersAsync(searchTerm, statusFilter, 1, int.MaxValue);
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
-            // Simple CSV export
-            var csv = new System.Text.StringBuilder();
-            csv.AppendLine("ID,Ngày đặt,Khách hàng,Email,Tổng tiền,Trạng thái,Địa chỉ giao hàng");
+            var orders = await _orderRepository.GetOrdersForAdminAsync(searchTerm, statusFilter);
 
-            foreach (var order in orders)
+            using (var package = new ExcelPackage())
             {
-                csv.AppendLine($"{order.Id},{order.OrderDate:dd/MM/yyyy},{order.User.FullName},{order.User.Email},{order.TotalAmount},{GetStatusText(order.Status)},{order.ShippingAddress}");
-            }
+                var ws = package.Workbook.Worksheets.Add("Orders");
 
-            var bytes = System.Text.Encoding.UTF8.GetBytes(csv.ToString());
-            return File(bytes, "text/csv", $"orders_{DateTime.Now:yyyyMMdd}.csv");
+                // Header
+                ws.Cells[1, 1].Value = "Mã ĐH";
+                ws.Cells[1, 2].Value = "Khách hàng";
+                ws.Cells[1, 3].Value = "Email";
+                ws.Cells[1, 4].Value = "Ngày đặt";
+                ws.Cells[1, 5].Value = "Tổng tiền";
+                ws.Cells[1, 6].Value = "Trạng thái";
+                ws.Cells[1, 7].Value = "Mã vận đơn";
+
+                // Data
+                int row = 2;
+                foreach (var order in orders)
+                {
+                    ws.Cells[row, 1].Value = order.Id;
+                    ws.Cells[row, 2].Value = order.CustomerName;
+                    ws.Cells[row, 3].Value = order.CustomerEmail;
+                    ws.Cells[row, 4].Value = order.OrderDate.ToString("dd/MM/yyyy HH:mm");
+                    ws.Cells[row, 5].Value = order.TotalAmount;
+                    ws.Cells[row, 6].Value = GetStatusText(order.Status);
+                    ws.Cells[row, 7].Value = order.TrackingNumber;
+                    row++;
+                }
+
+                ws.Cells[1, 1, row - 1, 7].AutoFitColumns();
+                ws.Cells[1, 1, 1, 7].Style.Font.Bold = true;
+
+                var stream = new MemoryStream();
+                package.SaveAs(stream);
+                stream.Position = 0;
+
+                string fileName = $"orders_{DateTime.Now:yyyyMMddHHmmss}.xlsx";
+                return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+            }
         }
 
+        // Hàm chuyển trạng thái sang tiếng Việt (có thể dùng chung với view)
         private string GetStatusText(OrderStatus status)
         {
             return status switch

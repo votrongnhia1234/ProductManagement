@@ -4,114 +4,609 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<div class="admin-page-header mb-4">
-    <div class="d-flex justify-content-between align-items-center">
+<style>
+    .create-product-header {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        color: white;
+        border-radius: 20px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .create-product-header::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+        animation: rotate 30s linear infinite;
+    }
+
+    @@keyframes rotate {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    .create-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .create-subtitle {
+        font-size: 1.125rem;
+        opacity: 0.9;
+        margin-bottom: 0;
+        position: relative;
+        z-index: 1;
+    }
+
+    .btn-back {
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border-radius: 12px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .btn-back:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: translateY(-2px);
+        color: white;
+    }
+
+    .form-card {
+        background: var(--surface-color);
+        border-radius: 20px;
+        padding: 2.5rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        margin-bottom: 2rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .form-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 6px;
+        background: linear-gradient(90deg, #10b981, #059669);
+        border-radius: 20px 20px 0 0;
+    }
+
+    .form-section-title {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: var(--dark-color);
+        margin-bottom: 2rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid var(--surface-dark);
+    }
+
+    .form-section-title i {
+        color: #10b981;
+        font-size: 1.75rem;
+    }
+
+    .form-group {
+        margin-bottom: 2rem;
+    }
+
+    .form-label {
+        font-weight: 700;
+        color: var(--dark-color);
+        margin-bottom: 0.75rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 1rem;
+    }
+
+    .form-label i {
+        color: #10b981;
+        font-size: 1.125rem;
+    }
+
+    .required-asterisk {
+        color: #ef4444;
+        font-weight: 800;
+    }
+
+    .form-control,
+    .form-select {
+        border: 2px solid var(--surface-dark);
+        border-radius: 12px;
+        padding: 1rem 1.25rem;
+        background-color: var(--surface-dark);
+        color: var(--dark-color);
+        transition: all 0.3s ease;
+        font-size: 1rem;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #10b981;
+        background-color: var(--surface-color);
+        box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+        outline: none;
+        transform: translateY(-1px);
+    }
+
+    .form-control::placeholder {
+        color: var(--gray-color);
+        opacity: 0.7;
+    }
+
+    .input-group {
+        position: relative;
+    }
+
+    .input-group-text {
+        background: linear-gradient(135deg, #10b981, #059669);
+        color: white;
+        border: 2px solid #10b981;
+        border-left: none;
+        border-radius: 0 12px 12px 0;
+        font-weight: 600;
+        padding: 1rem 1.25rem;
+    }
+
+    .input-group .form-control {
+        border-right: none;
+        border-radius: 12px 0 0 12px;
+    }
+
+    .input-group .form-control:focus {
+        border-color: #10b981;
+        box-shadow: none;
+    }
+
+    .input-group .form-control:focus+.input-group-text {
+        border-color: #10b981;
+    }
+
+    textarea.form-control {
+        resize: vertical;
+        min-height: 120px;
+    }
+
+    .file-upload-container {
+        position: relative;
+    }
+
+    .file-upload-wrapper {
+        position: relative;
+        display: inline-block;
+        width: 100%;
+    }
+
+    .file-upload-input {
+        position: absolute;
+        opacity: 0;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+    }
+
+    .file-upload-label {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        padding: 2rem;
+        border: 2px dashed var(--surface-dark);
+        border-radius: 16px;
+        background: var(--surface-dark);
+        color: var(--gray-color);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-align: center;
+    }
+
+    .file-upload-label:hover {
+        border-color: #10b981;
+        background: rgba(16, 185, 129, 0.1);
+        color: #10b981;
+        transform: translateY(-2px);
+    }
+
+    .file-upload-icon {
+        font-size: 2rem;
+        color: #10b981;
+    }
+
+    .file-upload-text {
+        font-weight: 600;
+    }
+
+    .file-upload-hint {
+        font-size: 0.875rem;
+        color: var(--gray-color);
+        margin-top: 0.5rem;
+    }
+
+    .image-preview-container {
+        margin-top: 1.5rem;
+        padding: 1.5rem;
+        background: var(--surface-dark);
+        border-radius: 16px;
+        text-align: center;
+        display: none;
+    }
+
+    .image-preview {
+        max-width: 100%;
+        max-height: 300px;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+    }
+
+    .image-preview:hover {
+        transform: scale(1.02);
+    }
+
+    .preview-label {
+        font-weight: 600;
+        color: var(--dark-color);
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 3rem;
+        padding-top: 2rem;
+        border-top: 2px solid var(--surface-dark);
+    }
+
+    .btn-create {
+        background: linear-gradient(135deg, #10b981, #059669);
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        flex: 1;
+        justify-content: center;
+    }
+
+    .btn-create:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+    }
+
+    .btn-cancel {
+        background: var(--surface-dark);
+        color: var(--gray-color);
+        border: 2px solid var(--surface-dark);
+        padding: 1rem 2rem;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        justify-content: center;
+    }
+
+    .btn-cancel:hover {
+        background: var(--gray-color);
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    .guide-card {
+        background: var(--surface-color);
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        height: fit-content;
+        position: sticky;
+        top: 2rem;
+    }
+
+    .guide-title {
+        font-size: 1.25rem;
+        font-weight: 800;
+        color: var(--dark-color);
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .guide-title i {
+        color: #3b82f6;
+    }
+
+    .guide-section {
+        margin-bottom: 1.5rem;
+    }
+
+    .guide-section:last-child {
+        margin-bottom: 0;
+    }
+
+    .guide-alert {
+        background: rgba(59, 130, 246, 0.1);
+        border-left: 4px solid #3b82f6;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .guide-alert.warning {
+        background: rgba(245, 158, 11, 0.1);
+        border-left-color: #f59e0b;
+    }
+
+    .guide-alert h6 {
+        font-weight: 700;
+        color: var(--dark-color);
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .guide-alert.warning h6 {
+        color: #d97706;
+    }
+
+    .guide-alert ul {
+        margin-bottom: 0;
+        padding-left: 1.5rem;
+    }
+
+    .guide-alert li {
+        color: var(--gray-color);
+        margin-bottom: 0.5rem;
+        line-height: 1.5;
+    }
+
+    .text-danger {
+        color: #ef4444 !important;
+        font-weight: 600;
+        font-size: 0.875rem;
+        margin-top: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .text-danger::before {
+        content: '\f071';
+        font-family: 'Font Awesome 5 Free';
+        font-weight: 900;
+    }
+
+    @@media (max-width: 991px) {
+        .create-title {
+            font-size: 2rem;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+
+        .form-actions {
+            flex-direction: column;
+        }
+
+        .guide-card {
+            position: static;
+            margin-top: 2rem;
+        }
+    }
+
+    @@media (max-width: 768px) {
+        .create-product-header {
+            padding: 1.5rem;
+        }
+
+        .create-title {
+            font-size: 1.75rem;
+        }
+
+        .form-card,
+        .guide-card {
+            padding: 1.5rem;
+        }
+
+        .form-control,
+        .form-select {
+            padding: 0.875rem 1rem;
+        }
+    }
+</style>
+
+<div class="create-product-header">
+    <div class="d-flex justify-content-between align-items-start flex-wrap">
         <div>
-            <h1 class="admin-page-title">
-                <i class="fas fa-plus-circle me-2"></i>Thêm sản phẩm mới
+            <h1 class="create-title">
+                <i class="fas fa-plus-circle"></i>
+                Thêm sản phẩm mới
             </h1>
-            <p class="admin-page-subtitle">Tạo sản phẩm mới cho cửa hàng</p>
+            <p class="create-subtitle">Tạo sản phẩm mới cho cửa hàng của bạn</p>
         </div>
-        <div class="ms-auto">
-            <a asp-action="Index" class="btn btn-secondary">
-                <i class="fas fa-arrow-left me-2"></i>Quay lại
-            </a>
-        </div>
+        <a asp-action="Index" class="btn-back">
+            <i class="fas fa-arrow-left"></i>
+            Quay lại danh sách
+        </a>
     </div>
 </div>
 
-<div class="row g-4">
-    <div class="col-md-8">
-        <div class="card shadow-sm animated-card">
-            <div class="card-header bg-light">
-                <h5 class="mb-0 card-title-custom"><i class="fas fa-pencil-alt me-2 text-primary"></i>Nhập thông tin sản
-                    phẩm</h5>
-            </div>
-            <div class="card-body p-4">
-                <form asp-action="Create" method="post" enctype="multipart/form-data">
-                    <div class="mb-3">
-                        <label asp-for="ProductName" class="form-label fw-semibold">Tên sản phẩm *</label>
-                        <input asp-for="ProductName" class="form-control" />
-                        <span asp-validation-for="ProductName" class="text-danger"></span>
-                    </div>
+<div class="row">
+    <div class="col-lg-8">
+        <div class="form-card">
+            <h2 class="form-section-title">
+                <i class="fas fa-edit"></i>
+                Thông tin sản phẩm
+            </h2>
 
-                    <div class="mb-3">
-                        <label asp-for="Description" class="form-label fw-semibold">Mô tả</label>
-                        <textarea asp-for="Description" class="form-control" rows="4"></textarea>
-                        <span asp-validation-for="Description" class="text-danger"></span>
-                    </div>
+            <form asp-action="Create" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label asp-for="ProductName" class="form-label">
+                        <i class="fas fa-tag"></i>
+                        Tên sản phẩm <span class="required-asterisk">*</span>
+                    </label>
+                    <input asp-for="ProductName" class="form-control" placeholder="Nhập tên sản phẩm..." />
+                    <span asp-validation-for="ProductName" class="text-danger"></span>
+                </div>
 
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label asp-for="Price" class="form-label fw-semibold">Giá *</label>
-                                <div class="input-group">
-                                    <input asp-for="Price" class="form-control" type="number" step="0.01" />
-                                    <span class="input-group-text">VNĐ</span>
+                <div class="form-group">
+                    <label asp-for="Description" class="form-label">
+                        <i class="fas fa-align-left"></i>
+                        Mô tả sản phẩm
+                    </label>
+                    <textarea asp-for="Description" class="form-control"
+                        placeholder="Nhập mô tả chi tiết về sản phẩm..."></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="Price" class="form-label">
+                                <i class="fas fa-dollar-sign"></i>
+                                Giá bán <span class="required-asterisk">*</span>
+                            </label>
+                            <div class="input-group">
+                                <input asp-for="Price" class="form-control" type="number" step="1000" min="0"
+                                    placeholder="0" />
+                                <span class="input-group-text">VNĐ</span>
+                            </div>
+                            <span asp-validation-for="Price" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="CategoryId" class="form-label">
+                                <i class="fas fa-folder"></i>
+                                Danh mục <span class="required-asterisk">*</span>
+                            </label>
+                            <select asp-for="CategoryId" asp-items="Model.Categories" class="form-select">
+                                <option value="">-- Chọn danh mục sản phẩm --</option>
+                            </select>
+                            <span asp-validation-for="CategoryId" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-image"></i>
+                        Hình ảnh sản phẩm
+                    </label>
+                    <div class="file-upload-container">
+                        <div class="file-upload-wrapper">
+                            <input asp-for="ImageFile" class="file-upload-input" type="file" accept="image/*"
+                                id="imageUpload" />
+                            <label for="imageUpload" class="file-upload-label">
+                                <i class="fas fa-cloud-upload-alt file-upload-icon"></i>
+                                <div>
+                                    <div class="file-upload-text">Nhấp để chọn hình ảnh</div>
+                                    <div class="file-upload-hint">hoặc kéo thả file vào đây</div>
                                 </div>
-                                <span asp-validation-for="Price" class="text-danger"></span>
-                            </div>
+                            </label>
                         </div>
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label asp-for="CategoryId" class="form-label fw-semibold">Danh mục *</label>
-                                <select asp-for="CategoryId" asp-items="Model.Categories" class="form-select">
-                                    <option value="">-- Chọn danh mục --</option>
-                                </select>
-                                <span asp-validation-for="CategoryId" class="text-danger"></span>
-                            </div>
+                        <div class="file-upload-hint">
+                            Định dạng: JPG, PNG, GIF. Kích thước tối đa: 5MB
                         </div>
-                    </div>
-
-                    <div class="mb-4">
-                        <label asp-for="ImageFile" class="form-label fw-semibold">Hình ảnh</label>
-                        <input asp-for="ImageFile" class="form-control" type="file" accept="image/*" id="imageUpload" />
-                        <div class="form-text">Chọn file ảnh (JPG, PNG, GIF). Tối đa 5MB.</div>
                         <span asp-validation-for="ImageFile" class="text-danger"></span>
-                        <div id="imagePreviewContainer" class="mt-3" style="max-width: 200px; display: none;">
-                            <img id="imagePreview" class="img-thumbnail rounded" src="#" alt="Xem trước ảnh"
-                                style="width: 100%; height: auto; object-fit: cover;" />
+
+                        <div id="imagePreviewContainer" class="image-preview-container">
+                            <div class="preview-label">
+                                <i class="fas fa-eye"></i>
+                                Xem trước hình ảnh
+                            </div>
+                            <img id="imagePreview" class="image-preview" src="#" alt="Xem trước ảnh" />
                         </div>
                     </div>
+                </div>
 
-                    <div class="d-flex gap-2 mt-4">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-save me-2"></i>Tạo sản phẩm
-                        </button>
-                        <a asp-action="Index" class="btn btn-outline-secondary">
-                            <i class="fas fa-times me-2"></i>Hủy
-                        </a>
-                    </div>
-                </form>
-            </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-create">
+                        <i class="fas fa-save"></i>
+                        Tạo sản phẩm
+                    </button>
+                    <a asp-action="Index" class="btn-cancel">
+                        <i class="fas fa-times"></i>
+                        Hủy bỏ
+                    </a>
+                </div>
+            </form>
         </div>
     </div>
 
-    <div class="col-md-4">
-        <div class="card shadow-sm animated-card" style="animation-delay: 0.1s;">
-            <div class="card-header bg-light">
-                <h5 class="mb-0 card-title-custom"><i class="fas fa-info-circle me-2 text-info"></i>Hướng dẫn</h5>
-            </div>
-            <div class="card-body">
-                <div class="alert alert-info alert-dismissible fade show" role="alert">
-                    <h6><i class="fas fa-lightbulb me-2"></i>Lưu ý:</h6>
-                    <ul class="mb-0 ps-3">
-                        <li>Tên sản phẩm nên rõ ràng, dễ hiểu.</li>
-                        <li>Mô tả chi tiết giúp khách hàng hiểu rõ sản phẩm.</li>
-                        <li>Giá phải lớn hơn 0.</li>
-                        <li>Hình ảnh nên có chất lượng tốt.</li>
-                    </ul>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
+    <div class="col-lg-4">
+        <div class="guide-card">
+            <h3 class="guide-title">
+                <i class="fas fa-info-circle"></i>
+                Hướng dẫn
+            </h3>
 
-                <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                    <h6><i class="fas fa-exclamation-triangle me-2"></i>Yêu cầu hình ảnh:</h6>
-                    <ul class="mb-0 ps-3">
-                        <li>Định dạng: JPG, PNG, GIF.</li>
-                        <li>Kích thước tối đa: 5MB.</li>
-                        <li>Tỷ lệ khuyến nghị: 1:1 hoặc 4:3.</li>
+            <div class="guide-section">
+                <div class="guide-alert">
+                    <h6><i class="fas fa-lightbulb"></i>Lưu ý quan trọng</h6>
+                    <ul>
+                        <li>Tên sản phẩm nên rõ ràng, dễ hiểu và thu hút</li>
+                        <li>Mô tả chi tiết giúp khách hàng hiểu rõ sản phẩm</li>
+                        <li>Giá bán phải lớn hơn 0 và hợp lý</li>
+                        <li>Chọn đúng danh mục để dễ tìm kiếm</li>
                     </ul>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+
+            <div class="guide-section">
+                <div class="guide-alert warning">
+                    <h6><i class="fas fa-camera"></i>Yêu cầu hình ảnh</h6>
+                    <ul>
+                        <li>Định dạng: JPG, PNG, GIF</li>
+                        <li>Kích thước tối đa: 5MB</li>
+                        <li>Tỷ lệ khuyến nghị: 1:1 hoặc 4:3</li>
+                        <li>Hình ảnh nên có chất lượng cao, rõ nét</li>
+                        <li>Nền trắng hoặc trong suốt được ưu tiên</li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -122,56 +617,140 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-    <style>
-        .card-title-custom {
-            font-weight: 600;
-            font-size: 1.1rem;
-        }
-
-        .animated-card {
-            animation: fadeInUp 0.6s ease-out forwards;
-            opacity: 0;
-        }
-
-        @@keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Optional: Add a subtle focus style to inputs */
-        .form-control:focus,
-        .form-select:focus {
-            border-color: var(--primary-light, #818cf8);
-            box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.25);
-            /* Corresponds to --primary-color */
-        }
-    </style>
-
     <script>
-        // Preview image before upload
+        // Animate elements on load
+        document.addEventListener('DOMContentLoaded', function () {
+            // Animate form card
+            const formCard = document.querySelector('.form-card');
+            formCard.style.opacity = '0';
+            formCard.style.transform = 'translateY(20px)';
+            formCard.style.transition = 'all 0.6s ease';
+
+            setTimeout(() => {
+                formCard.style.opacity = '1';
+                formCard.style.transform = 'translateY(0)';
+            }, 100);
+
+            // Animate guide card
+            const guideCard = document.querySelector('.guide-card');
+            guideCard.style.opacity = '0';
+            guideCard.style.transform = 'translateY(20px)';
+            guideCard.style.transition = 'all 0.6s ease 0.2s';
+
+            setTimeout(() => {
+                guideCard.style.opacity = '1';
+                guideCard.style.transform = 'translateY(0)';
+            }, 300);
+        });
+
+        // Image preview functionality
         document.getElementById('imageUpload').addEventListener('change', function (e) {
             const file = e.target.files[0];
             const reader = new FileReader();
             const preview = document.getElementById('imagePreview');
             const previewContainer = document.getElementById('imagePreviewContainer');
+            const uploadLabel = document.querySelector('.file-upload-label');
 
             if (file) {
+                // Validate file size (5MB)
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('File quá lớn! Vui lòng chọn file nhỏ hơn 5MB.');
+                    this.value = '';
+                    return;
+                }
+
+                // Validate file type
+                const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+                if (!allowedTypes.includes(file.type)) {
+                    alert('Định dạng file không được hỗ trợ! Vui lòng chọn file JPG, PNG hoặc GIF.');
+                    this.value = '';
+                    return;
+                }
+
                 reader.onload = function (e) {
                     preview.src = e.target.result;
                     previewContainer.style.display = 'block';
+
+                    // Update upload label
+                    uploadLabel.innerHTML = `
+                            <i class="fas fa-check-circle file-upload-icon" style="color: #10b981;"></i>
+                            <div>
+                                <div class="file-upload-text" style="color: #10b981;">Đã chọn: ${file.name}</div>
+                                <div class="file-upload-hint">Nhấp để thay đổi hình ảnh</div>
+                            </div>
+                        `;
+                    uploadLabel.style.borderColor = '#10b981';
+                    uploadLabel.style.background = 'rgba(16, 185, 129, 0.1)';
                 };
                 reader.readAsDataURL(file);
             } else {
                 preview.src = '#';
                 previewContainer.style.display = 'none';
+
+                // Reset upload label
+                uploadLabel.innerHTML = `
+                        <i class="fas fa-cloud-upload-alt file-upload-icon"></i>
+                        <div>
+                            <div class="file-upload-text">Nhấp để chọn hình ảnh</div>
+                            <div class="file-upload-hint">hoặc kéo thả file vào đây</div>
+                        </div>
+                    `;
+                uploadLabel.style.borderColor = '';
+                uploadLabel.style.background = '';
             }
+        });
+
+        // Drag and drop functionality
+        const uploadLabel = document.querySelector('.file-upload-label');
+        const fileInput = document.getElementById('imageUpload');
+
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            uploadLabel.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            uploadLabel.addEventListener(eventName, highlight, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            uploadLabel.addEventListener(eventName, unhighlight, false);
+        });
+
+        function highlight(e) {
+            uploadLabel.style.borderColor = '#10b981';
+            uploadLabel.style.background = 'rgba(16, 185, 129, 0.1)';
+            uploadLabel.style.transform = 'scale(1.02)';
+        }
+
+        function unhighlight(e) {
+            uploadLabel.style.borderColor = '';
+            uploadLabel.style.background = '';
+            uploadLabel.style.transform = '';
+        }
+
+        uploadLabel.addEventListener('drop', handleDrop, false);
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+
+            if (files.length > 0) {
+                fileInput.files = files;
+                fileInput.dispatchEvent(new Event('change'));
+            }
+        }
+
+        // Form validation enhancement
+        const form = document.querySelector('form');
+        form.addEventListener('submit', function (e) {
+            const submitBtn = document.querySelector('.btn-create');
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang tạo sản phẩm...';
+            submitBtn.disabled = true;
         });
     </script>
 }

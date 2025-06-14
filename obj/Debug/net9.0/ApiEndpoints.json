@@ -10,7 +10,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ProductManagement.Controllers.ProductController",
+    "ContainingType": "ProductManagement.Controllers.Api.ProductController",
     "Method": "GetProducts",
     "RelativePath": "api/Product",
     "HttpMethod": "GET",
@@ -30,7 +30,7 @@
     ]
   },
   {
-    "ContainingType": "ProductManagement.Controllers.ProductController",
+    "ContainingType": "ProductManagement.Controllers.Api.ProductController",
     "Method": "CreateProduct",
     "RelativePath": "api/Product",
     "HttpMethod": "POST",
@@ -56,7 +56,7 @@
     ]
   },
   {
-    "ContainingType": "ProductManagement.Controllers.ProductController",
+    "ContainingType": "ProductManagement.Controllers.Api.ProductController",
     "Method": "GetProduct",
     "RelativePath": "api/Product/{id}",
     "HttpMethod": "GET",
@@ -82,7 +82,7 @@
     ]
   },
   {
-    "ContainingType": "ProductManagement.Controllers.ProductController",
+    "ContainingType": "ProductManagement.Controllers.Api.ProductController",
     "Method": "UpdateProduct",
     "RelativePath": "api/Product/{id}",
     "HttpMethod": "PUT",
@@ -103,7 +103,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ProductManagement.Controllers.ProductController",
+    "ContainingType": "ProductManagement.Controllers.Api.ProductController",
     "Method": "DeleteProduct",
     "RelativePath": "api/Product/{id}",
     "HttpMethod": "DELETE",

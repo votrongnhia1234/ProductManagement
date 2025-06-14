@@ -1,6 +1,7 @@
 wwwroot\css\account.css
 wwwroot\css\admin.css
 wwwroot\css\customer.css
+wwwroot\css\site.css
 wwwroot\favicon.ico
 wwwroot\images\products\2501153f-9b5a-4bfc-a9f0-1e23a83d3bda_Screenshot 2024-07-24 141705.png
 wwwroot\images\products\337710b6-ae9a-49ce-96cc-cafad05bfd76_Screenshot 2024-07-24 141705.png
@@ -67,9 +68,16 @@ wwwroot\lib\jquery\dist\jquery.slim.js
 wwwroot\lib\jquery\dist\jquery.slim.min.js
 wwwroot\lib\jquery\dist\jquery.slim.min.map
 wwwroot\lib\jquery\LICENSE.txt
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\css\customer.css
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\favicon.ico
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\css\account.css
 D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\css\admin.css
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\css\customer.css
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\js\admin.js
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\css\site.css
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\jquery\dist\jquery.min.map
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\jquery\dist\jquery.slim.js
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\jquery\LICENSE.txt
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\favicon.ico
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\js\customer.js
 D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
 D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map
 D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css
@@ -120,15 +128,9 @@ D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\jquery-validation-unobtru
 D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\jquery-validation\dist\additional-methods.js
 D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\jquery-validation\dist\additional-methods.min.js
 D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\jquery-validation\dist\jquery.validate.js
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\jquery\dist\jquery.slim.min.map
 D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\jquery-validation\dist\jquery.validate.min.js
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\jquery\dist\jquery.slim.min.js
 D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\jquery-validation\LICENSE.md
 D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\jquery\dist\jquery.js
 D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\jquery\dist\jquery.min.js
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\jquery\dist\jquery.min.map
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\jquery\dist\jquery.slim.js
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\jquery\dist\jquery.slim.min.js
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\jquery\dist\jquery.slim.min.map
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\jquery\LICENSE.txt
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\js\admin.js
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\js\customer.js
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\css\account.css

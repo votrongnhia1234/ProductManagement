@@ -1,7 +1,7 @@
 @model ProductManagement.Areas.Customer.Models.CheckoutViewModel
 @{
     ViewData["Title"] = "Thanh toán";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Areas/Customer/Views/Shared/_CustomerLayout.cshtml";
 }
 
 <style>
@@ -10,7 +10,7 @@
         min-height: 80vh;
         padding: 2rem 0;
     }
-    
+
     .checkout-header {
         background: linear-gradient(135deg, var(--secondary-color) 0%, #059669 100%);
         color: white;
@@ -20,7 +20,7 @@
         position: relative;
         overflow: hidden;
     }
-    
+
     .checkout-header::before {
         content: '';
         position: absolute;
@@ -28,10 +28,10 @@
         right: -50%;
         width: 200%;
         height: 200%;
-        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
         animation: rotate 25s linear infinite;
     }
-    
+
     .checkout-title {
         font-size: 2.5rem;
         font-weight: 800;
@@ -39,7 +39,7 @@
         position: relative;
         z-index: 1;
     }
-    
+
     .checkout-subtitle {
         font-size: 1.125rem;
         opacity: 0.9;
@@ -47,7 +47,7 @@
         position: relative;
         z-index: 1;
     }
-    
+
     .progress-steps {
         display: flex;
         justify-content: center;
@@ -57,7 +57,7 @@
         padding: 1.5rem;
         box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
     }
-    
+
     .step {
         display: flex;
         align-items: center;
@@ -67,21 +67,21 @@
         font-weight: 600;
         transition: all 0.3s ease;
     }
-    
+
     .step.active {
         background: linear-gradient(135deg, var(--secondary-color), #059669);
         color: white;
     }
-    
+
     .step.completed {
         background: var(--surface-dark);
         color: var(--gray-color);
     }
-    
+
     .step i {
         font-size: 1.25rem;
     }
-    
+
     .shipping-card {
         background: var(--surface-color);
         border-radius: 20px;
@@ -90,12 +90,12 @@
         margin-bottom: 2rem;
         transition: all 0.3s ease;
     }
-    
+
     .shipping-card:hover {
         transform: translateY(-2px);
         box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
     }
-    
+
     .card-title {
         font-size: 1.5rem;
         font-weight: 800;
@@ -107,16 +107,16 @@
         padding-bottom: 1rem;
         border-bottom: 2px solid var(--surface-dark);
     }
-    
+
     .card-title i {
         color: var(--secondary-color);
         font-size: 1.75rem;
     }
-    
+
     .form-group {
         margin-bottom: 1.5rem;
     }
-    
+
     .form-label {
         font-weight: 600;
         color: var(--dark-color);
@@ -125,11 +125,11 @@
         align-items: center;
         gap: 0.5rem;
     }
-    
+
     .form-label i {
         color: var(--secondary-color);
     }
-    
+
     .form-control {
         border: 2px solid var(--surface-dark);
         border-radius: 12px;
@@ -139,18 +139,18 @@
         color: var(--dark-color);
         transition: all 0.3s ease;
     }
-    
+
     .form-control:focus {
         border-color: var(--secondary-color);
         background-color: var(--surface-color);
         box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
         outline: none;
     }
-    
+
     .form-control::placeholder {
         color: var(--gray-color);
     }
-    
+
     .order-summary-card {
         background: var(--surface-color);
         border-radius: 20px;
@@ -160,7 +160,7 @@
         top: 2rem;
         height: fit-content;
     }
-    
+
     .summary-title {
         font-size: 1.5rem;
         font-weight: 800;
@@ -172,11 +172,11 @@
         padding-bottom: 1rem;
         border-bottom: 2px solid var(--surface-dark);
     }
-    
+
     .summary-title i {
         color: var(--secondary-color);
     }
-    
+
     .order-item {
         display: flex;
         justify-content: space-between;
@@ -185,45 +185,45 @@
         border-bottom: 1px solid var(--surface-dark);
         transition: all 0.3s ease;
     }
-    
+
     .order-item:last-child {
         border-bottom: none;
     }
-    
+
     .order-item:hover {
         background: var(--surface-dark);
         margin: 0 -1rem;
         padding: 1rem;
         border-radius: 12px;
     }
-    
+
     .item-details {
         flex: 1;
     }
-    
+
     .item-name {
         font-weight: 600;
         color: var(--dark-color);
         margin-bottom: 0.25rem;
     }
-    
+
     .item-quantity {
         font-size: 0.875rem;
         color: var(--gray-color);
     }
-    
+
     .item-price {
         font-weight: 700;
         color: var(--secondary-color);
         font-size: 1.125rem;
     }
-    
+
     .total-section {
         margin-top: 1.5rem;
         padding-top: 1.5rem;
         border-top: 2px solid var(--surface-dark);
     }
-    
+
     .total-row {
         display: flex;
         justify-content: space-between;
@@ -231,7 +231,7 @@
         margin-bottom: 0.75rem;
         font-weight: 500;
     }
-    
+
     .total-row.final {
         font-size: 1.5rem;
         font-weight: 800;
@@ -239,13 +239,13 @@
         padding-top: 1rem;
         border-top: 1px solid var(--surface-dark);
     }
-    
+
     .total-row.final .amount {
         background: linear-gradient(135deg, var(--secondary-color), #059669);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
     }
-    
+
     .confirm-btn {
         background: linear-gradient(135deg, var(--secondary-color), #059669);
         color: white;
@@ -260,7 +260,7 @@
         position: relative;
         overflow: hidden;
     }
-    
+
     .confirm-btn::before {
         content: '';
         position: absolute;
@@ -271,16 +271,16 @@
         background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
         transition: left 0.7s;
     }
-    
+
     .confirm-btn:hover {
         transform: translateY(-2px);
         box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
     }
-    
+
     .confirm-btn:hover::before {
         left: 100%;
     }
-    
+
     .error-alert {
         background: linear-gradient(135deg, #fee2e2, #fecaca);
         border-left: 4px solid var(--accent-color);
@@ -291,7 +291,7 @@
         font-weight: 500;
         animation: shake 0.5s ease-in-out;
     }
-    
+
     .security-info {
         background: var(--surface-dark);
         border-radius: 12px;
@@ -299,58 +299,72 @@
         margin-top: 1.5rem;
         text-align: center;
     }
-    
+
     .security-info i {
         color: var(--secondary-color);
         font-size: 2rem;
         margin-bottom: 0.5rem;
     }
-    
+
     .security-info p {
         color: var(--gray-color);
         margin-bottom: 0;
         font-size: 0.875rem;
     }
-    
+
     @@keyframes shake {
-        0%, 20%, 40%, 60%, 80% { transform: translateX(0); }
-        10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+
+        0%,
+        20%,
+        40%,
+        60%,
+        80% {
+            transform: translateX(0);
+        }
+
+        10%,
+        30%,
+        50%,
+        70%,
+        90% {
+            transform: translateX(-5px);
+        }
     }
-    
+
     @@media (max-width: 991px) {
         .order-summary-card {
             position: static;
             margin-top: 2rem;
         }
-        
+
         .progress-steps {
             flex-direction: column;
             gap: 0.5rem;
         }
-        
+
         .checkout-title {
             font-size: 2rem;
         }
     }
-    
+
     @@media (max-width: 768px) {
         .checkout-container {
             padding: 1rem 0;
         }
-        
+
         .checkout-header {
             padding: 1.5rem;
         }
-        
+
         .checkout-title {
             font-size: 1.75rem;
         }
-        
+
         .shipping-card,
         .order-summary-card {
             padding: 1.5rem;
         }
-        
+
         .step {
             padding: 0.5rem 1rem;
             font-size: 0.875rem;
@@ -398,8 +412,8 @@
                         <i class="fas fa-truck"></i>
                         Thông tin giao hàng
                     </h5>
-                    
-                    <form asp-action="Checkout" method="post">
+
+                    <form asp-action="Checkout" method="post" id="checkout-form">
                         <div asp-validation-summary="All" class="error-alert"></div>
 
                         <div class="form-group">
@@ -407,8 +421,8 @@
                                 <i class="fas fa-map-marker-alt"></i>
                                 Địa chỉ nhận hàng *
                             </label>
-                            <textarea asp-for="ShippingAddress" class="form-control" rows="4" 
-                                      placeholder="Nhập địa chỉ đầy đủ để chúng tôi có thể giao hàng chính xác..."></textarea>
+                            <textarea asp-for="ShippingAddress" class="form-control" rows="4"
+                                placeholder="Nhập địa chỉ đầy đủ để chúng tôi có thể giao hàng chính xác..."></textarea>
                             <span asp-validation-for="ShippingAddress" class="text-danger"></span>
                         </div>
 
@@ -417,15 +431,15 @@
                                 <i class="fas fa-sticky-note"></i>
                                 Ghi chú đơn hàng (tùy chọn)
                             </label>
-                            <textarea asp-for="Notes" class="form-control" rows="3" 
-                                      placeholder="Ghi chú đặc biệt cho đơn hàng (thời gian giao hàng, yêu cầu đặc biệt...)"></textarea>
+                            <textarea asp-for="Notes" class="form-control" rows="3"
+                                placeholder="Ghi chú đặc biệt cho đơn hàng (thời gian giao hàng, yêu cầu đặc biệt...)"></textarea>
                             <span asp-validation-for="Notes" class="text-danger"></span>
                         </div>
 
                         <button type="submit" class="confirm-btn">
                             <i class="fas fa-lock me-2"></i>Xác nhận thanh toán
                         </button>
-                        
+
                         <div class="security-info">
                             <i class="fas fa-shield-alt"></i>
                             <p>Thông tin của bạn được bảo mật với mã hóa SSL 256-bit</p>
@@ -440,7 +454,7 @@
                         <i class="fas fa-receipt"></i>
                         Đơn hàng của bạn
                     </h5>
-                    
+
                     <div class="order-items">
                         @foreach (var item in Model.CartItems)
                         {
@@ -485,36 +499,61 @@
 </div>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-    
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Animate cards on load
             const cards = document.querySelectorAll('.shipping-card, .order-summary-card');
             cards.forEach((card, index) => {
                 card.style.opacity = '0';
                 card.style.transform = 'translateY(20px)';
                 card.style.transition = `all 0.6s ease ${index * 0.2}s`;
-                
+
                 setTimeout(() => {
                     card.style.opacity = '1';
                     card.style.transform = 'translateY(0)';
                 }, 100 + (index * 200));
             });
-            
+
             // Animate order items
             const orderItems = document.querySelectorAll('.order-item');
             orderItems.forEach((item, index) => {
                 item.style.opacity = '0';
                 item.style.transform = 'translateX(-10px)';
                 item.style.transition = `all 0.4s ease ${0.5 + (index * 0.1)}s`;
-                
+
                 setTimeout(() => {
                     item.style.opacity = '1';
                     item.style.transform = 'translateX(0)';
                 }, 600 + (index * 100));
+            });
+
+            function updateSelectedTotal() {
+                let total = 0;
+                document.querySelectorAll('.select-item-checkbox:checked').forEach(cb => {
+                    total += parseFloat(cb.getAttribute('data-price'));
+                });
+                let formatted = total.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+                document.getElementById('selected-subtotal').innerText = formatted;
+                document.getElementById('selected-total').innerText = formatted;
+            }
+
+            document.querySelectorAll('.select-item-checkbox').forEach(cb => {
+                cb.addEventListener('change', updateSelectedTotal);
+            });
+            updateSelectedTotal();
+
+            // Xử lý gửi danh sách sản phẩm đã chọn khi thanh toán
+            document.getElementById('checkout-form').addEventListener('submit', function (e) {
+                let selectedIds = [];
+                document.querySelectorAll('.select-item-checkbox:checked').forEach(cb => {
+                    selectedIds.push(cb.value);
+                });
+                if (selectedIds.length === 0) {
+                    alert('Vui lòng chọn ít nhất một sản phẩm để thanh toán!');
+                    e.preventDefault();
+                    return false;
+                }
+                document.getElementById('selectedProductIds').value = selectedIds.join(',');
             });
         });
     </script>

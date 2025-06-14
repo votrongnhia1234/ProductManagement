@@ -1,4 +1,5 @@
 ﻿using ProductManagement.Models;
+using ProductManagement.Areas.Admin.Models;
 
 namespace ProductManagement.Repositories
 {
@@ -13,5 +14,8 @@ namespace ProductManagement.Repositories
         Task<List<Order>> GetOrdersByUserIdAsync(string userId);
         Task<List<Order>> GetRecentOrdersAsync(int count = 10);
         Task<List<Order>> GetAllOrdersAsync(); // For statistics
+        Task DeleteOrderAsync(Order order);
+        Task<bool> ExistsTrackingNumberAsync(string trackingNumber);
+        public Task<List<AdminOrderExportViewModel>> GetOrdersForAdminAsync(string searchTerm, OrderStatus? statusFilter);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProductManagement.Data;
 using ProductManagement.Models;
+using ProductManagement.Areas.Admin.Models;
 
 namespace ProductManagement.Repositories
 {
@@ -119,6 +120,45 @@ namespace ProductManagement.Repositories
             return await _context.Orders
                 .Include(o => o.User)
                 .Include(o => o.OrderItems)
+                .ToListAsync();
+        }
+
+        public Task DeleteOrderAsync(Order order)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<bool> ExistsTrackingNumberAsync(string trackingNumber)
+        {
+            return await _context.Orders.AnyAsync(o => o.TrackingNumber == trackingNumber);
+        }
+        public async Task<List<AdminOrderExportViewModel>> GetOrdersForAdminAsync(string searchTerm, OrderStatus? statusFilter)
+        {
+            var query = _context.Orders
+                .Include(o => o.User)
+                .AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                query = query.Where(o => o.User.FullName.Contains(searchTerm) || o.User.Email.Contains(searchTerm));
+            }
+            if (statusFilter.HasValue)
+            {
+                query = query.Where(o => o.Status == statusFilter.Value);
+            }
+
+            return await query
+                .OrderByDescending(o => o.OrderDate)
+                .Select(o => new AdminOrderExportViewModel
+                {
+                    Id = o.Id,
+                    CustomerName = o.User.FullName,
+                    CustomerEmail = o.User.Email,
+                    OrderDate = o.OrderDate,
+                    TotalAmount = o.TotalAmount,
+                    Status = o.Status,
+                    TrackingNumber = o.TrackingNumber
+                })
                 .ToListAsync();
         }
     }

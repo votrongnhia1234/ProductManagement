@@ -1,0 +1,709 @@
+@model ProductManagement.Areas.Admin.Models.AdminOrderDetailsViewModel
+@{
+    ViewData["Title"] = "Chi tiết đơn hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .order-details-header {
+        background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+        color: white;
+        border-radius: 20px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .order-details-header::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+        animation: rotate 25s linear infinite;
+    }
+
+    @@keyframes rotate {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    .details-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .details-subtitle {
+        font-size: 1.125rem;
+        opacity: 0.9;
+        margin-bottom: 0;
+        position: relative;
+        z-index: 1;
+    }
+
+    .breadcrumb-nav {
+        background: var(--surface-color);
+        border-radius: 12px;
+        padding: 1rem 1.5rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .breadcrumb {
+        margin-bottom: 0;
+        background: none;
+        padding: 0;
+    }
+
+    .breadcrumb-item a {
+        color: #8b5cf6;
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .breadcrumb-item a:hover {
+        color: #7c3aed;
+    }
+
+    .breadcrumb-item.active {
+        color: var(--gray-color);
+    }
+
+    .order-summary-card {
+        background: var(--surface-color);
+        border-radius: 20px;
+        padding: 2.5rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        margin-bottom: 2rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .order-summary-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 6px;
+        background: linear-gradient(90deg, #8b5cf6, #7c3aed);
+        border-radius: 20px 20px 0 0;
+    }
+
+    .order-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .order-id {
+        font-size: 2rem;
+        font-weight: 800;
+        color: var(--dark-color);
+        margin-bottom: 0.5rem;
+    }
+
+    .order-date {
+        color: var(--gray-color);
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .order-status {
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        font-weight: 700;
+        font-size: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .status-pending {
+        background: rgba(245, 158, 11, 0.1);
+        color: #d97706;
+    }
+
+    .status-confirmed {
+        background: rgba(59, 130, 246, 0.1);
+        color: #2563eb;
+    }
+
+    .status-processing {
+        background: rgba(139, 92, 246, 0.1);
+        color: #7c3aed;
+    }
+
+    .status-shipped {
+        background: rgba(6, 182, 212, 0.1);
+        color: #0891b2;
+    }
+
+    .status-delivered {
+        background: rgba(16, 185, 129, 0.1);
+        color: #059669;
+    }
+
+    .status-cancelled {
+        background: rgba(239, 68, 68, 0.1);
+        color: #dc2626;
+    }
+
+    .customer-info-card {
+        background: var(--surface-dark);
+        border-radius: 16px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .customer-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .customer-avatar {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.5rem;
+        font-weight: 800;
+    }
+
+    .customer-details h5 {
+        font-weight: 700;
+        color: var(--dark-color);
+        margin-bottom: 0.25rem;
+    }
+
+    .customer-email {
+        color: var(--gray-color);
+        font-size: 0.875rem;
+    }
+
+    .shipping-address {
+        background: rgba(139, 92, 246, 0.1);
+        border-left: 4px solid #8b5cf6;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .address-label {
+        font-size: 0.875rem;
+        color: #8b5cf6;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .address-value {
+        color: var(--dark-color);
+        font-weight: 500;
+        line-height: 1.5;
+    }
+
+    .tracking-info {
+        background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(8, 145, 178, 0.05));
+        border-left: 6px solid #0891b2;
+        border-radius: 16px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .tracking-info::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 100px;
+        height: 100px;
+        background: radial-gradient(circle, rgba(6, 182, 212, 0.1) 0%, transparent 70%);
+        border-radius: 50%;
+        transform: translate(30px, -30px);
+    }
+
+    .tracking-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #0891b2;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .tracking-number {
+        font-family: 'Courier New', monospace;
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--dark-color);
+        background: rgba(255, 255, 255, 0.8);
+        padding: 1rem 1.5rem;
+        border-radius: 12px;
+        display: inline-block;
+        letter-spacing: 1px;
+    }
+
+    .products-section {
+        background: var(--surface-color);
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        margin-bottom: 2rem;
+    }
+
+    .section-header {
+        background: var(--surface-dark);
+        padding: 1.5rem 2rem;
+        border-bottom: none;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: var(--dark-color);
+        margin-bottom: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .section-title i {
+        color: #8b5cf6;
+    }
+
+    .products-table {
+        margin-bottom: 0;
+    }
+
+    .products-table thead th {
+        background: var(--surface-dark);
+        font-weight: 700;
+        color: var(--dark-color);
+        border: none;
+        padding: 1.5rem 1rem;
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .products-table tbody td {
+        padding: 1.5rem 1rem;
+        vertical-align: middle;
+        border-color: var(--surface-dark);
+    }
+
+    .products-table tbody tr {
+        transition: all 0.3s ease;
+    }
+
+    .products-table tbody tr:hover {
+        background-color: var(--surface-dark);
+    }
+
+    .product-name {
+        font-weight: 600;
+        color: var(--dark-color);
+    }
+
+    .quantity-badge {
+        background: rgba(139, 92, 246, 0.1);
+        color: #7c3aed;
+        padding: 0.5rem 1rem;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 0.875rem;
+    }
+
+    .total-amount-card {
+        background: linear-gradient(135deg, var(--secondary-color), #059669);
+        color: white;
+        border-radius: 20px;
+        padding: 2rem;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
+        position: relative;
+        overflow: hidden;
+        margin-bottom: 2rem;
+    }
+
+    .total-amount-card::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+        animation: rotate 20s linear infinite;
+    }
+
+    .total-label {
+        font-size: 1.125rem;
+        font-weight: 600;
+        opacity: 0.9;
+        margin-bottom: 0.5rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .total-value {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 0;
+        position: relative;
+        z-index: 1;
+    }
+
+    .status-update-card {
+        background: var(--surface-color);
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        margin-bottom: 2rem;
+    }
+
+    .update-title {
+        font-size: 1.25rem;
+        font-weight: 800;
+        color: var(--dark-color);
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .update-title i {
+        color: #8b5cf6;
+    }
+
+    .status-form {
+        display: flex;
+        gap: 1rem;
+        align-items: end;
+        flex-wrap: wrap;
+    }
+
+    .form-group {
+        flex: 1;
+        min-width: 200px;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: var(--dark-color);
+        margin-bottom: 0.5rem;
+        display: block;
+    }
+
+    .form-select {
+        border: 2px solid var(--surface-dark);
+        border-radius: 12px;
+        padding: 0.75rem 1rem;
+        background-color: var(--surface-dark);
+        color: var(--dark-color);
+        transition: all 0.3s ease;
+        width: 100%;
+    }
+
+    .form-select:focus {
+        border-color: #8b5cf6;
+        background-color: var(--surface-color);
+        box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);
+        outline: none;
+    }
+
+    .btn-update {
+        background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+        color: white;
+        border: none;
+        padding: 0.75rem 2rem;
+        border-radius: 12px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        white-space: nowrap;
+    }
+
+    .btn-update:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(139, 92, 246, 0.3);
+    }
+
+    .form-text {
+        font-size: 0.875rem;
+        color: var(--gray-color);
+        margin-top: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    @@media (max-width: 991px) {
+        .details-title {
+            font-size: 2rem;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+
+        .order-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .customer-header {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .status-form {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .form-group {
+            min-width: auto;
+        }
+    }
+
+    @@media (max-width: 768px) {
+        .order-details-header {
+            padding: 1.5rem;
+        }
+
+        .details-title {
+            font-size: 1.75rem;
+        }
+
+        .order-summary-card,
+        .status-update-card {
+            padding: 1.5rem;
+        }
+
+        .products-table thead th,
+        .products-table tbody td {
+            padding: 1rem 0.5rem;
+        }
+    }
+</style>
+
+<div class="order-details-header">
+    <div>
+        <h1 class="details-title">
+            <i class="fas fa-receipt"></i>
+            Mã đơn hàng #@Model.Id
+        </h1>
+        <p class="details-subtitle">Chi tiết và quản lý đơn hàng</p>
+    </div>
+</div>
+
+<nav class="breadcrumb-nav" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a asp-action="Index">Đơn hàng</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            Chi tiết đơn hàng
+        </li>
+    </ol>
+</nav>
+
+<div class="row">
+    <div class="col-lg-8">
+        <!-- Order Summary -->
+        <div class="order-summary-card">
+            <div class="order-header">
+                <div>
+                    <div class="order-id">#@Model.Id.ToString("D6")</div>
+                    <div class="order-date">
+                        <i class="fas fa-calendar-alt"></i>
+                        @Model.OrderDate.ToString("dd/MM/yyyy HH:mm")
+                    </div>
+                </div>
+                <div class="order-status status-@Model.Status.ToString().ToLower()">
+                    <i class="fas fa-circle"></i>
+                    @GetOrderStatusText(Model.Status)
+                </div>
+            </div>
+
+            <!-- Customer Information -->
+            <div class="customer-info-card">
+                <div class="customer-header">
+                    <div class="customer-avatar">
+                        @(Model.Customer.FullName?.Substring(0, 1).ToUpper() ?? "U")
+                    </div>
+                    <div class="customer-details">
+                        <h5>@Model.Customer.FullName</h5>
+                        <div class="customer-email">@Model.Customer.Email</div>
+                    </div>
+                </div>
+
+                <div class="shipping-address">
+                    <div class="address-label">Địa chỉ giao hàng</div>
+                    <div class="address-value">@Model.ShippingAddress</div>
+                </div>
+            </div>
+
+            <!-- Tracking Information -->
+            @if (!string.IsNullOrEmpty(Model.TrackingNumber))
+            {
+                <div class="tracking-info">
+                    <div class="tracking-title">
+                        <i class="fas fa-truck"></i>
+                        Thông tin vận chuyển
+                    </div>
+                    <div class="tracking-number">@Model.TrackingNumber</div>
+                </div>
+            }
+
+            <!-- Products List -->
+            <div class="products-section">
+                <div class="section-header">
+                    <h4 class="section-title">
+                        <i class="fas fa-box"></i>
+                        Danh sách sản phẩm
+                    </h4>
+                </div>
+                <div class="table-responsive">
+                    <table class="table products-table">
+                        <thead>
+                            <tr>
+                                <th>Sản phẩm</th>
+                                <th>Số lượng</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.OrderItems)
+                            {
+                                <tr>
+                                    <td class="product-name">@item.ProductName</td>
+                                    <td>
+                                        <span class="quantity-badge">@item.Quantity</span>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <!-- Total Amount -->
+        <div class="total-amount-card">
+            <div class="total-label">Tổng thanh toán</div>
+            <div class="total-value">@Model.TotalAmount.ToString("C0")</div>
+        </div>
+
+        <!-- Status Update -->
+        <div class="status-update-card">
+            <h5 class="update-title">
+                <i class="fas fa-edit"></i>
+                Cập nhật trạng thái
+            </h5>
+
+            <form asp-action="UpdateStatus" method="post">
+                <input type="hidden" name="id" value="@Model.Id" />
+                <div class="status-form">
+                    <div class="form-group">
+                        <label class="form-label">Trạng thái đơn hàng</label>
+                        <select name="status" class="form-select" id="status-select">
+                            @foreach (OrderStatus status in Enum.GetValues(typeof(OrderStatus)))
+                            {
+                                <option value="@status" selected="@(status == Model.Status)">
+                                    @GetOrderStatusText(status)
+                                </option>
+                            }
+                        </select>
+                    </div>
+                    <button type="submit" class="btn-update">
+                        <i class="fas fa-save me-2"></i>Cập nhật
+                    </button>
+                </div>
+                <div class="form-text">
+                    <i class="fas fa-info-circle"></i>
+                    Khi chọn "Đã gửi hàng", hệ thống sẽ tự động sinh mã vận đơn không trùng lặp.
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@functions {
+    public string GetOrderStatusText(OrderStatus status)
+    {
+        switch (status)
+        {
+            case OrderStatus.Pending: return "Chờ xác nhận";
+            case OrderStatus.Confirmed: return "Đã xác nhận";
+            case OrderStatus.Processing: return "Đang xử lý";
+            case OrderStatus.Shipped: return "Đã gửi hàng";
+            case OrderStatus.Delivered: return "Đã giao";
+            case OrderStatus.Cancelled: return "Đã hủy";
+            default: return status.ToString();
+        }
+    }
+}
+
+@section Scripts {
+    <script>
+        // Animate elements on load
+        document.addEventListener('DOMContentLoaded', function () {
+            // Animate order summary card
+            const summaryCard = document.querySelector('.order-summary-card');
+            summaryCard.style.opacity = '0';
+            summaryCard.style.transform = 'translateY(20px)';
+            summaryCard.style.transition = 'all 0.6s ease';
+
+            setTimeout(() => {
+                summaryCard.style.opacity = '1';
+                summaryCard.style.transform = 'translateY(0)';
+            }, 100);
+
+            // Animate sidebar cards
+            const sidebarCards = document.querySelectorAll('.col-lg-4 > div');
+            sidebarCards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = `all 0.6s ease ${0.2 + (index * 0.1)}s`;
+
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 300 + (index * 100));
+            });
+        });
+    </script>
+}
