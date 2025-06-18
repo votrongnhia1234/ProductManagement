@@ -1,4 +1,4 @@
 .vs/
 .env
-appsetting.json
+appsettings*.json
 
