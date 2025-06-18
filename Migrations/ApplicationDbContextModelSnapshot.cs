@@ -297,34 +297,98 @@ namespace ProductManagement.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Thiết bị và tiện ích điện tử",
-                            Name = "Điện tử",
-                            UpdatedAt = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            CreatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Laptop, PC, máy tính bảng và phụ kiện",
+                            Name = "Laptop & Máy tính",
+                            UpdatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Nhiều loại sách và tiểu thuyết",
-                            Name = "Sách",
-                            UpdatedAt = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            CreatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Smartphone, tablet và phụ kiện di động",
+                            Name = "Điện thoại & Tablet",
+                            UpdatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Quần áo và các mặt hàng thời trang",
-                            Name = "Thời trang",
-                            UpdatedAt = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            CreatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Tai nghe, loa, thiết bị âm thanh",
+                            Name = "Âm thanh & Tai nghe",
+                            UpdatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Đồ dùng cho nhà cửa và sân vườn",
-                            Name = "Nhà cửa & Vườn",
-                            UpdatedAt = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            CreatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Thiết bị gaming, console, phụ kiện game",
+                            Name = "Gaming & Esports",
+                            UpdatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CreatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Máy ảnh, camera, thiết bị quay phim",
+                            Name = "Camera & Quay phim",
+                            UpdatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CreatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Router, modem, thiết bị mạng và WiFi",
+                            Name = "Thiết bị mạng",
+                            UpdatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 7,
+                            CreatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Bàn phím, chuột, màn hình, webcam",
+                            Name = "Phụ kiện máy tính",
+                            UpdatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 8,
+                            CreatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Smart home, IoT, thiết bị tự động hóa",
+                            Name = "Thiết bị thông minh",
+                            UpdatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 9,
+                            CreatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "CPU, RAM, ổ cứng, card đồ họa",
+                            Name = "Linh kiện máy tính",
+                            UpdatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 10,
+                            CreatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Ốp lưng, sạc, cáp, pin dự phòng",
+                            Name = "Phụ kiện di động",
+                            UpdatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 11,
+                            CreatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Máy in, scanner, máy chiếu, thiết bị VP",
+                            Name = "Thiết bị văn phòng",
+                            UpdatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 12,
+                            CreatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Smartwatch, fitness tracker, wearable",
+                            Name = "Đồng hồ thông minh",
+                            UpdatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
@@ -448,243 +512,474 @@ namespace ProductManagement.Migrations
                         {
                             Id = 1,
                             CategoryId = 1,
-                            CreatedAt = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Máy tính xách tay hiệu năng cao",
-                            ImgUrl = "https://images.unsplash.com/photo-1517336714731-489689fd1ca8",
-                            Price = 1200.00m,
-                            ProductName = "Máy tính xách tay",
-                            UpdatedAt = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            CreatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Laptop Apple M3 chip, 16GB RAM, 512GB SSD",
+                            ImgUrl = "/images/products/macbook-pro-m3.jpg",
+                            Price = 4500.00m,
+                            ProductName = "MacBook Pro M3 14 inch",
+                            UpdatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 2,
                             CategoryId = 1,
-                            CreatedAt = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Điện thoại thông minh mẫu mới nhất",
-                            ImgUrl = "https://images.unsplash.com/photo-1517336714731-489689fd1ca8",
-                            Price = 800.00m,
-                            ProductName = "Điện thoại thông minh",
-                            UpdatedAt = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            CreatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Laptop Dell Intel Core i7, 16GB RAM, 1TB SSD",
+                            ImgUrl = "/images/products/dell-xps-13.jpg",
+                            Price = 3500.00m,
+                            ProductName = "Dell XPS 13 Plus",
+                            UpdatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 3,
-                            CategoryId = 2,
-                            CreatedAt = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Tiểu thuyết giả tưởng sử thi",
-                            ImgUrl = "https://images.unsplash.com/photo-1517336714731-489689fd1ca8",
-                            Price = 20.00m,
-                            ProductName = "Chúa tể những chiếc nhẫn",
-                            UpdatedAt = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            CategoryId = 1,
+                            CreatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Gaming laptop AMD Ryzen 7, RTX 4060, 16GB RAM",
+                            ImgUrl = "/images/products/asus-rog-strix.jpg",
+                            Price = 2800.00m,
+                            ProductName = "ASUS ROG Strix G15",
+                            UpdatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 4,
-                            CategoryId = 2,
-                            CreatedAt = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Khoa học viễn tưởng kinh điển",
-                            ImgUrl = "https://images.unsplash.com/photo-1517336714731-489689fd1ca8",
-                            Price = 15.00m,
-                            ProductName = "Xứ Cát",
-                            UpdatedAt = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            CategoryId = 1,
+                            CreatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Máy tính bảng Apple M2, 256GB, WiFi + Cellular",
+                            ImgUrl = "/images/products/ipad-pro-m2.jpg",
+                            Price = 32.00m,
+                            ProductName = "iPad Pro 12.9 inch M2",
+                            UpdatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 5,
-                            CategoryId = 3,
-                            CreatedAt = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Áo phông cotton thoải mái",
-                            ImgUrl = "https://images.unsplash.com/photo-1517336714731-489689fd1ca8",
-                            Price = 25.00m,
-                            ProductName = "Áo phông",
-                            UpdatedAt = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            CategoryId = 2,
+                            CreatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "iPhone 15 Pro Max 256GB, Titanium Natural",
+                            ImgUrl = "/images/products/iphone-15-pro-max.jpg",
+                            Price = 3400.00m,
+                            ProductName = "iPhone 15 Pro Max",
+                            UpdatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 6,
-                            CategoryId = 3,
-                            CreatedAt = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Quần jean vải bền",
-                            ImgUrl = "https://images.unsplash.com/photo-1517336714731-489689fd1ca8",
-                            Price = 50.00m,
-                            ProductName = "Quần jean",
-                            UpdatedAt = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            CategoryId = 2,
+                            CreatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Galaxy S24 Ultra 512GB, S Pen, AI Camera",
+                            ImgUrl = "/images/products/galaxy-s24-ultra.jpg",
+                            Price = 3100.00m,
+                            ProductName = "Samsung Galaxy S24 Ultra",
+                            UpdatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 7,
-                            CategoryId = 1,
-                            CreatedAt = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Máy ảnh độ phân giải cao",
-                            ImgUrl = "https://images.unsplash.com/photo-1517336714731-489689fd1ca8",
-                            Price = 650.00m,
-                            ProductName = "Máy ảnh Kỹ thuật số",
-                            UpdatedAt = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            CategoryId = 2,
+                            CreatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Pixel 8 Pro 256GB, AI Photography, Pure Android",
+                            ImgUrl = "/images/products/pixel-8-pro.jpg",
+                            Price = 2500.00m,
+                            ProductName = "Google Pixel 8 Pro",
+                            UpdatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 8,
-                            CategoryId = 1,
-                            CreatedAt = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Tai nghe không dây chống ồn",
-                            ImgUrl = "https://images.unsplash.com/photo-1517336714731-489689fd1ca8",
-                            Price = 150.00m,
-                            ProductName = "Tai nghe Bluetooth",
-                            UpdatedAt = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            CategoryId = 2,
+                            CreatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Xiaomi 14 Ultra 512GB, Leica Camera, Snapdragon 8 Gen 3",
+                            ImgUrl = "/images/products/xiaomi-14-ultra.jpg",
+                            Price = 2200.00m,
+                            ProductName = "Xiaomi 14 Ultra",
+                            UpdatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 9,
-                            CategoryId = 1,
-                            CreatedAt = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Màn hình Full HD 27 inch",
-                            ImgUrl = "https://images.unsplash.com/photo-1517336714731-489689fd1ca8",
-                            Price = 300.00m,
-                            ProductName = "Màn hình máy tính",
-                            UpdatedAt = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            CategoryId = 3,
+                            CreatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Tai nghe Apple AirPods Pro, Active Noise Cancelling",
+                            ImgUrl = "/images/products/airpods-pro-2.jpg",
+                            Price = 6500.00m,
+                            ProductName = "AirPods Pro 2nd Gen",
+                            UpdatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 10,
-                            CategoryId = 1,
-                            CreatedAt = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Bàn phím cơ với đèn nền RGB",
-                            ImgUrl = "https://images.unsplash.com/photo-1517336714731-489689fd1ca8",
-                            Price = 100.00m,
-                            ProductName = "Bàn phím cơ",
-                            UpdatedAt = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            CategoryId = 3,
+                            CreatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Tai nghe over-ear Sony, chống ồn hàng đầu",
+                            ImgUrl = "/images/products/sony-wh1000xm5.jpg",
+                            Price = 8500.00m,
+                            ProductName = "Sony WH-1000XM5",
+                            UpdatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 11,
-                            CategoryId = 1,
-                            CreatedAt = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Chuột quang không dây",
-                            ImgUrl = "https://images.unsplash.com/photo-1517336714731-489689fd1ca8",
-                            Price = 25.00m,
-                            ProductName = "Chuột không dây",
-                            UpdatedAt = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            CategoryId = 3,
+                            CreatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Loa Bluetooth JBL chống nước, bass mạnh",
+                            ImgUrl = "/images/products/jbl-charge-5.jpg",
+                            Price = 3500.00m,
+                            ProductName = "JBL Charge 5",
+                            UpdatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 12,
-                            CategoryId = 2,
-                            CreatedAt = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Câu chuyện hấp dẫn đầy bí ẩn",
-                            ImgUrl = "https://images.unsplash.com/photo-1517336714731-489689fd1ca8",
-                            Price = 18.00m,
-                            ProductName = "Tiểu thuyết trinh thám",
-                            UpdatedAt = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            CategoryId = 3,
+                            CreatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Tai nghe Bose chống ồn, âm thanh Hi-Fi",
+                            ImgUrl = "/images/products/bose-qc45.jpg",
+                            Price = 7500.00m,
+                            ProductName = "Bose QuietComfort 45",
+                            UpdatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 13,
-                            CategoryId = 2,
-                            CreatedAt = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Tuyển tập công thức món ngon",
-                            ImgUrl = "https://images.unsplash.com/photo-1517336714731-489689fd1ca8",
-                            Price = 30.00m,
-                            ProductName = "Sách nấu ăn",
-                            UpdatedAt = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            CategoryId = 4,
+                            CreatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Console PS5 Slim 1TB, 4K Gaming, Ray Tracing",
+                            ImgUrl = "/images/products/ps5-slim.jpg",
+                            Price = 14000.00m,
+                            ProductName = "PlayStation 5 Slim",
+                            UpdatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 14,
-                            CategoryId = 2,
-                            CreatedAt = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Tìm hiểu về lịch sử hào hùng",
-                            ImgUrl = "https://images.unsplash.com/photo-1517336714731-489689fd1ca8",
-                            Price = 25.00m,
-                            ProductName = "Lịch sử Việt Nam",
-                            UpdatedAt = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            CategoryId = 4,
+                            CreatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Console Xbox Series X 1TB, 4K 120fps Gaming",
+                            ImgUrl = "/images/products/xbox-series-x.jpg",
+                            Price = 13500.00m,
+                            ProductName = "Xbox Series X",
+                            UpdatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 15,
-                            CategoryId = 2,
-                            CreatedAt = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Bộ sưu tập truyện tranh vui nhộn",
-                            ImgUrl = "https://images.unsplash.com/photo-1517336714731-489689fd1ca8",
-                            Price = 10.00m,
-                            ProductName = "Truyện tranh",
-                            UpdatedAt = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            CategoryId = 4,
+                            CreatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Chuột gaming Razer wireless, sensor Focus Pro 30K",
+                            ImgUrl = "/images/products/razer-deathadder-v3.jpg",
+                            Price = 3500.00m,
+                            ProductName = "Razer DeathAdder V3 Pro",
+                            UpdatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 16,
-                            CategoryId = 3,
-                            CreatedAt = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Váy thời trang cho nữ",
-                            ImgUrl = "https://images.unsplash.com/photo-1517336714731-489689fd1ca8",
-                            Price = 40.00m,
-                            ProductName = "Váy đầm",
-                            UpdatedAt = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            CategoryId = 4,
+                            CreatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Bàn phím cơ gaming, OmniPoint switches",
+                            ImgUrl = "/images/products/steelseries-apex-pro.jpg",
+                            Price = 4500.00m,
+                            ProductName = "SteelSeries Apex Pro TKL",
+                            UpdatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 17,
-                            CategoryId = 3,
-                            CreatedAt = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Áo sơ mi công sở lịch lãm",
-                            ImgUrl = "https://images.unsplash.com/photo-1517336714731-489689fd1ca8",
-                            Price = 35.00m,
-                            ProductName = "Áo sơ mi",
-                            UpdatedAt = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            CategoryId = 5,
+                            CreatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Máy ảnh mirrorless Canon, 24.2MP, 4K Video",
+                            ImgUrl = "/images/products/canon-r6-mark2.jpg",
+                            Price = 4200.00m,
+                            ProductName = "Canon EOS R6 Mark II",
+                            UpdatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 18,
-                            CategoryId = 3,
-                            CreatedAt = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Giày thoải mái cho hoạt động thể thao",
-                            ImgUrl = "https://images.unsplash.com/photo-1517336714731-489689fd1ca8",
-                            Price = 70.00m,
-                            ProductName = "Giày thể thao",
-                            UpdatedAt = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            CategoryId = 5,
+                            CreatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Máy ảnh Sony Alpha 33MP, 4K 60p, Real-time Eye AF",
+                            ImgUrl = "/images/products/sony-a7-iv.jpg",
+                            Price = 4800.00m,
+                            ProductName = "Sony A7 IV",
+                            UpdatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 19,
-                            CategoryId = 4,
-                            CreatedAt = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Bàn làm việc gỗ hiện đại",
-                            ImgUrl = "https://images.unsplash.com/photo-1517336714731-489689fd1ca8",
-                            Price = 150.00m,
-                            ProductName = "Bàn làm việc",
-                            UpdatedAt = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            CategoryId = 5,
+                            CreatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Drone DJI 4K HDR, 3-axis gimbal, 45 phút bay",
+                            ImgUrl = "/images/products/dji-mini-4-pro.jpg",
+                            Price = 1800.00m,
+                            ProductName = "DJI Mini 4 Pro",
+                            UpdatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 20,
-                            CategoryId = 4,
-                            CreatedAt = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Ghế xoay thoải mái",
-                            ImgUrl = "https://images.unsplash.com/photo-1517336714731-489689fd1ca8",
-                            Price = 80.00m,
-                            ProductName = "Ghế văn phòng",
-                            UpdatedAt = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            CategoryId = 5,
+                            CreatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Action camera GoPro 5.3K, HyperSmooth 6.0",
+                            ImgUrl = "/images/products/gopro-hero-12.jpg",
+                            Price = 1200.00m,
+                            ProductName = "GoPro Hero 12 Black",
+                            UpdatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 21,
-                            CategoryId = 4,
-                            CreatedAt = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Đèn LED tiết kiệm điện",
-                            ImgUrl = "https://images.unsplash.com/photo-1517336714731-489689fd1ca8",
-                            Price = 30.00m,
-                            ProductName = "Đèn bàn",
-                            UpdatedAt = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            CategoryId = 6,
+                            CreatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Router ASUS WiFi 6E, 6000Mbps, Mesh ready",
+                            ImgUrl = "/images/products/asus-ax6000.jpg",
+                            Price = 8000.00m,
+                            ProductName = "ASUS AX6000 WiFi 6E",
+                            UpdatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 22,
-                            CategoryId = 4,
-                            CreatedAt = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Cây xanh trang trí bàn làm việc",
-                            ImgUrl = "https://images.unsplash.com/photo-1517336714731-489689fd1ca8",
-                            Price = 10.00m,
-                            ProductName = "Cây cảnh mini",
-                            UpdatedAt = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            CategoryId = 6,
+                            CreatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Router TP-Link WiFi 6, 5400Mbps, OneMesh",
+                            ImgUrl = "/images/products/tplink-ax73.jpg",
+                            Price = 3000.00m,
+                            ProductName = "TP-Link Archer AX73",
+                            UpdatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 23,
+                            CategoryId = 6,
+                            CreatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Hệ thống Mesh WiFi 6, phủ sóng 500m²",
+                            ImgUrl = "/images/products/netgear-orbi.jpg",
+                            Price = 1200.00m,
+                            ProductName = "Netgear Orbi AX6000",
+                            UpdatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 24,
+                            CategoryId = 7,
+                            CreatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Màn hình cong 34 inch, 3440x1440, USB-C",
+                            ImgUrl = "/images/products/lg-ultrawide-34.jpg",
+                            Price = 8000.00m,
+                            ProductName = "LG UltraWide 34WP65C",
+                            UpdatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 25,
+                            CategoryId = 7,
+                            CreatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Chuột wireless Logitech, 8000 DPI, USB-C",
+                            ImgUrl = "/images/products/logitech-mx-master-3s.jpg",
+                            Price = 2000.00m,
+                            ProductName = "Logitech MX Master 3S",
+                            UpdatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 26,
+                            CategoryId = 7,
+                            CreatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Bàn phím cơ wireless, hot-swap, RGB",
+                            ImgUrl = "/images/products/keychron-k8-pro.jpg",
+                            Price = 3000.00m,
+                            ProductName = "Keychron K8 Pro",
+                            UpdatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 27,
+                            CategoryId = 7,
+                            CreatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Webcam Logitech 1080p, auto-focus, stereo audio",
+                            ImgUrl = "/images/products/logitech-c920s.jpg",
+                            Price = 1000.00m,
+                            ProductName = "Logitech C920s Pro HD",
+                            UpdatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 28,
+                            CategoryId = 8,
+                            CreatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Loa thông minh Amazon Alexa, điều khiển giọng nói",
+                            ImgUrl = "/images/products/echo-dot-5.jpg",
+                            Price = 100.00m,
+                            ProductName = "Amazon Echo Dot 5th Gen",
+                            UpdatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 29,
+                            CategoryId = 8,
+                            CreatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Màn hình thông minh Google 10 inch, camera",
+                            ImgUrl = "/images/products/nest-hub-max.jpg",
+                            Price = 6500.00m,
+                            ProductName = "Google Nest Hub Max",
+                            UpdatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 30,
+                            CategoryId = 8,
+                            CreatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Bộ đèn LED thông minh Philips, điều khiển màu sắc",
+                            ImgUrl = "/images/products/philips-hue.jpg",
+                            Price = 2800.00m,
+                            ProductName = "Philips Hue White Ambiance",
+                            UpdatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 31,
+                            CategoryId = 9,
+                            CreatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "CPU AMD 12 cores, 24 threads, 5.6GHz boost",
+                            ImgUrl = "/images/products/amd-ryzen-9-7900x.jpg",
+                            Price = 1200.00m,
+                            ProductName = "AMD Ryzen 9 7900X",
+                            UpdatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 32,
+                            CategoryId = 9,
+                            CreatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Card đồ họa NVIDIA 12GB GDDR6X, DLSS 3",
+                            ImgUrl = "/images/products/rtx-4070-super.jpg",
+                            Price = 1800.00m,
+                            ProductName = "NVIDIA RTX 4070 Super",
+                            UpdatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 33,
+                            CategoryId = 9,
+                            CreatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "RAM Corsair 32GB (2x16GB) DDR5-5600, RGB",
+                            ImgUrl = "/images/products/corsair-vengeance-ddr5.jpg",
+                            Price = 4000.00m,
+                            ProductName = "Corsair Vengeance DDR5",
+                            UpdatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 34,
+                            CategoryId = 9,
+                            CreatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "SSD NVMe Samsung 2TB, 7000MB/s read speed",
+                            ImgUrl = "/images/products/samsung-980-pro.jpg",
+                            Price = 5000.00m,
+                            ProductName = "Samsung 980 PRO 2TB",
+                            UpdatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 35,
+                            CategoryId = 10,
+                            CreatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Pin sạc dự phòng Anker 26800mAh, sạc nhanh PD",
+                            ImgUrl = "/images/products/anker-powercore.jpg",
+                            Price = 1000.00m,
+                            ProductName = "Anker PowerCore 26800",
+                            UpdatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 36,
+                            CategoryId = 10,
+                            CreatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Đế sạc không dây Belkin cho iPhone, AirPods, Apple Watch",
+                            ImgUrl = "/images/products/belkin-magsafe-3in1.jpg",
+                            Price = 3000.00m,
+                            ProductName = "Belkin MagSafe 3-in-1",
+                            UpdatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 37,
+                            CategoryId = 10,
+                            CreatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Chân máy Peak Design cho smartphone, gấp gọn",
+                            ImgUrl = "/images/products/peak-design-tripod.jpg",
+                            Price = 1000.00m,
+                            ProductName = "Peak Design Mobile Tripod",
+                            UpdatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 38,
+                            CategoryId = 11,
+                            CreatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Máy in laser HP đen trắng, tốc độ 38 trang/phút",
+                            ImgUrl = "/images/products/hp-laserjet-m404n.jpg",
+                            Price = 4500.00m,
+                            ProductName = "HP LaserJet Pro M404n",
+                            UpdatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 39,
+                            CategoryId = 11,
+                            CreatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Máy in phun màu Epson, in scan copy, WiFi",
+                            ImgUrl = "/images/products/epson-l3250.jpg",
+                            Price = 3000.00m,
+                            ProductName = "Epson EcoTank L3250",
+                            UpdatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 40,
+                            CategoryId = 11,
+                            CreatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Máy chiếu BenQ WXGA 4000 lumens, HDMI",
+                            ImgUrl = "/images/products/benq-mw560.jpg",
+                            Price = 1200.00m,
+                            ProductName = "BenQ MW560 Projector",
+                            UpdatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 41,
+                            CategoryId = 12,
+                            CreatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Apple Watch 45mm, GPS + Cellular, Always-On display",
+                            ImgUrl = "/images/products/apple-watch-series-9.jpg",
+                            Price = 1200.00m,
+                            ProductName = "Apple Watch Series 9",
+                            UpdatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 42,
+                            CategoryId = 12,
+                            CreatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Galaxy Watch 6 44mm, Wear OS, health tracking",
+                            ImgUrl = "/images/products/galaxy-watch-6.jpg",
+                            Price = 8500.00m,
+                            ProductName = "Samsung Galaxy Watch 6",
+                            UpdatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 43,
+                            CategoryId = 12,
+                            CreatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Đồng hồ thể thao Garmin, GPS, pin năng lượng mặt trời",
+                            ImgUrl = "/images/products/garmin-fenix-7x.jpg",
+                            Price = 1800.00m,
+                            ProductName = "Garmin Fenix 7X Solar",
+                            UpdatedAt = new DateTime(2025, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 

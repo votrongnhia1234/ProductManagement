@@ -431,11 +431,17 @@
                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                     <span class="product-price">@product.Price.ToString("C0")</span>
                                 </div>
-                                <div class="d-grid">
+                                <div class="d-flex gap-2">
                                     <a asp-action="ProductDetails" asp-route-id="@product.Id" class="btn-view-product">
                                         <i class="fas fa-eye"></i>
                                         Xem chi tiết
                                     </a>
+                                    
+                                    <form asp-area="Customer" asp-action="AddToCart" asp-controller="Cart" asp-route-productId="@product.Id" method="post">
+                                        <button type="submit" class="btn-view-product" title="Thêm vào giỏ hàng" onclick="alert("Thêm giỏ hàng thành công")" style="padding: 1em 1em;">
+                                            <i class="fas fa-shopping-cart"></i>
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
                         </div>

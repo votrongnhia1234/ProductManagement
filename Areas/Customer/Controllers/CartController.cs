@@ -82,8 +82,7 @@ namespace ProductManagement.Areas.Customer.Controllers
 
             SaveCartToSession(cart);
             TempData["Success"] = $"Đã thêm {product.ProductName} vào giỏ hàng.";
-
-            return RedirectToAction("ProductDetails", "Home", new { id = productId });
+            return RedirectToAction("Index", "Home", new { id = productId });
         }
 
         [HttpPost]
@@ -123,42 +122,6 @@ namespace ProductManagement.Areas.Customer.Controllers
 
             return RedirectToAction(nameof(Index));
         }
-
-        // [HttpGet]
-        // public async Task<IActionResult> Checkout()
-        // {
-        //     var cartItems = HttpContext.Session.GetObjectFromJson<List<CartItem>>("Cart") ?? new List<CartItem>();
-        //     if (!cartItems.Any())
-        //     {
-        //         TempData["Error"] = "Giỏ hàng trống, không thể thanh toán.";
-        //         return RedirectToAction(nameof(Index));
-        //     }
-
-        //     var cartItemViewModels = new List<CartItemViewModel>();
-        //     foreach (var item in cartItems)
-        //     {
-        //         var product = await _productRepository.GetProductByIdAsync(item.ProductId);
-        //         if (product != null)
-        //         {
-        //             cartItemViewModels.Add(new CartItemViewModel
-        //             {
-        //                 ProductId = product.Id,
-        //                 ProductName = product.ProductName,
-        //                 Price = product.Price,
-        //                 Quantity = item.Quantity,
-        //                 TotalPrice = product.Price * item.Quantity
-        //             });
-        //         }
-        //     }
-
-        //     var viewModel = new CheckoutViewModel
-        //     {
-        //         CartItems = cartItemViewModels,
-        //         TotalAmount = cartItemViewModels.Sum(i => i.TotalPrice)
-        //     };
-
-        //     return View(viewModel);
-        // }
 
         [HttpGet]
         public async Task<IActionResult> Checkout(string selectedProductIds)
@@ -211,91 +174,11 @@ namespace ProductManagement.Areas.Customer.Controllers
             return View(viewModel);
         }
 
-        // [HttpPost]
-        // [Authorize]
-        // public async Task<IActionResult> Checkout(CheckoutViewModel model)
-        // {
-        //     if (!ModelState.IsValid)
-        //         return View(model);
-
-        //     // Lấy cart từ session đúng kiểu
-        //     var cartItems = HttpContext.Session.GetObjectFromJson<List<CartItem>>("Cart") ?? new List<CartItem>();
-        //     if (!cartItems.Any())
-        //         return RedirectToAction("Index");
-
-        //     // Map lại sang CartItemViewModel
-        //     var cartItemViewModels = new List<CartItemViewModel>();
-        //     foreach (var item in cartItems)
-        //     {
-        //         var product = await _productRepository.GetProductByIdAsync(item.ProductId);
-        //         if (product != null)
-        //         {
-        //             cartItemViewModels.Add(new CartItemViewModel
-        //             {
-        //                 ProductId = product.Id,
-        //                 ProductName = product.ProductName,
-        //                 Price = product.Price,
-        //                 Quantity = item.Quantity,
-        //                 TotalPrice = product.Price * item.Quantity
-        //             });
-        //         }
-        //     }
-
-        //     var cartViewModel = new CartViewModel
-        //     {
-        //         Items = cartItemViewModels,
-        //         TotalAmount = cartItemViewModels.Sum(i => i.TotalPrice),
-        //         ItemCount = cartItemViewModels.Sum(i => i.Quantity)
-        //     };
-
-        //     var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-        //     if (string.IsNullOrEmpty(userId))
-        //         return RedirectToAction("Login", "Account", new { area = "" });
-
-        //     var order = new Order
-        //     {
-        //         UserId = userId,
-        //         OrderDate = DateTime.UtcNow,
-        //         Status = OrderStatus.Pending,
-        //         TotalAmount = cartViewModel.TotalAmount,
-        //         ShippingAddress = model.ShippingAddress,
-        //         Notes = model.Notes,
-        //         OrderItems = cartViewModel.Items.Select(item => new OrderItem
-        //         {
-        //             ProductId = item.ProductId,
-        //             Quantity = item.Quantity,
-        //             Price = item.Price
-        //         }).ToList()
-        //     };
-
-        //     await _orderRepository.CreateOrderAsync(order);
-        //     HttpContext.Session.Remove("Cart");
-
-        //     var confirmationViewModel = new OrderConfirmationViewModel
-        //     {
-        //         OrderId = order.Id,
-        //         OrderDate = order.OrderDate,
-        //         TotalAmount = order.TotalAmount,
-        //         Status = order.Status,
-        //         ShippingAddress = order.ShippingAddress,
-        //         Items = order.OrderItems.Select(item => new OrderItemViewModel
-        //         {
-        //             ProductName = item.Product.ProductName,
-        //             Quantity = item.Quantity,
-        //             Price = item.Price,
-        //             TotalPrice = item.Price * item.Quantity
-        //         }).ToList()
-        //     };
-
-        //     return View("Confirmation", confirmationViewModel);
-        // }
-
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Checkout(CheckoutViewModel model)
         {
-            // Lấy danh sách id sản phẩm đã chọn từ session
             var selectedIdsStr = HttpContext.Session.GetString("SelectedCartIds");
             if (string.IsNullOrEmpty(selectedIdsStr))
                 return RedirectToAction("Index");
@@ -311,9 +194,40 @@ namespace ProductManagement.Areas.Customer.Controllers
             if (string.IsNullOrEmpty(userId))
                 return RedirectToAction("Login", "Account", new { area = "" });
 
-            // Tạo đơn hàng chỉ với các sản phẩm đã chọn
-            var orderItems = new List<OrderItem>();
             decimal totalAmount = 0;
+
+            // Nếu chọn PayPal thì chuyển hướng sang trang Payment
+            if (model.PaymentMethod == "PayPal")
+            {
+                foreach (var item in selectedItems)
+                {
+                    var product = await _productRepository.GetProductByIdAsync(item.ProductId);
+                    if (product != null)
+                    {
+                        totalAmount += product.Price * item.Quantity;
+                    }
+                }
+                TempData["CheckoutModel"] = System.Text.Json.JsonSerializer.Serialize(model);
+                return RedirectToAction("Index", "Payment", new { area = "Customer", amount = totalAmount });
+            }
+
+            // Nếu chọn Stripe thì chuyển hướng sang trang Stripe
+            if (model.PaymentMethod == "Stripe")
+            {
+                foreach (var item in selectedItems)
+                {
+                    var product = await _productRepository.GetProductByIdAsync(item.ProductId);
+                    if (product != null)
+                    {
+                        totalAmount += product.Price * item.Quantity;
+                    }
+                }
+                TempData["CheckoutModel"] = System.Text.Json.JsonSerializer.Serialize(model);
+                return RedirectToAction("Index", "Stripe", new { area = "Customer", amount = totalAmount });
+            }
+
+            // Xử lý đơn hàng bình thường (COD)
+            var orderItems = new List<OrderItem>();
             foreach (var item in selectedItems)
             {
                 var product = await _productRepository.GetProductByIdAsync(item.ProductId);
@@ -347,7 +261,6 @@ namespace ProductManagement.Areas.Customer.Controllers
             SaveCartToSession(remainCart);
             HttpContext.Session.Remove("SelectedCartIds");
 
-            // Tạo ViewModel xác nhận chỉ với sản phẩm đã thanh toán
             var confirmationViewModel = new OrderConfirmationViewModel
             {
                 OrderId = order.Id,
@@ -384,10 +297,11 @@ namespace ProductManagement.Areas.Customer.Controllers
             HttpContext.Session.SetString("Cart", cartJson);
         }
     }
+}
 
-    public class CartItem
-    {
-        public int ProductId { get; set; }
-        public int Quantity { get; set; }
-    }
+// Đặt class CartItem ở ngoài namespace để các controller khác dùng chung
+public class CartItem
+{
+    public int ProductId { get; set; }
+    public int Quantity { get; set; }
 }

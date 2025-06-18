@@ -1,11 +1,54 @@
 wwwroot\css\account.css
 wwwroot\css\admin.css
-wwwroot\css\customer.css
-wwwroot\css\site.css
+wwwroot\css\Customer\customer.css
+wwwroot\css\main\Account\login.css
+wwwroot\css\main\Account\register.css
+wwwroot\css\main\Home\index.css
+wwwroot\css\main\site.css
 wwwroot\favicon.ico
-wwwroot\images\products\2501153f-9b5a-4bfc-a9f0-1e23a83d3bda_Screenshot 2024-07-24 141705.png
-wwwroot\images\products\337710b6-ae9a-49ce-96cc-cafad05bfd76_Screenshot 2024-07-24 141705.png
-wwwroot\images\products\73cbc030-63ba-4caf-bac7-370b623e5c50_Screenshot 2024-07-24 141705.png
+wwwroot\images\products\airpods-pro-2.jpg
+wwwroot\images\products\amd-ryzen-9-7900x.jpg
+wwwroot\images\products\anker-powercore.jpg
+wwwroot\images\products\apple-watch-series-9.jpg
+wwwroot\images\products\asus-ax6000.jpg
+wwwroot\images\products\asus-rog-strix.jpg
+wwwroot\images\products\belkin-magsafe-3in1.jpg
+wwwroot\images\products\benq-mw560.jpg
+wwwroot\images\products\bose-qc45.jpg
+wwwroot\images\products\canon-r6-mark2.jpg
+wwwroot\images\products\corsair-vengeance-ddr5.jpg
+wwwroot\images\products\dell-xps-13.jpg
+wwwroot\images\products\dji-mini-4-pro.jpg
+wwwroot\images\products\echo-dot-5.jpg
+wwwroot\images\products\epson-l3250.jpg
+wwwroot\images\products\galaxy-s24-ultra.jpg
+wwwroot\images\products\galaxy-watch-6.jpg
+wwwroot\images\products\garmin-fenix-7x.jpg
+wwwroot\images\products\gopro-hero-12.jpg
+wwwroot\images\products\hp-laserjet-m404n.jpg
+wwwroot\images\products\ipad-pro-m2.jpg
+wwwroot\images\products\iphone-15-pro-max.jpg
+wwwroot\images\products\jbl-charge-5.jpg
+wwwroot\images\products\keychron-k8-pro.jpg
+wwwroot\images\products\lg-ultrawide-34.jpg
+wwwroot\images\products\logitech-c920s.jpg
+wwwroot\images\products\logitech-mx-master-3s.jpg
+wwwroot\images\products\macbook-pro-m3.jpg
+wwwroot\images\products\nest-hub-max.jpg
+wwwroot\images\products\netgear-orbi.jpg
+wwwroot\images\products\peak-design-tripod.jpg
+wwwroot\images\products\philips-hue.jpg
+wwwroot\images\products\pixel-8-pro.jpg
+wwwroot\images\products\ps5-slim.jpg
+wwwroot\images\products\razer-deathadder-v3.jpg
+wwwroot\images\products\rtx-4070-super.jpg
+wwwroot\images\products\samsung-980-pro.jpg
+wwwroot\images\products\sony-a7-iv.jpg
+wwwroot\images\products\sony-wh1000xm5.jpg
+wwwroot\images\products\steelseries-apex-pro.jpg
+wwwroot\images\products\tplink-ax73.jpg
+wwwroot\images\products\xbox-series-x.jpg
+wwwroot\images\products\xiaomi-14-ultra.jpg
 wwwroot\js\admin.js
 wwwroot\js\customer.js
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
@@ -68,15 +111,52 @@ wwwroot\lib\jquery\dist\jquery.slim.js
 wwwroot\lib\jquery\dist\jquery.slim.min.js
 wwwroot\lib\jquery\dist\jquery.slim.min.map
 wwwroot\lib\jquery\LICENSE.txt
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\jquery\dist\jquery.slim.min.js
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\js\bootstrap.esm.min.js
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\css\bootstrap.css
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\jquery-validation\LICENSE.md
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.min.css
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.min.css.map
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\jquery\dist\jquery.js
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.min.css.map
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\css\bootstrap.min.css
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\js\bootstrap.js.map
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.min.css.map
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.css.map
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.css
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.min.css
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\css\bootstrap.css.map
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.min.css
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\jquery-validation\dist\jquery.validate.js
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\js\bootstrap.esm.js
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\js\bootstrap.min.js
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.css.map
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\jquery-validation-unobtrusive\dist\jquery.validate.unobtrusive.js
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.min.css.map
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.css
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.css.map
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.css.map
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\jquery-validation-unobtrusive\dist\jquery.validate.unobtrusive.min.js
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.css
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\jquery\dist\jquery.min.js
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.css
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.min.css
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\js\bootstrap.esm.min.js.map
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js.map
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\jquery-validation\dist\additional-methods.min.js
 D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\css\account.css
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\favicon.ico
 D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\css\admin.css
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\css\customer.css
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\js\admin.js
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\css\site.css
 D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\jquery\dist\jquery.min.map
 D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\jquery\dist\jquery.slim.js
 D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\jquery\LICENSE.txt
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\favicon.ico
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\css\Customer\customer.css
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\css\main\Home\index.css
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\js\admin.js
 D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\js\customer.js
 D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
 D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map
@@ -88,49 +168,15 @@ D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\css\bootst
 D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.min.css.map
 D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css
 D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css.map
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css.map
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.css
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.css.map
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.min.css
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.min.css.map
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.css
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.css.map
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.min.css
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.min.css.map
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.css
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.css.map
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.min.css
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.min.css.map
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\css\bootstrap.css
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\css\bootstrap.css.map
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\css\bootstrap.min.css
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.css
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.css.map
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.min.css
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.min.css.map
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js.map
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js.map
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\js\bootstrap.esm.js
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\js\bootstrap.esm.js.map
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\js\bootstrap.esm.min.js
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\js\bootstrap.esm.min.js.map
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\js\bootstrap.js
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\js\bootstrap.js.map
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\js\bootstrap.min.js
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\jquery-validation-unobtrusive\dist\jquery.validate.unobtrusive.js
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\jquery-validation-unobtrusive\dist\jquery.validate.unobtrusive.min.js
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\jquery-validation-unobtrusive\LICENSE.txt
 D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\jquery-validation\dist\additional-methods.js
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\jquery-validation\dist\additional-methods.min.js
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\jquery-validation\dist\jquery.validate.js
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js.map
 D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\jquery\dist\jquery.slim.min.map
 D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\jquery-validation\dist\jquery.validate.min.js
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\jquery\dist\jquery.slim.min.js
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\jquery-validation\LICENSE.md
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\jquery\dist\jquery.js
-D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\jquery\dist\jquery.min.js
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\jquery-validation-unobtrusive\LICENSE.txt
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\js\bootstrap.js
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\js\bootstrap.esm.js.map
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css.map
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\css\main\site.css
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\css\main\Account\login.css
+D:\ASP.NET Core MVC\Main\ProductManagement\wwwroot\css\main\Account\register.css

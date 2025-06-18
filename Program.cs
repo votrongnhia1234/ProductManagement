@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using ProductManagement.Data;
 using ProductManagement.Models;
 using ProductManagement.Repositories;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -105,5 +106,8 @@ using (var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
     await SeedData.Initialize(services);
 }
+
+var stripeSettings = builder.Configuration.GetSection("Stripe");
+Stripe.StripeConfiguration.ApiKey = stripeSettings["SecretKey"];
 
 app.Run();

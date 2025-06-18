@@ -1,10 +1,10 @@
 ﻿@model CartViewModel
+@using ProductManagement.Areas.Customer.Models
 @{
     ViewData["Title"] = "Giỏ hàng của bạn";
     Layout = "~/Areas/Customer/Views/Shared/_CustomerLayout.cshtml";
 }
 
-@using ProductManagement.Areas.Customer.Models
 
 <style>
     .cart-container {
@@ -396,7 +396,7 @@
                                         <input type="checkbox" class="select-item-checkbox" data-price="@item.TotalPrice"
                                             value="@item.ProductId" />
                                     </div>
-                                    <div class="col-md-2 col-3">
+                                    <div class="col-md-2 col-2">
                                         <div class="item-image">
                                             @if (!string.IsNullOrEmpty(item.ImgUrl))
                                             {
@@ -408,13 +408,13 @@
                                             }
                                         </div>
                                     </div>
-                                    <div class="col-md-4 col-9  ">
+                                    <div class="col-md-4 col-8  ">
                                         <div class="item-info">
                                             <h6>@item.ProductName</h6>
                                             <p class="item-price">@item.Price.ToString("C0")</p>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 col-6 mt-2 mt-md-0">
+                                    <div class="col-md-3 col-4 mt-2 mt-md-0">
                                         <form asp-action="UpdateQuantity" method="post" class="quantity-controls">
                                             <input type="hidden" name="productId" value="@item.ProductId" />
                                             <button type="submit" name="quantity" value="@(item.Quantity - 1)"
@@ -428,7 +428,7 @@
                                             </button>
                                         </form>
                                     </div>
-                                    <div class="col-md-1 col-3 mt-2 mt-md-0 d-flex">
+                                    <div class="col-md-1 col-4 mt-2 mt-md-0 d-flex">
                                         <div class="item-total">@item.TotalPrice.ToString("C0")</div>
                                     </div>
                                     <div class="col-md-1 col-1 mt-2 mt-md-0">

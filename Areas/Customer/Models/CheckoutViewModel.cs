@@ -19,6 +19,10 @@ namespace ProductManagement.Areas.Customer.Models
         [StringLength(500, ErrorMessage = "Ghi chú không được vượt quá {1} ký tự.")]
         [Display(Name = "Ghi chú")]
         public string? Notes { get; set; }
+
+        [Required(ErrorMessage = "Vui lòng chọn phương thức thanh toán.")]
+        [Display(Name = "Phương thức thanh toán")]
+        public string PaymentMethod { get; set; } = "COD"; // Thêm dòng này
     }
 
     public class CartViewModel
@@ -37,4 +41,4 @@ namespace ProductManagement.Areas.Customer.Models
         public int Quantity { get; set; }
         public decimal TotalPrice { get; set; }
     }
-} 
+}
