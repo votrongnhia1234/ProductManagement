@@ -5,6 +5,8 @@ using ProductManagement.Areas.Admin.Models;
 using ProductManagement.Models;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
+using ProductManagement.Services;
+using Microsoft.AspNetCore.Identity;
 
 namespace ProductManagement.Areas.Admin.Controllers
 {
@@ -13,10 +15,17 @@ namespace ProductManagement.Areas.Admin.Controllers
     public class OrderController : Controller
     {
         private readonly IOrderRepository _orderRepository;
+        private readonly EmailService _emailService;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public OrderController(IOrderRepository orderRepository)
+        public OrderController(
+            IOrderRepository orderRepository,
+            EmailService emailService,
+            UserManager<ApplicationUser> userManager)
         {
             _orderRepository = orderRepository;
+            _emailService = emailService;
+            _userManager = userManager;
         }
 
         public async Task<IActionResult> Index(string searchTerm, OrderStatus? statusFilter, int page = 1)
@@ -170,9 +179,47 @@ namespace ProductManagement.Areas.Admin.Controllers
 
             await _orderRepository.UpdateOrderAsync(order);
 
+            // Gửi email khi giao hàng hoặc hủy đơn
+            var user = await _userManager.FindByIdAsync(order.UserId);
+            if (user != null && !string.IsNullOrEmpty(user.Email))
+            {
+                string subject = "";
+                string body = "";
+
+                if (status == OrderStatus.Delivered)
+                {
+                    subject = "Đơn hàng đã được giao thành công";
+                    body = $@"
+                        <p>Xin chào <b>{user.UserName}</b>,</p>
+                        <p>Đơn hàng <b>#{order.Id}</b> của bạn đã được giao thành công.</p>
+                        <ul>
+                            <li><b>Ngày giao:</b> {DateTime.Now:dd/MM/yyyy HH:mm}</li>
+                            <li><b>Tổng tiền:</b> {order.TotalAmount:C0}</li>
+                            <li><b>Địa chỉ nhận hàng:</b> {order.ShippingAddress}</li>
+                        </ul>
+                        <p>Cảm ơn bạn đã mua hàng tại cửa hàng của chúng tôi!</p>
+                    ";
+                }
+                else if (status == OrderStatus.Cancelled)
+                {
+                    subject = "Đơn hàng đã bị hủy";
+                    body = $@"
+                        <p>Xin chào <b>{user.UserName}</b>,</p>
+                        <p>Đơn hàng <b>#{order.Id}</b> của bạn đã bị hủy.</p>
+                        <p>Nếu có thắc mắc, vui lòng liên hệ cửa hàng để được hỗ trợ.</p>
+                    ";
+                }
+
+                if (!string.IsNullOrEmpty(subject))
+                {
+                    await _emailService.SendEmailAsync(user.Email, subject, body);
+                }
+            }
+
             TempData["Success"] = "Cập nhật trạng thái thành công!";
             return RedirectToAction("Details", new { id });
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
@@ -255,5 +302,6 @@ namespace ProductManagement.Areas.Admin.Controllers
                 _ => "Không xác định"
             };
         }
+
     }
 }

@@ -4,6 +4,10 @@ using ProductManagement.Data;
 using ProductManagement.Models;
 using ProductManagement.Repositories;
 using System;
+using DotNetEnv;
+using ProductManagement.Services;
+
+Env.Load();
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -71,6 +75,7 @@ builder.Services.AddScoped<ICategoryRepository, EFCategoryRepository>();
 builder.Services.AddScoped<IOrderRepository, EFOrderRepository>();
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddTransient<EmailService>();
 
 var app = builder.Build();
 
@@ -107,7 +112,7 @@ using (var scope = app.Services.CreateScope())
     await SeedData.Initialize(services);
 }
 
-var stripeSettings = builder.Configuration.GetSection("Stripe");
-Stripe.StripeConfiguration.ApiKey = stripeSettings["SecretKey"];
+var stripeSecretKey = Environment.GetEnvironmentVariable("SecretKey");
+Stripe.StripeConfiguration.ApiKey = stripeSecretKey;
 
 app.Run();

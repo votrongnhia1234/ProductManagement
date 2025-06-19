@@ -6,6 +6,7 @@ using ProductManagement.Repositories;
 using ProductManagement.Areas.Customer.Models;
 using System.Text.Json;
 using ProductManagement.Extensions;
+using ProductManagement.Services; // Thêm namespace chứa EmailService nếu cần
 
 namespace ProductManagement.Areas.Customer.Controllers
 {
@@ -16,15 +17,19 @@ namespace ProductManagement.Areas.Customer.Controllers
         private readonly IProductRepository _productRepository;
         private readonly IOrderRepository _orderRepository;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly EmailService _emailService; // Thêm dòng này
 
         public CartController(
             IProductRepository productRepository,
             IOrderRepository orderRepository,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager,
+            EmailService emailService // Thêm tham số này
+        )
         {
             _productRepository = productRepository;
             _orderRepository = orderRepository;
             _userManager = userManager;
+            _emailService = emailService; // Gán vào field
         }
 
         public async Task<IActionResult> Index()
@@ -194,6 +199,8 @@ namespace ProductManagement.Areas.Customer.Controllers
             if (string.IsNullOrEmpty(userId))
                 return RedirectToAction("Login", "Account", new { area = "" });
 
+            var user = await _userManager.FindByIdAsync(userId);
+
             decimal totalAmount = 0;
 
             // Nếu chọn PayPal thì chuyển hướng sang trang Payment
@@ -255,6 +262,57 @@ namespace ProductManagement.Areas.Customer.Controllers
             };
 
             await _orderRepository.CreateOrderAsync(order);
+
+            // Gửi email xác nhận đơn hàng
+            if (user != null && !string.IsNullOrEmpty(user.Email))
+            {
+                var subject = "Xác nhận đơn hàng";
+                var body = $@"
+                <div style='font-family:Arial,sans-serif;max-width:600px;margin:auto;border:1px solid #eee;padding:24px;background:#fafbfc;'>
+                    <h2 style='color:#2b6cb0;text-align:center;margin-bottom:24px;'>Xác nhận đơn hàng</h2>
+                    <p style='font-size:16px;'>Xin chào <b>{user.UserName}</b>,</p>
+                    <p style='font-size:16px;'>Cảm ơn quý khách đã đặt hàng tại <b>TechnoShop</b>!</p>
+                    <table style='width:100%;border-collapse:collapse;margin:16px 0;'>
+                        <tr>
+                            <td style='padding:8px 0;font-weight:bold;'>Mã đơn hàng:</td>
+                            <td style='padding:8px 0;color:#2b6cb0;'>{order.Id}</td>
+                        </tr>
+                        <tr>
+                            <td style='padding:8px 0;font-weight:bold;'>Ngày đặt:</td>
+                            <td style='padding:8px 0;'>{order.OrderDate:dd/MM/yyyy HH:mm}</td>
+                        </tr>
+                        <tr>
+                            <td style='padding:8px 0;font-weight:bold;'>Tổng tiền:</td>
+                            <td style='padding:8px 0;color:#e53e3e;font-weight:bold;'>${order.TotalAmount:N0}</td>
+                        </tr>
+                        <tr>
+                            <td style='padding:8px 0;font-weight:bold;'>Địa chỉ giao hàng:</td>
+                            <td style='padding:8px 0;'>{order.ShippingAddress}</td>
+                        </tr>
+                        <tr>
+                            <td style='padding:8px 0;font-weight:bold;'>Phương thức thanh toán:</td>
+                                    <td style='padding:8px 0;'>Chuyển khoản khi nhận hàng (COD)</td>
+                        </tr>
+                        <tr>
+                            <td style='padding:8px 0;font-weight:bold;'>Ghi chú đơn hàng:</td>
+                            <td style='padding:8px 0;'>{order.Notes}</td>
+                        </tr>
+                    </table>
+                    <div style='margin:16px 0;'>
+                        <span style='font-weight:bold;'>Danh sách sản phẩm:</span>
+                        <ul style='margin:8px 0 16px 20px;padding:0;font-size:15px;'>
+                            {string.Join("", order.OrderItems.Select(item => $"<li>{item.Product.ProductName} x {item.Quantity} = <b>${item.Price * item.Quantity:N0}</b></li>"))}
+                        </ul>
+                    </div>
+                    <div style='margin-top:24px;font-size:15px;'>
+                        <b>Chúng tôi sẽ liên hệ khi đơn hàng được giao.<br/>Xin cảm ơn quý khách!</b>
+                    </div>
+                    <hr style='margin:32px 0 8px 0;border:none;border-top:1px solid #eee;'/>
+                    <div style='text-align:center;color:#888;font-size:13px;'>Shop - Hotline: 0123 456 789</div>
+                </div>
+                ";
+                await _emailService.SendEmailAsync(user.Email, subject, body);
+            }
 
             // Xóa các sản phẩm đã thanh toán khỏi giỏ hàng
             var remainCart = cart.Where(i => !ids.Contains(i.ProductId)).ToList();
