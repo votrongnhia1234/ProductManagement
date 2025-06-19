@@ -1,6 +1,5 @@
 .vs/
 .env
-appsettings*.json
 bin/
 obj/
 *.user
