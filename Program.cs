@@ -6,6 +6,10 @@ using ProductManagement.Repositories;
 using System;
 using DotNetEnv;
 using ProductManagement.Services;
+using QuestPDF;
+using QuestPDF.Infrastructure;
+
+QuestPDF.Settings.License = LicenseType.Community;
 
 Env.Load();
 
@@ -76,6 +80,7 @@ builder.Services.AddScoped<IOrderRepository, EFOrderRepository>();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddTransient<EmailService>();
+builder.Services.AddTransient<OrderInvoicePdfService>();
 
 var app = builder.Build();
 

@@ -270,7 +270,7 @@ namespace ProductManagement.Areas.Customer.Controllers
                 var body = $@"
                 <div style='font-family:Arial,sans-serif;max-width:600px;margin:auto;border:1px solid #eee;padding:24px;background:#fafbfc;'>
                     <h2 style='color:#2b6cb0;text-align:center;margin-bottom:24px;'>Xác nhận đơn hàng</h2>
-                    <p style='font-size:16px;'>Xin chào <b>{user.UserName}</b>,</p>
+                    <p style='font-size:16px;'>Xin chào <b>{user.FullName}</b>,</p>
                     <p style='font-size:16px;'>Cảm ơn quý khách đã đặt hàng tại <b>TechnoShop</b>!</p>
                     <table style='width:100%;border-collapse:collapse;margin:16px 0;'>
                         <tr>
@@ -279,7 +279,7 @@ namespace ProductManagement.Areas.Customer.Controllers
                         </tr>
                         <tr>
                             <td style='padding:8px 0;font-weight:bold;'>Ngày đặt:</td>
-                            <td style='padding:8px 0;'>{order.OrderDate:dd/MM/yyyy HH:mm}</td>
+                            <td style='padding:8px 0;'>{order.OrderDate.AddHours(7):dd/MM/yyyy HH:mm}</td>
                         </tr>
                         <tr>
                             <td style='padding:8px 0;font-weight:bold;'>Tổng tiền:</td>
@@ -336,6 +336,40 @@ namespace ProductManagement.Areas.Customer.Controllers
             };
 
             return View("Confirmation", confirmationViewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ExportInvoice(int orderId, [FromServices] OrderInvoicePdfService pdfService)
+        {
+            var order = await _orderRepository.GetOrderByIdAsync(orderId);
+            if (order == null) return NotFound();
+
+            // Lấy thông tin user
+            var user = await _userManager.FindByIdAsync(order.UserId);
+
+            // Map sang OrderConfirmationViewModel và truyền thêm thông tin khách hàng qua ViewBag
+            var orderVm = new OrderConfirmationViewModel
+            {
+                OrderId = order.Id,
+                OrderDate = order.OrderDate.AddHours(7),
+                TotalAmount = order.TotalAmount,
+                Status = order.Status,
+                ShippingAddress = order.ShippingAddress,
+                Items = order.OrderItems.Select(item => new OrderItemViewModel
+                {
+                    ProductName = item.Product?.ProductName ?? "",
+                    Quantity = item.Quantity,
+                    Price = item.Price,
+                    TotalPrice = item.Price * item.Quantity
+                }).ToList()
+            };
+
+            // Truyền thông tin khách hàng qua ViewBag hoặc một object phụ
+            var customerName = user?.FullName ?? "Khách hàng";
+            var customerEmail = user?.Email ?? "N/A";
+
+            var pdfBytes = pdfService.GenerateInvoice(orderVm, customerName, customerEmail);
+            return File(pdfBytes, "application/pdf", $"HoaDon_{orderVm.OrderId}.pdf");
         }
 
         private List<CartItem> GetCartFromSession()

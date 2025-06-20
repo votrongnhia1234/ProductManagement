@@ -492,6 +492,14 @@
                             </button>
                         </form>
                     }
+
+                    <a asp-controller="Cart"
+                    asp-action="ExportInvoice"
+                    asp-route-orderId="@order.Id"
+                    class="btn-action btn-view"
+                    target="_blank">
+                        <i class="fas fa-file-pdf"></i> Xuất hóa đơn
+                    </a>
                 </div>
             </div>
         </div>

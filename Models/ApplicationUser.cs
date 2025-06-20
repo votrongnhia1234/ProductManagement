@@ -25,6 +25,6 @@ namespace ProductManagement.Models
         // Navigation properties
         public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 
-        public string FullName => $"{FirstName} {LastName}";
+        public string FullName => $"{ LastName} {FirstName}";
     }
 }
