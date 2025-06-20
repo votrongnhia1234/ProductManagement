@@ -4,450 +4,9 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<style>
-    .admin-page-header {
-        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
-        color: white;
-        border-radius: 20px;
-        padding: 2rem;
-        margin-bottom: 2rem;
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .admin-page-header::before {
-        content: '';
-        position: absolute;
-        top: -50%;
-        right: -50%;
-        width: 200%;
-        height: 200%;
-        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-        animation: rotate 25s linear infinite;
-    }
-    
-    .admin-page-title {
-        font-size: 2.5rem;
-        font-weight: 800;
-        margin-bottom: 0.5rem;
-        position: relative;
-        z-index: 1;
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-    }
-    
-    .admin-page-subtitle {
-        font-size: 1.125rem;
-        opacity: 0.9;
-        margin-bottom: 0;
-        position: relative;
-        z-index: 1;
-    }
-    
-    .header-actions {
-        position: relative;
-        z-index: 1;
-    }
-    
-    .btn-create {
-        background: rgba(255, 255, 255, 0.2);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        color: white;
-        padding: 0.75rem 1.5rem;
-        border-radius: 12px;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        text-decoration: none;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-    
-    .btn-create:hover {
-        background: rgba(255, 255, 255, 0.3);
-        transform: translateY(-2px);
-        color: white;
-    }
-    
-    .admin-search-section {
-        background: var(--surface-color);
-        border-radius: 20px;
-        padding: 2rem;
-        margin-bottom: 2rem;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    }
-    
-    .search-title {
-        font-size: 1.25rem;
-        font-weight: 700;
-        color: var(--dark-color);
-        margin-bottom: 1.5rem;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-    
-    .search-title i {
-        color: var(--primary-color);
-    }
-    
-    .form-label {
-        font-weight: 600;
-        color: var(--dark-color);
-        margin-bottom: 0.5rem;
-    }
-    
-    .form-control,
-    .form-select {
-        border: 2px solid var(--surface-dark);
-        border-radius: 12px;
-        padding: 0.75rem 1rem;
-        background-color: var(--surface-dark);
-        color: var(--dark-color);
-        transition: all 0.3s ease;
-    }
-    
-    .form-control:focus,
-    .form-select:focus {
-        border-color: var(--primary-color);
-        background-color: var(--surface-color);
-        box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
-        outline: none;
-    }
-    
-    .btn-search {
-        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
-        color: white;
-        border: none;
-        padding: 0.75rem 1.5rem;
-        border-radius: 12px;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        width: 100%;
-    }
-    
-    .btn-search:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3);
-    }
-    
-    .admin-content-section {
-        background: var(--surface-color);
-        border-radius: 20px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        overflow: hidden;
-        margin-bottom: 2rem;
-    }
-    
-    .users-table {
-        margin-bottom: 0;
-    }
-    
-    .users-table thead th {
-        background: var(--surface-dark);
-        font-weight: 700;
-        color: var(--dark-color);
-        border: none;
-        padding: 1.5rem 1rem;
-        font-size: 0.875rem;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-    
-    .users-table tbody td {
-        padding: 1.5rem 1rem;
-        vertical-align: middle;
-        border-color: var(--surface-dark);
-        transition: all 0.3s ease;
-    }
-    
-    .users-table tbody tr {
-        transition: all 0.3s ease;
-    }
-    
-    .users-table tbody tr:hover {
-        background-color: var(--surface-dark);
-        transform: scale(1.01);
-    }
-    
-    .user-avatar {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 700;
-        color: white;
-        font-size: 0.875rem;
-    }
-    
-    .user-info {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-    }
-    
-    .user-details h6 {
-        font-weight: 700;
-        color: var(--dark-color);
-        margin-bottom: 0.25rem;
-    }
-    
-    .user-email {
-        color: var(--gray-color);
-        font-size: 0.875rem;
-        margin-bottom: 0;
-    }
-    
-    .role-badges {
-        display: flex;
-        gap: 0.5rem;
-        flex-wrap: wrap;
-    }
-    
-    .role-badge {
-        padding: 0.375rem 0.75rem;
-        border-radius: 50px;
-        font-size: 0.75rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-    
-    .role-admin {
-        background: rgba(239, 68, 68, 0.1);
-        color: #dc2626;
-    }
-    
-    .role-manager {
-        background: rgba(245, 158, 11, 0.1);
-        color: #d97706;
-    }
-    
-    .role-customer {
-        background: rgba(99, 102, 241, 0.1);
-        color: var(--primary-color);
-    }
-    
-    .status-badge {
-        padding: 0.5rem 1rem;
-        border-radius: 50px;
-        font-size: 0.75rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        width: fit-content;
-    }
-    
-    .status-active {
-        background: rgba(16, 185, 129, 0.1);
-        color: var(--secondary-color);
-    }
-    
-    .status-inactive {
-        background: rgba(156, 163, 175, 0.1);
-        color: #6b7280;
-    }
-    
-    .action-buttons {
-        display: flex;
-        gap: 0.5rem;
-    }
-    
-    .btn-action {
-        width: 36px;
-        height: 36px;
-        border: none;
-        border-radius: 8px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.3s ease;
-        cursor: pointer;
-        text-decoration: none;
-    }
-    
-    .btn-view {
-        background: rgba(59, 130, 246, 0.1);
-        color: #3b82f6;
-    }
-    
-    .btn-view:hover {
-        background: #3b82f6;
-        color: white;
-        transform: scale(1.1);
-    }
-    
-    .btn-edit {
-        background: rgba(245, 158, 11, 0.1);
-        color: #f59e0b;
-    }
-    
-    .btn-edit:hover {
-        background: #f59e0b;
-        color: white;
-        transform: scale(1.1);
-    }
-    
-    .btn-toggle {
-        background: rgba(156, 163, 175, 0.1);
-        color: #6b7280;
-    }
-    
-    .btn-toggle:hover {
-        background: #6b7280;
-        color: white;
-        transform: scale(1.1);
-    }
-    
-    .btn-delete {
-        background: rgba(239, 68, 68, 0.1);
-        color: #dc2626;
-    }
-    
-    .btn-delete:hover {
-        background: #dc2626;
-        color: white;
-        transform: scale(1.1);
-    }
-    
-    .admin-pagination {
-        display: flex;
-        justify-content: center;
-        margin-top: 2rem;
-    }
-    
-    .pagination {
-        background: var(--surface-color);
-        border-radius: 12px;
-        padding: 0.5rem;
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-    }
-    
-    .page-link {
-        border: none;
-        color: var(--dark-color);
-        padding: 0.75rem 1rem;
-        margin: 0 0.25rem;
-        border-radius: 8px;
-        font-weight: 500;
-        transition: all 0.3s ease;
-    }
-    
-    .page-link:hover {
-        background: var(--primary-color);
-        color: white;
-    }
-    
-    .page-item.active .page-link {
-        background: var(--primary-color);
-        color: white;
-    }
-    
-    .stats-cards {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 1rem;
-        margin-bottom: 2rem;
-    }
-    
-    .stat-card {
-        background: var(--surface-color);
-        border-radius: 16px;
-        padding: 1.5rem;
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-        transition: all 0.3s ease;
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .stat-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    }
-    
-    .stat-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 4px;
-        border-radius: 16px 16px 0 0;
-    }
-    
-    .stat-card.total::before { background: linear-gradient(90deg, var(--primary-color), var(--primary-dark)); }
-    .stat-card.admin::before { background: linear-gradient(90deg, #dc2626, #b91c1c); }
-    .stat-card.manager::before { background: linear-gradient(90deg, #f59e0b, #d97706); }
-    .stat-card.customer::before { background: linear-gradient(90deg, var(--secondary-color), #059669); }
-    
-    .stat-value {
-        font-size: 2rem;
-        font-weight: 800;
-        color: var(--dark-color);
-        margin-bottom: 0.5rem;
-    }
-    
-    .stat-label {
-        color: var(--gray-color);
-        font-weight: 500;
-        margin-bottom: 0;
-    }
-    
-    @@media (max-width: 991px) {
-        .admin-page-title {
-            font-size: 2rem;
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 0.5rem;
-        }
-        
-        .admin-search-section {
-            padding: 1.5rem;
-        }
-        
-        .users-table {
-            font-size: 0.875rem;
-        }
-        
-        .users-table thead th,
-        .users-table tbody td {
-            padding: 1rem 0.5rem;
-        }
-    }
-    
-    @@media (max-width: 768px) {
-        .admin-page-header {
-            padding: 1.5rem;
-        }
-        
-        .admin-page-title {
-            font-size: 1.75rem;
-        }
-        
-        .action-buttons {
-            flex-direction: column;
-            gap: 0.25rem;
-        }
-        
-        .btn-action {
-            width: 100%;
-            height: 32px;
-            border-radius: 6px;
-        }
-        
-        .stats-cards {
-            grid-template-columns: repeat(2, 1fr);
-        }
-    }
-</style>
+@section Styles {
+    <link rel="stylesheet" href="~/css/Admin/User/index.css" />
+}
 
 <div class="admin-page-header">
     <div class="d-flex justify-content-between align-items-center flex-wrap">
@@ -496,8 +55,8 @@
     <form method="get" class="row g-3">
         <div class="col-md-4">
             <label class="form-label">Tìm kiếm</label>
-            <input type="text" name="searchTerm" value="@Model.SearchTerm" class="form-control" 
-                   placeholder="Tên, email, địa chỉ...">
+            <input type="text" name="searchTerm" value="@Model.SearchTerm" class="form-control"
+                placeholder="Tên, email, địa chỉ...">
         </div>
         <div class="col-md-3">
             <label class="form-label">Vai trò</label>
@@ -572,20 +131,20 @@
                             <td>@user.CreatedAt.ToString("dd/MM/yyyy")</td>
                             <td>
                                 <div class="action-buttons">
-                                    <a asp-action="Details" asp-route-id="@user.Id" class="btn-action btn-view" title="Xem chi tiết">
+                                    <a asp-action="Details" asp-route-id="@user.Id" class="btn-action btn-view"
+                                        title="Xem chi tiết">
                                         <i class="fas fa-eye"></i>
                                     </a>
                                     <a asp-action="Edit" asp-route-id="@user.Id" class="btn-action btn-edit" title="Chỉnh sửa">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <button type="button" class="btn-action btn-toggle" 
-                                            onclick="toggleUserStatus('@user.Id', @user.IsActive.ToString().ToLower())"
-                                            title="@(user.IsActive ? "Vô hiệu hóa" : "Kích hoạt")">
+                                    <button type="button" class="btn-action btn-toggle"
+                                        onclick="toggleUserStatus('@user.Id', @user.IsActive.ToString().ToLower())"
+                                        title="@(user.IsActive ? "Vô hiệu hóa" : "Kích hoạt")">
                                         <i class="fas fa-@(user.IsActive ? "ban" : "check")"></i>
                                     </button>
-                                    <button type="button" class="btn-action btn-delete" 
-                                            onclick="deleteUser('@user.Id', '@user.FullName')"
-                                            title="Xóa người dùng">
+                                    <button type="button" class="btn-action btn-delete"
+                                        onclick="deleteUser('@user.Id', '@user.FullName')" title="Xóa người dùng">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </div>
@@ -616,7 +175,8 @@
             @if (Model.CurrentPage > 1)
             {
                 <li class="page-item">
-                    <a class="page-link" href="@Url.Action("Index", new { page = Model.CurrentPage - 1, searchTerm = Model.SearchTerm, roleFilter = Model.RoleFilter })">
+                    <a class="page-link"
+                        href="@Url.Action("Index", new { page = Model.CurrentPage - 1, searchTerm = Model.SearchTerm, roleFilter = Model.RoleFilter })">
                         <i class="fas fa-chevron-left"></i>
                     </a>
                 </li>
@@ -625,14 +185,16 @@
             @for (int i = Math.Max(1, Model.CurrentPage - 2); i <= Math.Min(Model.TotalPages, Model.CurrentPage + 2); i++)
             {
                 <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
-                    <a class="page-link" href="@Url.Action("Index", new { page = i, searchTerm = Model.SearchTerm, roleFilter = Model.RoleFilter })">@i</a>
+                    <a class="page-link"
+                        href="@Url.Action("Index", new { page = i, searchTerm = Model.SearchTerm, roleFilter = Model.RoleFilter })">@i</a>
                 </li>
             }
 
             @if (Model.CurrentPage < Model.TotalPages)
             {
                 <li class="page-item">
-                    <a class="page-link" href="@Url.Action("Index", new { page = Model.CurrentPage + 1, searchTerm = Model.SearchTerm, roleFilter = Model.RoleFilter })">
+                    <a class="page-link"
+                        href="@Url.Action("Index", new { page = Model.CurrentPage + 1, searchTerm = Model.SearchTerm, roleFilter = Model.RoleFilter })">
                         <i class="fas fa-chevron-right"></i>
                     </a>
                 </li>
@@ -658,7 +220,7 @@
                 form.submit();
             }
         }
-        
+
         function deleteUser(userId, userName) {
             if (confirm(`Bạn có chắc chắn muốn xóa người dùng "${userName}"?\n\nHành động này không thể hoàn tác!`)) {
                 const form = document.getElementById('actionForm');
@@ -667,28 +229,28 @@
                 form.submit();
             }
         }
-        
+
         // Animate table rows on load
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const rows = document.querySelectorAll('.users-table tbody tr');
             rows.forEach((row, index) => {
                 row.style.opacity = '0';
                 row.style.transform = 'translateY(20px)';
                 row.style.transition = `all 0.6s ease ${index * 0.1}s`;
-                
+
                 setTimeout(() => {
                     row.style.opacity = '1';
                     row.style.transform = 'translateY(0)';
                 }, 100 + (index * 100));
             });
-            
+
             // Animate stat cards
             const statCards = document.querySelectorAll('.stat-card');
             statCards.forEach((card, index) => {
                 card.style.opacity = '0';
                 card.style.transform = 'translateY(20px)';
                 card.style.transition = `all 0.6s ease ${index * 0.1}s`;
-                
+
                 setTimeout(() => {
                     card.style.opacity = '1';
                     card.style.transform = 'translateY(0)';

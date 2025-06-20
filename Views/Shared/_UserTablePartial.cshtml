@@ -1,6 +1,4 @@
 ﻿@using ProductManagement.Models
-
-
 @model IEnumerable<UserViewModel>
 
 <div class="table-responsive">
@@ -52,24 +50,23 @@
                     </td>
                     <td>
                         <div class="btn-group" role="group">
-                            <a asp-action="Details" asp-route-id="@user.Id"
-                               class="btn btn-sm btn-outline-primary" title="Xem chi tiết">
+                            <a asp-action="Details" asp-route-id="@user.Id" class="btn btn-sm btn-outline-primary"
+                                title="Xem chi tiết">
                                 <i class="fas fa-eye"></i>
                             </a>
-                            <a asp-action="Edit" asp-route-id="@user.Id"
-                               class="btn btn-sm btn-outline-warning" title="Chỉnh sửa">
+                            <a asp-action="Edit" asp-route-id="@user.Id" class="btn btn-sm btn-outline-warning"
+                                title="Chỉnh sửa">
                                 <i class="fas fa-edit"></i>
                             </a>
                             <button class="btn btn-sm btn-outline-@(user.IsActive ? "secondary" : "success")"
-                                    onclick="toggleUserStatus('@user.Id', @user.IsActive.ToString().ToLower())"
-                                    title="@(user.IsActive ? "Vô hiệu hóa" : "Kích hoạt")">
+                                onclick="toggleUserStatus('@user.Id', @user.IsActive.ToString().ToLower())"
+                                title="@(user.IsActive ? "Vô hiệu hóa" : "Kích hoạt")">
                                 <i class="fas fa-@(user.IsActive ? "ban" : "check")"></i>
                             </button>
                             <form asp-action="Delete" method="post" class="d-inline">
                                 <input type="hidden" name="id" value="@user.Id" />
                                 <button type="submit" class="btn btn-sm btn-outline-danger"
-                                        onclick="return confirm('Bạn có chắc chắn muốn xóa người dùng này?')"
-                                        title="Xóa">
+                                    onclick="return confirm('Bạn có chắc chắn muốn xóa người dùng này?')" title="Xóa">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </form>
