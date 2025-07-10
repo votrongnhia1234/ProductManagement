@@ -11,5 +11,7 @@ namespace ProductManagement.Areas.Admin.Models
         public int PendingOrders { get; set; }
         public List<Order> RecentOrders { get; set; } = new();
         public List<Product> TopSellingProducts { get; set; } = new();
+        public List<decimal> MonthlyRevenue { get; set; } = new();
+        public Dictionary<string, int> OrderStatusStats { get; set; } = new();
     }
 } 

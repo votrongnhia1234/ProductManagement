@@ -39,21 +39,23 @@ namespace ProductManagement.Controllers
                     {
                         user.LastLoginAt = DateTime.UtcNow;
                         await _userManager.UpdateAsync(user);
-                        return Redirect("/");
-                        // var roles = await _userManager.GetRolesAsync(user);
-
-                        // if (roles.Contains("Admin"))
-                        // {
-                        //     return RedirectToAction("Index", "Home", new { area = "Customer" });
-                        // }
-                        // else if (roles.Contains("Manager"))
-                        // {
-                        //     return RedirectToAction("Index", "Dashboard", new { area = "Manager" });
-                        // }
-                        // else
-                        // {
-                        //     return RedirectToAction("Index", "Home", new { area = "Customer" });
-                        // }
+                        if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                        {
+                            return Redirect(returnUrl);
+                        }
+                        var roles = await _userManager.GetRolesAsync(user);
+                        if (roles.Contains("Admin"))
+                        {
+                            return RedirectToAction("Index", "Dashboard", new { area = "Admin" });
+                        }
+                        else if (roles.Contains("Manager"))
+                        {
+                            return RedirectToAction("Index", "Dashboard", new { area = "Manager" });
+                        }
+                        else
+                        {
+                            return RedirectToAction("Index", "Home", new { area = "Customer" });
+                        }
                     }
                 }
 

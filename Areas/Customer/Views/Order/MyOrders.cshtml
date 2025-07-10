@@ -28,62 +28,27 @@
 
 @if (Model.Orders.Any())
 {
-    @foreach (var (order, index) in Model.Orders.Select((value, i) => (value, i)))
-    {
-        <div class="order-card status-@GetStatusClass(order.Status)" style="animation-delay: @((index * 0.1) + 0.1)s">
-            <div class="order-content">
-                <div class="order-header">
-                    <div>
-                        <div class="order-id">#@order.Id.ToString("D6")</div>
-                        <div class="order-date">
-                            <i class="fas fa-calendar-alt"></i>
-                            @order.OrderDate.ToString("dd/MM/yyyy HH:mm")
-                        </div>
-                    </div>
-                    <div class="order-status status-@GetStatusClass(order.Status)">
-                        <i class="fas fa-circle"></i>
-                        @GetStatusText(order.Status)
-                    </div>
+    <div class="order-list">
+        @foreach (var order in Model.Orders)
+        {
+            <div class="order-card-simple d-flex flex-wrap align-items-center justify-content-between mb-3 p-3 shadow-sm rounded">
+                <div class="d-flex flex-column flex-md-row align-items-md-center gap-3">
+                    <span class="order-id fw-bold">#@order.Id.ToString("D6")</span>
+                    <span class="order-date text-muted"><i class="far fa-calendar-alt"></i> @order.OrderDate.ToString("dd/MM/yyyy HH:mm")</span>
+                    <span class="order-amount"><i class="fas fa-money-bill"></i> <b>@order.TotalAmount.ToString("C0")</b></span>
+                    <span class="order-items"><i class="fas fa-box"></i> @order.ItemCount sản phẩm</span>
                 </div>
-
-                <div class="order-details">
-                    <div class="detail-item">
-                        <div class="detail-label">
-                            <i class="fas fa-money-bill-wave"></i>
-                            Tổng tiền
-                        </div>
-                        <div class="detail-value">@order.TotalAmount.ToString("C0")</div>
-                    </div>
-                    <div class="detail-item">
-                        <div class="detail-label">
-                            <i class="fas fa-box"></i>
-                            Sản phẩm
-                        </div>
-                        <div class="detail-value">@order.ItemCount</div>
-                    </div>
-                </div>
-
-                @if (!string.IsNullOrEmpty(order.TrackingNumber))
-                {
-                    <div class="tracking-info">
-                        <div class="tracking-label">Mã vận đơn:</div>
-                        <div class="tracking-number">@order.TrackingNumber</div>
-                    </div>
-                }
-
-                <div class="order-actions">
-                    <a asp-action="Details" asp-route-id="@order.Id" class="btn-action btn-view">
-                        <i class="fas fa-eye"></i>
-                        Chi tiết
+                <div class="d-flex align-items-center gap-2 mt-2 mt-md-0">
+                    <span class="badge status-badge status-@GetStatusClass(order.Status)">@GetStatusText(order.Status)</span>
+                    <a asp-action="Details" asp-route-id="@order.Id" class="btn btn-sm btn-primary">
+                        <i class="fas fa-eye"></i> Chi tiết
                     </a>
                     @if (order.Status == OrderStatus.Pending || order.Status == OrderStatus.Confirmed)
                     {
                         <form asp-action="CancelOrder" method="post" class="d-inline">
                             <input type="hidden" name="id" value="@order.Id" />
-                            <button type="submit" class="btn-action btn-cancel"
-                                    onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này?')">
-                                <i class="fas fa-times"></i>
-                                Hủy đơn
+                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này?')">
+                                <i class="fas fa-times"></i> Hủy đơn
                             </button>
                         </form>
                     }
@@ -91,26 +56,15 @@
                     {
                         <form asp-action="DeleteOrder" method="post" class="d-inline">
                             <input type="hidden" name="id" value="@order.Id" />
-                            <button type="submit" class="btn-action btn-delete"
-                                    onclick="return confirm('Bạn có chắc chắn muốn xóa đơn hàng này?')">
-                                <i class="fas fa-trash"></i>
-                                Xóa
+                            <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa đơn hàng này?')">
+                                <i class="fas fa-trash"></i> Xóa
                             </button>
                         </form>
                     }
-
-                    <a asp-controller="Cart"
-                    asp-action="ExportInvoice"
-                    asp-route-orderId="@order.Id"
-                    class="btn-action btn-view"
-                    target="_blank">
-                        <i class="fas fa-file-pdf"></i> Xuất hóa đơn
-                    </a>
                 </div>
             </div>
-        </div>
-    }
-
+        }
+    </div>
     <!-- Pagination -->
     @if (Model.TotalPages > 1)
     {

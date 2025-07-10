@@ -162,6 +162,9 @@
                                    title="Xem chi tiết">
                                     <i class="fas fa-eye"></i>
                                 </a>
+                                <a asp-action="ExportInvoice" asp-route-id="@order.Id" class="btn-action btn-invoice" title="Xuất hóa đơn PDF" target="_blank">
+                                    <i class="fas fa-file-invoice"></i>
+                                </a>
                                 @if (order.Status == OrderStatus.Cancelled)
                                 {
                                     <form asp-action="Delete" method="post" class="d-inline">

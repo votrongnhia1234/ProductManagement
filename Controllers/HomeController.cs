@@ -8,7 +8,13 @@ namespace ProductManagement.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            // Nếu đã đăng nhập và là Admin thì chuyển về dashboard admin
+            if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+            {
+                return RedirectToAction("Index", "Dashboard", new { area = "Admin" });
+            }
+            // Còn lại (chưa đăng nhập hoặc Customer) thì chuyển về trang cửa hàng
+            return RedirectToAction("Index", "Home", new { area = "Customer" });
         }
 
         public IActionResult Privacy()

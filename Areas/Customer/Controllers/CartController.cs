@@ -11,7 +11,6 @@ using ProductManagement.Services; // Thêm namespace chứa EmailService nếu c
 namespace ProductManagement.Areas.Customer.Controllers
 {
     [Area("Customer")]
-    [Authorize(Policy = "RequireCustomerRole")]
     public class CartController : Controller
     {
         private readonly IProductRepository _productRepository;
@@ -131,6 +130,13 @@ namespace ProductManagement.Areas.Customer.Controllers
         [HttpGet]
         public async Task<IActionResult> Checkout(string selectedProductIds)
         {
+            // Nếu chưa đăng nhập thì chuyển hướng sang trang đăng nhập, kèm returnUrl
+            if (!User.Identity.IsAuthenticated)
+            {
+                var returnUrl = Url.Action("Checkout", "Cart", new { area = "Customer", selectedProductIds });
+                return RedirectToAction("Login", "Account", new { area = "", returnUrl });
+            }
+
             if (string.IsNullOrEmpty(selectedProductIds))
                 selectedProductIds = HttpContext.Session.GetString("SelectedCartIds");
 
@@ -180,7 +186,7 @@ namespace ProductManagement.Areas.Customer.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Policy = "RequireCustomerRole")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Checkout(CheckoutViewModel model)
         {
@@ -197,7 +203,7 @@ namespace ProductManagement.Areas.Customer.Controllers
 
             var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userId))
-                return RedirectToAction("Login", "Account", new { area = "" });
+                return RedirectToAction("Login", "Account", new { area = "", returnUrl = Url.Action("Checkout", "Cart", new { area = "Customer" }) });
 
             var user = await _userManager.FindByIdAsync(userId);
 
@@ -339,6 +345,7 @@ namespace ProductManagement.Areas.Customer.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "RequireCustomerRole")]
         public async Task<IActionResult> ExportInvoice(int orderId, [FromServices] OrderInvoicePdfService pdfService)
         {
             var order = await _orderRepository.GetOrderByIdAsync(orderId);

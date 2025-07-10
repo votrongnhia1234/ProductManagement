@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ProductManagement.Areas.Admin.Models;
 using ProductManagement.Models;
+using ProductManagement.Data;
 
 namespace ProductManagement.Areas.Admin.Controllers
 {
@@ -12,11 +13,13 @@ namespace ProductManagement.Areas.Admin.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly ApplicationDbContext _context;
 
-        public UserController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public UserController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, ApplicationDbContext context)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _context = context;
         }
 
         public async Task<IActionResult> Index(string searchTerm, string roleFilter, int page = 1)
@@ -30,6 +33,25 @@ namespace ProductManagement.Areas.Admin.Controllers
                 users = users.Where(u => u.Email.Contains(searchTerm) ||
                                         u.FirstName.Contains(searchTerm) ||
                                         u.LastName.Contains(searchTerm));
+            }
+
+            if (!string.IsNullOrEmpty(roleFilter))
+            {
+                var userIdsWithRole = (from user in _userManager.Users
+                                       join userRole in _context.UserRoles on user.Id equals userRole.UserId
+                                       join role in _context.Roles on userRole.RoleId equals role.Id
+                                       where role.Name == roleFilter
+                                       select user.Id).ToList();
+                users = users.Where(u => userIdsWithRole.Contains(u.Id));
+            }
+            else
+            {
+                var userIdsWithRole = (from user in _userManager.Users
+                                       join userRole in _context.UserRoles on user.Id equals userRole.UserId
+                                       join role in _context.Roles on userRole.RoleId equals role.Id
+                                       where role.Name == "Customer"
+                                       select user.Id).ToList();
+                users = users.Where(u => userIdsWithRole.Contains(u.Id));
             }
 
             var totalUsers = users.Count();

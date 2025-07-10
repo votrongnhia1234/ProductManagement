@@ -95,5 +95,6 @@ namespace ProductManagement.Areas.Customer.Models
         public int Quantity { get; set; }
         public decimal Price { get; set; }
         public decimal TotalPrice { get; set; }
+        public int ProductId { get; internal set; }
     }
 }

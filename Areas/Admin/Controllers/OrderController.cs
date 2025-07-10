@@ -156,6 +156,19 @@ namespace ProductManagement.Areas.Admin.Controllers
             var order = await _orderRepository.GetOrderByIdAsync(id);
             if (order == null) return NotFound();
 
+            // Ràng buộc trạng thái: không cho phép cập nhật đơn đã hủy
+            if (order.Status == OrderStatus.Cancelled)
+            {
+                TempData["Error"] = "Đơn hàng đã hủy không thể cập nhật trạng thái khác.";
+                return RedirectToAction("Details", new { id });
+            }
+            // Không cho phép chuyển trạng thái về thấp hơn trạng thái hiện tại
+            if ((int)status < (int)order.Status)
+            {
+                TempData["Error"] = "Không thể chuyển trạng thái đơn hàng về trạng thái trước đó.";
+                return RedirectToAction("Details", new { id });
+            }
+
             order.Status = status;
 
             if (status == OrderStatus.Shipped)
@@ -301,6 +314,38 @@ namespace ProductManagement.Areas.Admin.Controllers
                 OrderStatus.Returned => "Đã trả hàng",
                 _ => "Không xác định"
             };
+        }
+
+        // Action xuất hóa đơn PDF cho đơn hàng
+        public async Task<IActionResult> ExportInvoice(int id, [FromServices] OrderInvoicePdfService pdfService)
+        {
+            // Lấy thông tin đơn hàng
+            var order = await _orderRepository.GetOrderByIdAsync(id);
+            if (order == null)
+            {
+                return NotFound();
+            }
+            // Tạo viewmodel hóa đơn với đúng kiểu dữ liệu
+            var orderVm = new ProductManagement.Areas.Customer.Models.OrderConfirmationViewModel
+            {
+                OrderId = order.Id,
+                OrderDate = order.OrderDate,
+                ShippingAddress = order.ShippingAddress,
+                Status = order.Status, // Nếu OrderConfirmationViewModel.Status là OrderStatus
+                Items = order.OrderItems.Select(oi => new ProductManagement.Areas.Customer.Models.OrderItemViewModel
+                {
+                    ProductId = oi.ProductId,
+                    ProductName = oi.Product.ProductName,
+                    Price = oi.Price,
+                    Quantity = oi.Quantity,
+                    TotalPrice = oi.TotalPrice
+                }).ToList(),
+                TotalAmount = order.TotalAmount
+            };
+            var customerName = order.User.FullName;
+            var customerEmail = order.User.Email;
+            var pdfBytes = pdfService.GenerateInvoice(orderVm, customerName, customerEmail);
+            return File(pdfBytes, "application/pdf", $"HoaDon_{order.Id:D6}.pdf");
         }
 
     }
